@@ -17,7 +17,7 @@ function PlayerProvider({ children }){
         const fetchData = async () => {
             try {
                 ///api/element-summary/616/
-                const response = await axios.get('/api/bootstrap-static/')
+                const response = await axios.get('https://corsproxy.io/?https://fantasy.premierleague.com/api/bootstrap-static/')
                 const data = await response.data
                 const { teams, element_types, elements } = data
                 setPlayers(elements)
