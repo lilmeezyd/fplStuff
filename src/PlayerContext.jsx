@@ -2,11 +2,15 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 export const PlayerContext = createContext({
-    players: []
+    players: [],
+    teams: [],
+    elementTypes: []
 })
 
 function PlayerProvider({ children }){
     const [players, setPlayers ] = useState([])
+    const [teams, setTeams ] = useState([])
+    const [elementTypes, setElementTypes ] = useState([])
     //const [elements, setElements] = useState([])
 
     useEffect(() => {
@@ -17,6 +21,8 @@ function PlayerProvider({ children }){
                 const data = await response.data
                 const { teams, element_types, elements } = data
                 setPlayers(elements)
+                setTeams(teams)
+                setElementTypes(element_types)
                 /*
                 elements.forEach(async(element) => {
                     const a = {}
@@ -39,7 +45,9 @@ function PlayerProvider({ children }){
     
 
     const contextValue = {
-        players: players
+        players: players,
+        teams: teams,
+        elementTypes: elementTypes
     }
 
     return (
