@@ -6,11 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    proxy: {
+    /*proxy: {
       '/api': {
         target: 'https://fantasy.premierleague.com',
         changeOrigin: true
       }
-    }
+    }*/
   }
 })
