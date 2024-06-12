@@ -1,5 +1,6 @@
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 import './App.css'
+import PlayerProvider from './PlayerContext';
 const data = [{name: 'GW1', 'GW Score': 72, 'Top 10k Average': 66.65, 'Overall Average': 57},
 {name: 'GW2', 'GW Score': 67, 'Top 10k Average': 53.34, 'Overall Average': 57}, {name: 'GW3', 'GW Score': 60, 'Top 10k Average': 48.97, 'Overall Average': 48},
 {name: 'GW4', 'GW Score': 79, 'Top 10k Average': 59.74, 'Overall Average': 62}, {name: 'GW5', 'GW Score': 80, 'Top 10k Average': 71.24, 'Overall Average': 62},
@@ -17,20 +18,24 @@ const data = [{name: 'GW1', 'GW Score': 72, 'Top 10k Average': 66.65, 'Overall A
 {name: 'GW17', 'GW Score': 99, 'Top 10k Average': 86.69, 'Overall Average': 72},
 {name: 'GW18', 'GW Score': 52, 'Top 10k Average': 54.91, 'Overall Average': 48},
 {name: 'GW19', 'GW Score': 58, 'Top 10k Average': 58.92, 'Overall Average': 49}];
+import { Outlet } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
+import Header from './components/Header';
+import Footer from './components/Footer';
+
 
 function App() {
   
   return (
-    <LineChart width={600} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-      <Line type="monotone" dataKey="GW Score" stroke
-      ="#8884d8"/>
-      <Line type="monotone" dataKey="Top 10k Average" stroke="#213547"/>
-      <Line type="monotone" dataKey="Overall Average" stroke="red"/>
-      <CartesianGrid strokeDasharray="3 3"/>
-      <XAxis dataKey="name" />
-      <YAxis/>
-      <Tooltip />
-    </LineChart>
+    <PlayerProvider>
+    <>
+    <Header />
+    <Container className="my-2 min-vh-100">
+      <Outlet />
+    </Container>
+    <Footer />
+  </>
+  </PlayerProvider>
   )
 }
 
