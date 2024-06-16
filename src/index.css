@@ -1,10 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 
+
 body {
     font-family: 'Manrope', 'Segoe UI', 'Roboto', sans-serif;
 }
 .navbar-brand {
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .name:nth-of-type(2) {
@@ -34,6 +35,29 @@ footer {
     padding: 2rem;*/
     font-family: 'Manrope', 'Segoe UI', 'Roboto', sans-serif;
     text-align: center;
+  }
+ .sortWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ }
+  .sortBy {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media(max-width: 576px) {
+    html {
+        font-size: 12px;
+    }
+       
+  }
+
+  @media(min-width: 300px) {
+    .col-xs-1 {
+        flex: 0 0 auto;
+        width: 8.333333%;
+    }
   }
   
   
