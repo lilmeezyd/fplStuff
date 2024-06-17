@@ -1,12 +1,80 @@
-import { useState } from "react"
+import { useState, useMemo, useReducer } from "react"
 import { FaCaretUp, FaCaretDown } from "react-icons/fa"
-import { BiCaretUp } from "react-icons/bi"
 import { Row, Col, Form, Table, Container, OverlayTrigger, Tooltip } from "react-bootstrap"
 import { usePlayer } from "../PlayerContext"
 const Statistics = () => {
 
   const { teams, elementTypes, players } = usePlayer()
   const [option, setOption] = useState('total')
+  
+  function reducer(state, action) {
+    if(action.type === 'now_cost' && state.name === 'now_cost') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'now_cost' && state.name !== 'now_cost') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'total_points' && state.name === 'total_points') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'total_points' && state.name !== 'total_points') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'starts' && state.name === 'starts') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'starts' && state.name !== 'starts') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'minutes' && state.name === 'minutes') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'minutes' && state.name !== 'minutes') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+  }
+
+  const [state, dispatch] = useReducer(reducer, { name: 'now_cost', desc: -1})
+  const { name, desc} = state
+  
+
+  const newPlayers = useMemo(() => 
+    players?.sort((x, y) => x[name] > y[name] ? desc : -desc)?.slice(0, 20)
+  , [players, name, desc])
+
+
+  
 
   const onOptionChange = (e) => {
     setOption(e.target.value)
@@ -73,7 +141,7 @@ const Statistics = () => {
             <th></th>
             <th className="name">Player</th>
             <th>Team</th>
-            <th>Pos</th>
+            <th><div className="sortWrapper">Pos</div></th>
             <OverlayTrigger
               placement="top"
               overlay={
@@ -82,8 +150,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div className="sortWrapper">
-              <div>£</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+              <th><div onClick={() => {
+                dispatch({type: 'now_cost', nextName: 'now_cost'})
+              }} className="sortWrapper">
+              <div>£</div> <div className="sortBy"><FaCaretUp fill="gray" /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
               placement="top"
@@ -93,10 +163,16 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div className="sortWrapper">
+              <th><div onClick={() => {
+                dispatch({type: 'total_points', nextName: 'total_points'})
+              }} className="sortWrapper">
               <div>Pts</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
-            <th>Start</th>
+            <th>
+            <div className="sortWrapper">
+              <div onClick={() => {
+                dispatch({type: 'starts', nextName: 'starts'})
+              }}>Start</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             <OverlayTrigger
               placement="top"
               overlay={
@@ -105,7 +181,9 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div className="sortWrapper">
+              <th><div onClick={() => {
+                dispatch({type: 'minutes', nextName: 'minutes'})
+              }} className="sortWrapper">
               <div>MP</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -179,9 +257,7 @@ const Statistics = () => {
           </tr>
         </thead>
         <tbody>
-          {players
-            .sort((x, y) => x.total_points > y.total_points ? -1 : 1)
-            .slice(0, 20).map((player, key) => <tr key={player.id}>
+          {players.sort((x, y) => x[name] > y[name] ? desc : -desc).slice(0, 20).map((player, key) => <tr key={player.id}>
               <td>{key + 1}</td>
               <td className="name">{player.web_name}</td>
               <td>{teams.find(x => +x.id === +player.team).short_name}</td>
