@@ -1,64 +1,109 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 
 body {
-    font-family: 'Manrope', 'Segoe UI', 'Roboto', sans-serif;
+  font-family: "Manrope", "Segoe UI", "Roboto", sans-serif;
 }
 .navbar-brand {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .name:nth-of-type(2) {
-    position: sticky;
-    left: 0;
+  position: sticky;
+  left: 0;
 }
 
 label {
-    display: block;
-    font-weight: 600;
+  display: block;
+  font-weight: 600;
 }
 
 label.gw {
-    text-align: right;
+  text-align: right;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
 }
 
 footer {
-    background: #f8f9fa;
+  background: #f8f9fa;
 }
 #root {
-    /*max-width: 1280px;
+  /*max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;*/
-    font-family: 'Manrope', 'Segoe UI', 'Roboto', sans-serif;
-    text-align: center;
-  }
- .sortWrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
- }
-  .sortBy {
-    display: flex;
-    flex-direction: column;
-  }
+  font-family: "Manrope", "Segoe UI", "Roboto", sans-serif;
+  text-align: center;
+}
+.sortWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.sortBy {
+  display: flex;
+  flex-direction: column;
+}
 
-  @media(max-width: 576px) {
-    html {
-        font-size: 12px;
-    }
-       
-  }
+.button-controls {
+  display: flex;
+  padding: 8px 0;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0;
+}
 
-  @media(min-width: 300px) {
-    .col-xs-1 {
-        flex: 0 0 auto;
-        width: 8.333333%;
-    }
+.btn-controls {
+  outline: none;
+  border: 1px solid black;
+  background: rgba(255, 255, 255, 1);
+  /*padding: 1rem 1rem;*/
+  width: auto;
+  margin: 0 0.2rem;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 8px 10px;
+}
+
+.btn-controls:disabled {
+  opacity: 0.2;
+}
+
+.current {
+  margin-right: 0.2rem;
+}
+
+.total_pages {
+  margin-left: 0.2rem;
+}
+
+.pages {
+  padding: 1rem;
+  color: rgba(22, 22, 68, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pages .current {
+  font-weight: 700;
+}
+
+@media (max-width: 576px) {
+  html {
+    font-size: 12px;
   }
-  
-  
+}
+
+@media (min-width: 300px) {
+  .col-xs-1 {
+    flex: 0 0 auto;
+    width: 8.333333%;
+  }
+}

@@ -1,11 +1,19 @@
 import { useState, useMemo, useReducer } from "react"
+import { Link } from "react-router-dom"
 import { FaCaretUp, FaCaretDown } from "react-icons/fa"
+   import { BsChevronLeft, BsChevronRight,
+    BsChevronDoubleLeft, BsChevronDoubleRight
+    } from "react-icons/bs"
 import { Row, Col, Form, Table, Container, OverlayTrigger, Tooltip } from "react-bootstrap"
 import { usePlayer } from "../PlayerContext"
 const Statistics = () => {
 
   const { teams, elementTypes, players } = usePlayer()
   const [option, setOption] = useState('total')
+  const [curPage, setCurPage] = useState(1)
+  const [ page, setPage ] = useState(1)
+  const pageSize = 15
+  let totalPages = Math.ceil(players.length / pageSize)
   
   function reducer(state, action) {
     if(action.type === 'now_cost' && state.name === 'now_cost') {
@@ -68,10 +76,63 @@ const Statistics = () => {
   const [state, dispatch] = useReducer(reducer, { name: 'now_cost', desc: -1})
   const { name, desc} = state
   
+  
+  const newPlayers = useMemo(() => {
+    const nPlayers = players.sort((x, y) => x[name] > y[name] ? desc : -desc)
+    .filter((player, key) => {
+    let start = (curPage - 1) * pageSize
+    let end = curPage * pageSize
+    if (key >= start && key < end) return true
+  })
+  return nPlayers
+}
+  , [players, name, desc, curPage, pageSize])
 
-  const newPlayers = useMemo(() => 
-    players?.sort((x, y) => x[name] > y[name] ? desc : -desc)?.slice(0, 20)
-  , [players, name, desc])
+  const onSubmit = (e) => {
+    e.preventDefault()
+    if(page > totalPages) {
+      setCurPage(totalPages)
+      setPage(totalPages)
+    } else if(page < 0) {
+      setCurPage(1)
+      setPage(1)
+    }
+    else if(+page === 0){
+      setCurPage(1)
+      setPage(1)
+    } else {
+      setCurPage(page)
+    }
+    
+  }
+
+  const changePage = (e) => {
+    if(e.target.value === '') {
+      setPage('')
+    } else if(e.target.value > totalPages) {
+      setPage(totalPages)
+    } else {
+      setPage(+e.target.value)
+    }
+    
+  }
+  const viewNextPage = () => {
+    setCurPage(curPage + 1)
+    setPage(curPage + 1)
+  }
+  const viewPreviousPage = () => {
+    setCurPage(curPage - 1)
+    setPage(curPage - 1)
+  }
+  const viewFirstPage = () => {
+    setCurPage(1)
+    setPage(1)
+  }
+
+  const viewLastPage = () => {
+    setCurPage(totalPages)
+    setPage(totalPages)
+  }
 
 
   
@@ -169,10 +230,10 @@ const Statistics = () => {
               <div>Pts</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <th>
-            <div className="sortWrapper">
-              <div onClick={() => {
+            <div onClick={() => {
                 dispatch({type: 'starts', nextName: 'starts'})
-              }}>Start</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+              }} className="sortWrapper">
+              <div>Start</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             <OverlayTrigger
               placement="top"
               overlay={
@@ -257,9 +318,11 @@ const Statistics = () => {
           </tr>
         </thead>
         <tbody>
-          {players.sort((x, y) => x[name] > y[name] ? desc : -desc).slice(0, 20).map((player, key) => <tr key={player.id}>
-              <td>{key + 1}</td>
-              <td className="name">{player.web_name}</td>
+          {newPlayers.map((player, key) => 
+          <tr key={player.id}>
+              <td>{key + 1 + (curPage - 1) * pageSize}</td>
+              <td className="name">
+                {player.web_name}</td>
               <td>{teams.find(x => +x.id === +player.team).short_name}</td>
               <td>{elementTypes.find(x => +x.id === +player.element_type).singular_name_short}</td>
               <td>{(player.now_cost / 10).toFixed(1)}</td>
@@ -284,6 +347,35 @@ const Statistics = () => {
         </tbody>
       </Table>
 
+      <div className="button-controls">
+          <button disabled={curPage === 1 ? true : false} onClick={viewFirstPage} className="btn-controls" id="firstPage">
+          <BsChevronDoubleLeft />
+          </button>
+          <button disabled={curPage === 1 ? true : false} onClick={viewPreviousPage} className="btn-controls" id="prevButton">
+          <BsChevronLeft />
+          </button>
+          <div className="pages">
+          <Form onSubmit={onSubmit} className="mx-2">
+                <Form.Group className="my-2 current" controlId="curPage">
+                    <Form.Control
+                        type="number"
+                        value={page}
+                        onChange={changePage}
+                        min='1'
+                        max={totalPages}
+                    ></Form.Control>
+                </Form.Group>
+                </Form>
+            <span>of</span>
+            <span className="mx-2 total_pages">{totalPages}</span>
+          </div>
+          <button disabled={curPage === totalPages ? true : false} onClick={viewNextPage} className="btn-controls" id="nextButton">
+          <BsChevronRight />
+          </button>
+          <button disabled={curPage === totalPages ? true : false} onClick={viewLastPage} className="btn-controls" id="lastPage">
+            <BsChevronDoubleRight />
+          </button>
+        </div>
 
     </Container>
   )
