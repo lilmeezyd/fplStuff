@@ -14,6 +14,7 @@ import Statistics from './screens/Statistics.jsx'
 import Compare from './screens/Compare.jsx'
 import Planner from './screens/Planner.jsx'
 import PlayerScreen from './screens/PlayerScreen.jsx'
+import Unknown from './screens/Unknown.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,7 +23,8 @@ const router = createBrowserRouter(
       <Route path='/statistics' element={<Statistics />} />
       <Route path='/compare' element={<Compare />} />
       <Route path='/planner' element={<Planner />} />
-      <Route path='/statistics/player/:playerId' element={<PlayerScreen />} />
+      <Route path='/statistics/players/:playerId' element={<PlayerScreen />} />
+      <Route path="*" element={<Unknown/>}/>
     </Route>
   )
 )

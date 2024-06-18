@@ -322,7 +322,7 @@ const Statistics = () => {
           <tr key={player.id}>
               <td>{key + 1 + (curPage - 1) * pageSize}</td>
               <td className="name">
-                {player.web_name}</td>
+              <Link to={`/statistics/players/${player.id}`}>{player.web_name}</Link></td>
               <td>{teams.find(x => +x.id === +player.team).short_name}</td>
               <td>{elementTypes.find(x => +x.id === +player.element_type).singular_name_short}</td>
               <td>{(player.now_cost / 10).toFixed(1)}</td>

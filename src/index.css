@@ -30,6 +30,11 @@ h6 {
   font-weight: 700;
 }
 
+.name a {
+    text-decoration: none;
+    color: black;
+}
+
 footer {
   background: #f8f9fa;
 }
