@@ -12,8 +12,8 @@ const PlayerScreen = () => {
   const { playerId } = useParams()
   const navigate = useNavigate()
   const player = players.find(player => player.id === +playerId)
-  const team = teams.find(team => team.id === player.team).name
-  const elementType = elementTypes.find(x => x.id === player.element_type).singular_name
+  const team = player && teams.find(team => team.id === player.team).name
+  const elementType = player && elementTypes.find(x => x.id === player.element_type).singular_name
   useEffect(() => {
     const playerData = async () => {
       try {
@@ -30,14 +30,14 @@ const PlayerScreen = () => {
     }
     playerData()
   }, [playerId])
-  //console.log(player)
+  console.log(player)
 
   if (players.length === 0) return <h1>Loading...</h1>
   if (!player) navigate('/statistics/players/1')
   return (
     <>
-      <div className="player-header border">
-        <h3>{player.web_name}</h3>
+      <div className="player-header my-4">
+        <h3>{player.first_name}&nbsp;{player.second_name}</h3>
         <h5>{team}</h5>
         <h6>{elementType}</h6>
       </div>

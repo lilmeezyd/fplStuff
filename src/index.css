@@ -108,7 +108,21 @@ footer {
   justify-content: center;
   padding: 1rem;
   border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
+  border-top-right-radius: 1rem;  
+  background: #db1414;
+  color: white;
+}
+
+.player-header > h3 {
+  font-weight: 700;
+}
+
+.player-header > h5 {
+  font-weight: 500;
+}
+
+.player-header > h6 {
+  font-weight: 300;
 }
 
 @media (max-width: 576px) {
