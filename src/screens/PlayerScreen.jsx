@@ -1,16 +1,49 @@
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { usePlayer } from "../PlayerContext"
 import { useNavigate } from "react-router-dom"
+import { Row, Col } from "react-bootstrap"
+import axios from "axios"
 const PlayerScreen = () => {
 
-    const { teams, elementTypes, players } = usePlayer()
-    const { playerId } = useParams()
-    const navigate = useNavigate()
-    const player = players.find(player => player.id === +playerId)
-    if(players.length === 0) return <h1>Loading...</h1>
-    if(!player) navigate('/statistics/players/1')
+  const [data, setData] = useState([])
+  const [error, setError] = useState('')
+  const { teams, elementTypes, players } = usePlayer()
+  const { playerId } = useParams()
+  const navigate = useNavigate()
+  const player = players.find(player => player.id === +playerId)
+  const team = teams.find(team => team.id === player.team).name
+  const elementType = elementTypes.find(x => x.id === player.element_type).singular_name
+  useEffect(() => {
+    const playerData = async () => {
+      try {
+        const response = await axios
+          .get(`https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${playerId}/`)
+        const data = await response.data
+        //console.log(data)
+        setData(data)
+      } catch (error) {
+        const errMsg = error?.response?.data?.msg || error?.message
+        setError(errMsg)
+      }
+
+    }
+    playerData()
+  }, [playerId])
+  //console.log(player)
+
+  if (players.length === 0) return <h1>Loading...</h1>
+  if (!player) navigate('/statistics/players/1')
   return (
-    <div>{player.web_name}</div>
+    <>
+      <div className="player-header border">
+        <h3>{player.web_name}</h3>
+        <h5>{team}</h5>
+        <h6>{elementType}</h6>
+      </div>
+      {error === 'Network Error' && <div>Check Your internet Connection!</div>}
+      {!!(error === '') && <div>You On</div>}
+    </>
   )
 }
 

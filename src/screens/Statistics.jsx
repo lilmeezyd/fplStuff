@@ -134,14 +134,12 @@ const Statistics = () => {
     setPage(totalPages)
   }
 
-
-  
-
   const onOptionChange = (e) => {
     setOption(e.target.value)
   }
   return (
     <Container className="py-2 my-2">
+      {players.length === 0 ? <h1>Loading...</h1> : <>
       <h3 className="p-2">View Statistics by one of the options below</h3>
       <Form className="my-2">
         <Row className="my-2 py-2 justify-content-center">
@@ -195,8 +193,9 @@ const Statistics = () => {
           </Col>
         </Row>
       </>}
+      </>}
 
-      <Table striped bordered hover size="sm" responsive>
+      {players.length === 0 ? <h1>Loading...</h1> : <Table striped bordered hover size="sm" responsive>
         <thead>
           <tr>
             <th></th>
@@ -345,9 +344,9 @@ const Statistics = () => {
           <td>@twitter</td>
         </tr>*/}
         </tbody>
-      </Table>
+      </Table>}
 
-      <div className="button-controls">
+      {players.length === 0 ? <h1>Loading...</h1>:<div className="button-controls">
           <button disabled={curPage === 1 ? true : false} onClick={viewFirstPage} className="btn-controls" id="firstPage">
           <BsChevronDoubleLeft />
           </button>
@@ -375,7 +374,7 @@ const Statistics = () => {
           <button disabled={curPage === totalPages ? true : false} onClick={viewLastPage} className="btn-controls" id="lastPage">
             <BsChevronDoubleRight />
           </button>
-        </div>
+        </div>}
 
     </Container>
   )
