@@ -135,6 +135,10 @@ footer {
   font-weight: 600;
 }
 
+.chart-container {
+  overflow: auto;
+}
+
 @media (max-width: 576px) {
   html {
     font-size: 12px;

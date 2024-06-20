@@ -39,7 +39,7 @@ const PlayerScreen = () => {
   const returnPoints = () => {
     const data = []
     history?.map(x => x.total_points)?.forEach((x, key) => {
-      const subData = {name: key+1, points: x}
+      const subData = { name: `GW${key + 1}`, points: x }
       data.push(subData)
     })
 
@@ -60,21 +60,21 @@ const PlayerScreen = () => {
       </div>
       {error === 'Network Error' && <div>Check Your internet Connection!</div>}
       {!!(error === '') && <div>
-        <div className="chart">
-        <div className='chart-heading'>Player Performance</div>
-        <ResponsiveContainer width="100%" height="100%">
-        <BarChart width={500} height={400} data={points}
-        margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="points" fill='#57d557' activeBar={<Rectangle fill='gold' stroke='purple' />} />
-        </BarChart>
-        </ResponsiveContainer>
+        <div className="chart border">
+          <div className='chart-heading'>Player Performance</div>
+          <div className="chart-container">
+            <BarChart width={1300} height={400} data={points}
+              margin={{ top: 5, right: 30, left: 20, bottom: 50 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              {/*<Legend />*/}
+              <Bar onClick={(e) => console.log(+e.payload.name.slice(2))} dataKey="points" fill='#2e5f2e' activeBar={<Rectangle fill='gold' stroke='purple' />} />
+            </BarChart>
+          </div>
         </div>
-        </div>}
+      </div>}
     </>
   )
 }
