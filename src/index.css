@@ -126,7 +126,6 @@ footer {
 }
 
 .chart {
-  height: 400px;
   padding: 10px 0;
   margin: 25px 0;
 }
@@ -137,6 +136,12 @@ footer {
 
 .chart-container {
   overflow: auto;
+  padding: 1rem 0;
+}
+
+.custom-tooltip {
+  background: white;
+  padding: 1rem;
 }
 
 @media (max-width: 576px) {

@@ -2,9 +2,8 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { usePlayer } from "../PlayerContext"
 import { useNavigate } from "react-router-dom"
-import { Row, Col } from "react-bootstrap"
 import axios from "axios"
-import { BarChart, Bar, Rectangle, Legend, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { BarChart, Bar, Rectangle, Legend, Cell, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 const PlayerScreen = () => {
 
   const [data, setData] = useState([])
@@ -21,7 +20,7 @@ const PlayerScreen = () => {
         const response = await axios
           .get(`https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${playerId}/`)
         const data = await response.data
-        console.log(data)
+        //console.log(data)
         setData(data)
       } catch (error) {
         const errMsg = error?.response?.data?.msg || error?.message
@@ -38,8 +37,8 @@ const PlayerScreen = () => {
 
   const returnPoints = () => {
     const data = []
-    history?.map(x => x.total_points)?.forEach((x, key) => {
-      const subData = { name: `GW${key + 1}`, points: x }
+    history?.sort((x,y) => x.round > y.round ? 1 : -1)?.map(x => x.total_points)?.forEach((x, key) => {
+      const subData = { name: `GW${key+1}`, points: x }
       data.push(subData)
     })
 
@@ -47,7 +46,24 @@ const PlayerScreen = () => {
   }
 
   const points = returnPoints()
-  console.log(points)
+  //console.log(points)
+
+  //function getIntroOfPage(label) { console.log(label)}
+
+  function CustomTooltip({ payload, label, active }) {
+    if (active) {
+      return (
+        <div className="custom-tooltip border">
+          <p className="label">{`${label} : ${payload[0].value}`}</p>
+          <p className="desc">Anything you want can be displayed here.</p>
+        </div>
+      );
+    }
+  
+    return null;
+  }
+  
+  
 
   if (players.length === 0) return <h1>Loading...</h1>
   if (!player) navigate('/statistics/players/1')
@@ -63,14 +79,14 @@ const PlayerScreen = () => {
         <div className="chart border">
           <div className='chart-heading'>Player Performance</div>
           <div className="chart-container">
-            <BarChart width={1300} height={400} data={points}
-              margin={{ top: 5, right: 30, left: 20, bottom: 50 }}>
-              <CartesianGrid strokeDasharray="3 3" />
+            <BarChart width={1300} height={300} data={points}
+              margin={{ top: 5, right: 30, left: 20, bottom: 0 }}>
+              {/*<CartesianGrid strokeDasharray="3 3" />*/}
               <XAxis dataKey="name" />
               <YAxis />
-              <Tooltip />
+              <Tooltip content={<CustomTooltip />}/>
               {/*<Legend />*/}
-              <Bar onClick={(e) => console.log(+e.payload.name.slice(2))} dataKey="points" fill='#2e5f2e' activeBar={<Rectangle fill='gold' stroke='purple' />} />
+              <Bar dataKey="points" fill='#2e5f2e' />
             </BarChart>
           </div>
         </div>
