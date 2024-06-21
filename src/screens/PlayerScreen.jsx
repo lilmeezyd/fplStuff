@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom"
 import { usePlayer } from "../PlayerContext"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
-import { BarChart, Bar, Rectangle, Legend, Cell, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 const PlayerScreen = () => {
 
   const [data, setData] = useState([])
@@ -30,38 +29,14 @@ const PlayerScreen = () => {
     }
     playerData()
   }, [playerId])
-  //console.log(player)
 
   const { history } = data
-  console.log(history)
-
-  const returnPoints = () => {
-    const data = []
-    history?.sort((x,y) => x.round > y.round ? 1 : -1)?.map(x => x.total_points)?.forEach((x, key) => {
-      const subData = { name: `GW${key+1}`, points: x }
-      data.push(subData)
-    })
-
-    return data
-  }
-
-  const points = returnPoints()
-  //console.log(points)
-
-  //function getIntroOfPage(label) { console.log(label)}
-
-  function CustomTooltip({ payload, label, active }) {
-    if (active) {
-      return (
-        <div className="custom-tooltip border">
-          <p className="label">{`${label} : ${payload[0].value}`}</p>
-          <p className="desc">Anything you want can be displayed here.</p>
-        </div>
-      );
+  const rounds = history?.map(x => `GW${x.round}`)
+  const opponents = history?.map(x => teams?.find(y => y.id === x.opponent_team)?.short_name)
+ 
+  const handleClick = (x) => {
+      console.log(x)
     }
-  
-    return null;
-  }
   
   
 
@@ -79,15 +54,21 @@ const PlayerScreen = () => {
         <div className="chart border">
           <div className='chart-heading'>Player Performance</div>
           <div className="chart-container">
-            <BarChart width={1300} height={300} data={points}
-              margin={{ top: 5, right: 30, left: 20, bottom: 0 }}>
-              {/*<CartesianGrid strokeDasharray="3 3" />*/}
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip content={<CustomTooltip />}/>
-              {/*<Legend />*/}
-              <Bar dataKey="points" fill='#2e5f2e' />
-            </BarChart>
+            <div className="graph">
+              {history?.map((x, idx) => <div              
+               className="graph-label graph-wrap" key={idx}>
+                <div onClick={() => console.log(x)} 
+                style={{height: x.total_points === 0 && x.minutes === 0 ? 5+'px' : 10*x.total_points+'px'}}
+                className={`${x.minutes === 0 ? 'dnp' : 'graph-bar'}`}>
+                  {x.minutes === 0 ? 'DNP' : x.total_points}</div>
+                </div>)}
+            </div>
+            <div className="graph">
+              {rounds?.map((x, idx) => <div className="graph-label" key={idx}>{x}</div>)}
+            </div>
+            <div className="graph">
+              {opponents?.map((x, idx) => <div className="graph-label" key={idx}>{x}</div>)}
+            </div>
           </div>
         </div>
       </div>}

@@ -144,6 +144,42 @@ footer {
   padding: 1rem;
 }
 
+/* graph */
+.graph {
+  display: flex;
+  width: 1800px;
+}
+.graph-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  width: 50px;
+  line-height: 1;
+  text-align: center;
+}
+
+.graph-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;  
+  border-bottom: 1px solid;
+  margin-bottom: 0.5rem;
+}
+
+.graph-bar {
+  border: 1px solid;
+  width: 80%;
+  border-bottom: 0;
+  background: #20ce94;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  cursor: pointer;
+}
+
+.dnp {
+  cursor: pointer;
+  padding: 1rem;
+}
+
 @media (max-width: 576px) {
   html {
     font-size: 12px;
