@@ -177,7 +177,7 @@ footer {
 
 .dnp {
   cursor: pointer;
-  padding: 1rem;
+  padding: 1rem  0;
 }
 
 .stat-wrap {
