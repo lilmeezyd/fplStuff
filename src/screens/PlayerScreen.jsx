@@ -2,11 +2,15 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { usePlayer } from "../PlayerContext"
 import { useNavigate } from "react-router-dom"
+import { Modal, Button } from "react-bootstrap"
 import axios from "axios"
 const PlayerScreen = () => {
 
   const [data, setData] = useState([])
   const [error, setError] = useState('')
+  const [show, setShow] = useState(false);
+  const [gwStat, setGwStat] = useState('')
+
   const { teams, elementTypes, players } = usePlayer()
   const { playerId } = useParams()
   const navigate = useNavigate()
@@ -29,13 +33,18 @@ const PlayerScreen = () => {
     }
     playerData()
   }, [playerId])
+  
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const { history } = data
   const rounds = history?.map(x => `GW${x.round}`)
   const opponents = history?.map(x => teams?.find(y => y.id === x.opponent_team)?.short_name)
  
-  const handleClick = (x) => {
-      console.log(x)
+  const handleClick = (a) => {
+   handleShow()
+   setGwStat(a)
+   console.log(a)
     }
   
   
@@ -57,8 +66,8 @@ const PlayerScreen = () => {
             <div className="graph">
               {history?.map((x, idx) => <div              
                className="graph-label graph-wrap" key={idx}>
-                <div onClick={() => console.log(x)} 
-                style={{height: x.total_points === 0 && x.minutes === 0 ? 5+'px' : 10*x.total_points+'px'}}
+                <div onClick={() =>handleClick(x)} 
+                style={{height: x.total_points === 0 && x.minutes > 0 ? 5+'px' : 10*x.total_points+'px'}}
                 className={`${x.minutes === 0 ? 'dnp' : 'graph-bar'}`}>
                   {x.minutes === 0 ? 'DNP' : x.total_points}</div>
                 </div>)}
@@ -72,6 +81,87 @@ const PlayerScreen = () => {
           </div>
         </div>
       </div>}
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header style={{background: '#20ce94'}} closeButton>
+          <Modal.Title style={{fontWeight: 700}}>{player.first_name}&nbsp;{player.second_name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-3">
+        <div className="stat-wrap">
+            <div className="stat-head">
+              {teams?.find(y => y.id === gwStat.opponent_team)?.short_name}&nbsp;
+              {gwStat.was_home ? '(H)': '(A)'}</div>
+            <div className="stat-details">{gwStat.team_h_score} : {gwStat.team_a_score}</div>
+          </div>
+        <div className="stat-wrap">
+            <div className="stat-head">Minutes</div>
+            <div className="stat-details">{gwStat.minutes}</div>
+          </div>
+          <div className="stat-wrap">
+            <div className="stat-head">Points</div>
+            <div className="stat-details">{gwStat.total_points}</div>
+          </div>
+          <div className="stat-wrap">
+            <div className="stat-head">Goals</div>
+            <div className="stat-details">{gwStat.goals_scored}</div>
+          </div>
+          <div className="stat-wrap">
+            <div className="stat-head">Assists</div>
+            <div className="stat-details">{gwStat.assists}</div>
+          </div>
+          <div className="stat-wrap">
+            <div className="stat-head">Bonus Points</div>
+            <div className="stat-details">{gwStat.bonus}</div>
+          </div>
+          {player.element_type === 1 && <div className="stat-wrap">
+            <div className="stat-head">Saves</div>
+            <div className="stat-details">{gwStat.saves}</div>
+          </div>}
+          <div className="stat-wrap">
+            <div className="stat-head">xG</div>
+            <div className="stat-details">{gwStat.expected_goals}</div>
+          </div>
+          <div className="stat-wrap">
+            <div className="stat-head">xA</div>
+            <div className="stat-details">{gwStat.expected_assists}</div>
+          </div>
+          {gwStat.own_goals > 0 && <div className="stat-wrap">
+            <div className="stat-head">Own Goals</div>
+            <div className="stat-details">{gwStat.own_goals}</div>
+          </div>}
+          {/*<div className="stat-wrap">
+            <div className="stat-head">nPxG</div>
+            <div className="stat-details">{gwStat.expected_goals-0.78}</div>
+          </div>*/}
+          <div className="stat-wrap">
+            <div className="stat-head">xGi</div>
+            <div className="stat-details">{gwStat.expected_goal_involvements}</div>
+          </div>
+          {(player.element_type === 1 || player.element_type === 2) && 
+          <div className="stat-wrap">
+            <div className="stat-head">xGc</div>
+            <div className="stat-details">{gwStat.expected_goals_conceded}</div>
+          </div>}
+          <div className="stat-wrap">
+            <div className="stat-head">Yellow Cards</div>
+            <div className="stat-details">{gwStat.yellow_cards}</div>
+          </div>
+          <div className="stat-wrap">
+            <div className="stat-head">Red Cards</div>
+            <div className="stat-details">{gwStat.red_cards}</div>
+          </div>
+        </Modal.Body>
+        {/*<Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary">Understood</Button>
+        </Modal.Footer>*/}
+      </Modal>
     </>
   )
 }

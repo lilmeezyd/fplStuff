@@ -180,6 +180,17 @@ footer {
   padding: 1rem;
 }
 
+.stat-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 0;
+}
+
+.stat-head {
+  font-weight: 700;
+}
+
 @media (max-width: 576px) {
   html {
     font-size: 12px;
