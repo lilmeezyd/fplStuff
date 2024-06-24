@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { usePlayer } from "../PlayerContext"
 import { useNavigate } from "react-router-dom"
-import { Modal, Button } from "react-bootstrap"
+import { Modal, Spinner } from "react-bootstrap"
 import axios from "axios"
 const PlayerScreen = () => {
 
@@ -62,14 +62,18 @@ const PlayerScreen = () => {
       {!!(error === '') && <div>
         <div className="chart border">
           <div className='chart-heading'>Player Performance</div>
-          <div className="chart-container">
+          {history ? <div className="chart-container">
             <div className="graph">
               {history?.map((x, idx) => <div              
                className="graph-label graph-wrap" key={idx}>
                 <div onClick={() =>handleClick(x)} 
                 style={{height: x.total_points === 0 && x.minutes > 0 ? 5+'px' : 10*x.total_points+'px'}}
                 className={`${x.minutes === 0 ? 'dnp' : 'graph-bar'}`}>
-                  {x.minutes === 0 ? 'DNP' : x.total_points}</div>
+                
+                  {x.minutes === 0 ?  <div className="no-returns">DNP</div> : 
+                  <div className="returns" style={{paddingTop: x.total_points > 1 && 0.2+'rem', 
+                  paddingBottom: x.total_points > 1 && 0.2+'rem',
+                  background: x.total_points > 1 && '#ff000030'}}>{x.total_points}</div>}</div>
                 </div>)}
             </div>
             <div className="graph">
@@ -78,19 +82,21 @@ const PlayerScreen = () => {
             <div className="graph">
               {opponents?.map((x, idx) => <div className="graph-label" key={idx}>{x}</div>)}
             </div>
-          </div>
+          </div> : <Spinner />}
         </div>
       </div>}
       <Modal
         show={show}
         onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
       >
         <Modal.Header style={{background: '#20ce94'}} closeButton>
           <Modal.Title style={{fontWeight: 700}}>{player.first_name}&nbsp;{player.second_name}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-3">
+        <div className="stat-wrap">
+            <div className="stat-head">Gameweek</div>
+            <div className="stat-details">{gwStat.round}</div>
+          </div>
         <div className="stat-wrap">
             <div className="stat-head">
               {teams?.find(y => y.id === gwStat.opponent_team)?.short_name}&nbsp;
@@ -113,6 +119,14 @@ const PlayerScreen = () => {
             <div className="stat-head">Assists</div>
             <div className="stat-details">{gwStat.assists}</div>
           </div>
+          {gwStat.penalties_missed > 0 && <div className="stat-wrap">
+            <div className="stat-head">Penalties Missed</div>
+            <div className="stat-details">{gwStat.penalties_missed}</div>
+          </div>}
+          {player.element_type === 1 && gwStat.penalties_saved > 0 && <div className="stat-wrap">
+            <div className="stat-head">Penalties Saved</div>
+            <div className="stat-details">{gwStat.penalties_saved}</div>
+          </div>}
           <div className="stat-wrap">
             <div className="stat-head">Bonus Points</div>
             <div className="stat-details">{gwStat.bonus}</div>
