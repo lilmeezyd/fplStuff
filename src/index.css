@@ -246,6 +246,10 @@ footer {
   html {
     font-size: 12px;
   }
+  .custom-select {
+    padding: .3rem 0.7rem .25rem .4rem;
+  margin: 0.25rem 0;
+    width: 100px;}
 }
 
 @media (min-width: 300px) {
