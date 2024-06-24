@@ -10,6 +10,8 @@ const Compare = () => {
   const [ playerData2, setPlayerData2 ] = useState({start2: '', end2: ''})
   const [data1, setData1] = useState([])
   const [data2, setData2] = useState([])
+  const [p1, setP1] = useState('')
+  const [p2, setP2] = useState('')
 
   const { player1, player2 } = playersId
   const { start1, end1 } = playerData1
@@ -66,10 +68,41 @@ const Compare = () => {
     const {history: history2} = data2
     const p1History = history1.filter(x => +x.round >= start1 && +x.round <= +end1)
     const p2History = history2.filter(x => +x.round >= start2 && +x.round <= +end2)
+    const p1 = {minutes:p1History.reduce((x,y) => x+y.minutes,0),
+       goals_scored:p1History.reduce((x,y) => x+y.goals_scored,0),
+       assists:p1History.reduce((x,y) => x+y.assists,0),
+       clean_sheets:p1History.reduce((x,y) => x+y.clean_sheets,0),
+       own_goals:p1History.reduce((x,y) => x+y.own_goals,0),
+      penalties_saved:p1History.reduce((x,y) => x+y.penalties_saved,0),
+      penalties_missed:p1History.reduce((x,y) => x+y.penalties_missed,0),
+      yellow_cards:p1History.reduce((x,y) => x+y.yellow_cards,0),
+      red_cards:p1History.reduce((x,y) => x+y.red_cards,0),
+      saves:p1History.reduce((x,y) => x+y.saves,0),
+      starts:p1History.reduce((x,y) => x+y.starts,0),
+      expected_goals:p1History.reduce((x,y) => x+(+y.expected_goals),0),
+       expected_assists:p1History.reduce((x,y) => x+(+y.expected_assists),0),
+       expected_goal_involvements:p1History.reduce((x,y) => x+(+y.expected_goal_involvements),0),
+      expected_goals_conceded:p1History.reduce((x,y) => x+(+y.expected_goals_conceded),0)
+    }
+    const p2 = {minutes:p2History.reduce((x,y) => x+y.minutes,0),
+      goals_scored:p2History.reduce((x,y) => x+y.goals_scored,0),
+      assists:p2History.reduce((x,y) => x+y.assists,0),
+      clean_sheets:p2History.reduce((x,y) => x+y.clean_sheets,0),
+      own_goals:p2History.reduce((x,y) => x+y.own_goals,0),
+     penalties_saved:p2History.reduce((x,y) => x+y.penalties_saved,0),
+     penalties_missed:p2History.reduce((x,y) => x+y.penalties_missed,0),
+     yellow_cards:p2History.reduce((x,y) => x+y.yellow_cards,0),
+     red_cards:p2History.reduce((x,y) => x+y.red_cards,0),
+     saves:p2History.reduce((x,y) => x+y.saves,0),
+     starts:p2History.reduce((x,y) => x+y.starts,0),
+     expected_goals:p2History.reduce((x,y) => x+(+y.expected_goals),0),
+      expected_assists:p2History.reduce((x,y) => x+(+y.expected_assists),0),
+      expected_goal_involvements:p2History.reduce((x,y) => x+(+y.expected_goal_involvements),0),
+     expected_goals_conceded:p1History.reduce((x,y) => x+(+y.expected_goals_conceded),0)}
     console.log(`Player1: ${player1}, From: ${start1}, To: ${end1}`)
     console.log(`Player2: ${player2}, From: ${start2}, To: ${end2}`)
-    console.log(p1History)
-    console.log(p2History)
+    setP1(p1)
+    setP2(p2)
   }
 
 
@@ -132,21 +165,45 @@ const Compare = () => {
         <Button disabled={!player1||!player2||!start1||!end1||!start2||!end2} onClick={compare}>Compare</Button>
       </div>
       <h4 className="p-2">Player Statistics</h4>
+      {<>
+        <h6 className="p-2">Minutes</h6>
       <div className="p-1 compare-stat-wrap">
-        <div>3</div>
-        <h6>Minutes</h6>
-        <div>6</div>
+      <div>
+          <div 
+          style={{width: (p1.minutes/(p1.minutes+p2.minutes)*100)+'%',
+            background: 'blue', padding: 0.3+'rem'
+          }}>{p1.minutes}</div></div>
+        <div>
+          <div style={{width: (p2.minutes/(p1.minutes+p2.minutes)*100)+'%',
+            background: 'red', padding: 0.3+'rem'
+          }}>{p2.minutes}</div></div>
       </div>
+      <h6 className="p-2">Goals</h6>
       <div className="p-1 compare-stat-wrap">
-        <div>3</div>
-        <h6>Goals</h6>
-        <div>6</div>
+        <div>
+          <div 
+          style={{width: (p1.goals_scored/(p1.goals_scored+p2.goals_scored)*100)+'%',
+            background: 'blue', padding: 0.3+'rem'
+          }}>{p1.goals_scored}</div></div>
+        <div>
+          <div style={{width: (p2.goals_scored/(p1.goals_scored+p2.goals_scored)*100)+'%',
+            background: 'red', padding: 0.3+'rem'
+          }}>{p2.goals_scored}</div></div>
       </div>
+      <h6 className="p-2">Assists</h6>
       <div className="p-1 compare-stat-wrap">
-        <div>3</div>
-        <h6>Assists</h6>
-        <div>6</div>
+        <div>
+          <div 
+          style={{width: (p1.assists/(p1.assists+p2.assists)*100)+'%',
+            background: 'blue', padding: 0.3+'rem'
+          }}>{p1.assists}</div></div>
+        <div>
+          <div style={{width: (p2.assists/(p1.assists+p2.assists)*100)+'%',
+            background: 'red', padding: 0.3+'rem'
+          }}>{p2.assists}</div></div>
       </div>
+      </>}
+      
     </Container>
   );
 };
