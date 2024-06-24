@@ -196,6 +196,52 @@ footer {
   color: white;
 }
 
+/* Comparison Tool */
+.playerison {
+  display: flex;
+  padding: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.custom-select{
+  padding: .6rem 1.4rem .5rem .8rem;
+  margin: 0.5rem 0;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+}
+
+.custom-select-2{
+  padding: .25rem .4rem;
+  margin: 0.5rem 0;
+  border: 1px solid #aaa;
+  font-size: 0.8rem;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+}
+
+.range-wrapper {
+  display: flex;
+  padding: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.range-contents {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5rem;
+  width: 250px;
+}
+
+.compare-stat-wrap {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media (max-width: 576px) {
   html {
     font-size: 12px;

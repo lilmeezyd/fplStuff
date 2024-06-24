@@ -23,7 +23,6 @@ const PlayerScreen = () => {
         const response = await axios
           .get(`https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${playerId}/`)
         const data = await response.data
-        //console.log(data)
         setData(data)
       } catch (error) {
         const errMsg = error?.response?.data?.msg || error?.message

@@ -4,6 +4,7 @@ import axios from "axios";
 export const PlayerContext = createContext({
     players: [],
     teams: [],
+    events: [],
     elementTypes: []
 })
 
@@ -11,6 +12,7 @@ function PlayerProvider({ children }){
     const [players, setPlayers ] = useState([])
     const [teams, setTeams ] = useState([])
     const [elementTypes, setElementTypes ] = useState([])
+    const [events, setEvents] = useState([])
     //const [elements, setElements] = useState([])
 
     useEffect(() => {
@@ -19,7 +21,8 @@ function PlayerProvider({ children }){
                 ///api/element-summary/616/
                 const response = await axios.get('https://corsproxy.io/?https://fantasy.premierleague.com/api/bootstrap-static/')
                 const data = await response.data
-                const { teams, element_types, elements } = data
+                const { teams, element_types, elements, events } = data
+                setEvents(events)
                 setPlayers(elements)
                 setTeams(teams)
                 setElementTypes(element_types)
@@ -47,6 +50,7 @@ function PlayerProvider({ children }){
     const contextValue = {
         players: players,
         teams: teams,
+        events: events,
         elementTypes: elementTypes
     }
 
