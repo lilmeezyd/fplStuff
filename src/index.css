@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 
+html {
+  font-size: 16px;
+}
 body {
   font-family: "Manrope", "Segoe UI", "Roboto", sans-serif;
 }
@@ -209,6 +212,7 @@ footer {
   margin: 0.5rem 0;
   border: 1px solid #aaa;
   border-radius: 5px;
+  font-weight: 700;
 }
 
 .custom-select-2{
@@ -216,54 +220,105 @@ footer {
   margin: 0.5rem 0;
   border: 1px solid #aaa;
   font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .form-group label {
   font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .range-wrapper {
-  display: flex;
+  display: grid;
   padding: 0.5rem;
-  justify-content: space-between;
-  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
 }
 
 .range-contents {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 0 0.5rem;
-  width: 250px;
+}
+
+.range-contents .form-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: baseline;
+  padding: 0 0.5rem;
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  font-size: 0.8rem;
 }
 
 .compare-stat-wrap {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   justify-content: center;
+  gap: 0.4rem;
+  border: 1px solid gray;
   border-radius: 0.4rem;
 }
-.compare-stat-wrap > div:first-of-type {
-  text-align: left;
-  border: 1px solid gray;
-  border-right: none;
-  display: flex;
-  justify-content: flex-end;
-  color: white;
-  font-weight: 700;
+.compare-stat-wrap > div.player-one {
+  justify-self: end;
   border-top-left-radius: 0.4rem;
   border-bottom-left-radius: 0.4rem;
 }
 
-.compare-stat-wrap > div:last-of-type {
-  text-align: right;
-  border: 1px solid gray;
-  border-left: none;
-  display: flex;
-  color: white;
-  font-weight: 700;
+.compare-stat-wrap > div.player-two {
   border-top-right-radius: 0.4rem;
   border-bottom-right-radius: 0.4rem;
+}
+
+.player-stats {
+  display: grid;
+  grid-template-columns: 10% 1fr 10%;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.player-wrapper {
+  padding: 0.5rem;
+  width: 40vw;
+}
+
+.player-details {
+  padding: 0.3rem;
+}
+
+.details {
+  display: grid;
+  padding: 0.2rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.details  div:first-child {
+  font-weight: 700;
+  justify-self: baseline;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: left;
+  
+}
+
+.details div:last-child {
+  justify-self: right;
+  font-weight: 700;
+  color: #aaa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: left;
+}
+
+footer {
+  font-size: 0.8rem;
 }
 
 @media (max-width: 576px) {
