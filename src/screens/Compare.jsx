@@ -10,6 +10,8 @@ const Compare = () => {
   const [playerData2, setPlayerData2] = useState({ start2: 1, end2: 1 });
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
+  const [ view, setView] = useState({statView: true, graphView: false})
+  const [graph, setGraph] = useState(false)
 
   const { player1, player2 } = playersId;
   const { start1, end1 } = playerData1;
@@ -164,6 +166,13 @@ const Compare = () => {
     return { p1, p2}
   }, [data1, data2, start1, start2, end1, end2 ])
 
+  const onStat = () => {
+    view.statView === false && setView({statView:true, graphView:false})
+  }
+  const onGraph = () => {
+    view.graphView === false && setView(prev =>({...prev, graphView:true}))
+  }
+
   const { p1, p2 } = compare
   const nEvents = events
     .map((event) => event.finished && event.id)
@@ -242,8 +251,8 @@ const Compare = () => {
         
       </div>
       <div className="comparison">
-      <div style={{fontWeight: 700}} className="p-2">Select Gameweeks range for {playerToCompare1.name}</div>
-      <div style={{fontWeight: 700}} className="p-2">Select Gameweeks range for {playerToCompare2.name}</div>
+      <div onClick={onStat} style={{fontWeight: 700}} className="p-2">Select Gameweeks range for {playerToCompare1.name}</div>
+      <div onClick={onGraph} style={{fontWeight: 700}} className="p-2">Select Gameweeks range for {playerToCompare2.name}</div>
       </div>
       
       <div className="range-wrapper">
@@ -255,9 +264,10 @@ const Compare = () => {
               className="custom-select-2"
               name="player-from-1"
               id="player-from-1"
+              value={start1}
             >
               {nEvents.map((event, idx) => (
-                <option selected={event === start1} value={event} key={idx}>
+                <option value={event} key={idx}>
                   GW{event}
                 </option>
               ))}
@@ -270,9 +280,10 @@ const Compare = () => {
               className="custom-select-2"
               name="player-to-1"
               id="player-to-1"
+              value={end1}
             >
               {nEvents.map((event, idx) => (
-                <option selected={event === end1} value={event} key={idx}>
+                <option value={event} key={idx}>
                   GW{event}
                 </option>
               ))}
@@ -287,9 +298,10 @@ const Compare = () => {
               className="custom-select-2"
               name="player-from-2"
               id="player-from-2"
+              value={start2}
             >
               {nEvents.map((event, idx) => (
-                <option selected={event === start2} value={event} key={idx}>
+                <option value={event} key={idx}>
                   GW{event}
                 </option>
               ))}
@@ -302,9 +314,10 @@ const Compare = () => {
               className="custom-select-2"
               name="player-to-2"
               id="player-to-2"
+              value={end2}
             >
               {nEvents.map((event, idx) => (
-                <option selected={event === end2} value={event} key={idx}>
+                <option value={event} key={idx}>
                   GW{event}
                 </option>
               ))}
