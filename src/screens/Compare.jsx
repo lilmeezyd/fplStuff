@@ -1,4 +1,4 @@
-import { Container} from "react-bootstrap";
+import { Container, Spinner} from "react-bootstrap";
 import { usePlayer } from "../PlayerContext";
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
@@ -13,9 +13,10 @@ const Compare = () => {
   const [playerData2, setPlayerData2] = useState({ start2: 1, end2: 1 });
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
-  const [ view, setView] = useState({statView: true, graphView: false})
   const [graph, setGraph] = useState(false)
   const [stat, setStat] = useState(true)
+  const [error, setError] = useState('')
+  const [error1, setError1] = useState('')
 
   const { player1, player2 } = playersId;
   const { start1, end1 } = playerData1;
@@ -31,7 +32,7 @@ const Compare = () => {
         setData1(data);
       } catch (error) {
         const errMsg = error?.response?.data?.msg || error?.message;
-        //setError(errMsg)
+        setError(errMsg)
       }
     };
     playerData();
@@ -47,7 +48,7 @@ const Compare = () => {
         setData2(data);
       } catch (error) {
         const errMsg = error?.response?.data?.msg || error?.message;
-        //setError(errMsg)
+        setError1(errMsg)
       }
     };
     playerData();
@@ -189,13 +190,6 @@ const Compare = () => {
   const nEvents = events
     .map((event) => event.finished && event.id)
     .sort((x, y) => (x.id > y.id ? -1 : 1));
-  console.log(p1)
-  /*
-  {"param" : "Minutes", 
-    "player1":p1.minutes, "player2":p2.minutes },
-    {"param" : "Points","player1":p1.total_points, "player2":p2.total_points
-    },
-  */
   
   const data = [
     {"param" : "Minutes", 
@@ -210,6 +204,10 @@ const Compare = () => {
     {"param" : "Saves","player1":p1.saves, "player2":p2.saves}]
   return (
     <Container>
+    {players.length === 0 && error === '' && error1 === '' && <div className="py-5"><Spinner/></div>}
+    {(error === 'Network Error' || error1 === 'Network Error')  && 
+    <div className="py-5">Check your internet connection!</div>}
+      {players.length > 0 &&  <>
       <h4 style={{fontWeight: 700}} className="p-2">Select players to compare</h4>
       <div className="playerison">
         <div className="player-wrapper">
@@ -220,6 +218,7 @@ const Compare = () => {
               player1: e.target.value,
             }))
           }
+          defaultValue='1'
           className="custom-select"
           name=""
           id=""
@@ -254,6 +253,7 @@ const Compare = () => {
             }))
           }
           className="custom-select"
+          defaultValue='1'
           name=""
           id=""
         >
@@ -808,6 +808,7 @@ const Compare = () => {
         </RadarChart>
         </ResponsiveContainer>
         </div>}
+        </>}
     </Container>
   );
 };
