@@ -246,6 +246,26 @@ footer {
   padding: 0 0.5rem;
 }
 
+.form-group label {
+  padding-right: 0.2rem;
+}
+
+.compare-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  padding: 0.5rem;
+}
+
+.compare-tabs div {
+  cursor: pointer;
+}
+
+.select-active {
+  background: #8080803d;
+  box-shadow: black 0 0 5px;
+}
+
 .comparison {
   display: grid;
   grid-template-columns: 1fr 1fr;

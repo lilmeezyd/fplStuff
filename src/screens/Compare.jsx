@@ -1,18 +1,15 @@
-import { Container, Button } from "react-bootstrap";
+import { Container} from "react-bootstrap";
 import { usePlayer } from "../PlayerContext";
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
-import { DiTravis } from "react-icons/di";
 
 const Compare = () => {
   const { players, events, elementTypes, teams } = usePlayer();
   const [playersId, setPlayersId] = useState({ player1: 1, player2: 1 });
-  const [playerData1, setPlayerData1] = useState({ start1: "", end1: "" });
-  const [playerData2, setPlayerData2] = useState({ start2: "", end2: "" });
+  const [playerData1, setPlayerData1] = useState({ start1: 1, end1: 1 });
+  const [playerData2, setPlayerData2] = useState({ start2: 1, end2: 1 });
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
-  const [p1, setP1] = useState("");
-  const [p2, setP2] = useState("");
 
   const { player1, player2 } = playersId;
   const { start1, end1 } = playerData1;
@@ -75,77 +72,99 @@ const Compare = () => {
   const { playerToCompare1, playerToCompare2 } = playersToCompare
 
   const playerFrom1 = (e) => {
-    setPlayerData1((prevState) => ({ ...prevState, start1: e.target.value }));
+    if(+e.target.value > +end1) {
+      setPlayerData1({end1: +e.target.value, start1: end1
+      })
+  } else {
+    setPlayerData1((prevState) => ({ ...prevState, start1: +e.target.value }));
+  }
   };
   const playerTo1 = (e) => {
-    setPlayerData1((prevState) => ({ ...prevState, end1: e.target.value }));
+    if(+e.target.value < +start1) {
+      setPlayerData1(prevState => ({
+          ...prevState, end1: start1, start1: +e.target.value
+      }))
+  } else {
+    setPlayerData1((prevState) => ({ ...prevState, end1: +e.target.value }));
+  }
   };
   const playerFrom2 = (e) => {
-    setPlayerData2((prevState) => ({ ...prevState, start2: e.target.value }));
+    if(+e.target.value > +end2) {
+      setPlayerData2({end2: +e.target.value, start2: end2
+      })
+  } else {
+    setPlayerData2((prevState) => ({ ...prevState, start2: +e.target.value }));
+  }
   };
   const playerTo2 = (e) => {
-    setPlayerData2((prevState) => ({ ...prevState, end2: e.target.value }));
+    if(+e.target.value < +start1) {
+      setPlayerData2(prevState => ({
+          ...prevState, end2: start2, start2: +e.target.value
+      }))
+  } else {
+    setPlayerData2((prevState) => ({ ...prevState, end2: +e.target.value }));
+  }
   };
 
-  const compare = () => {
+  const compare = useMemo(() => {
     const { history: history1 } = data1;
     const { history: history2 } = data2;
-    const p1History = history1.filter(
+    const p1History = history1?.filter(
       (x) => +x.round >= start1 && +x.round <= +end1
     );
-    const p2History = history2.filter(
+    const p2History = history2?.filter(
       (x) => +x.round >= start2 && +x.round <= +end2
     );
     const p1 = {
-      minutes: p1History.reduce((x, y) => x + y.minutes, 0),
-      goals_scored: p1History.reduce((x, y) => x + y.goals_scored, 0),
-      assists: p1History.reduce((x, y) => x + y.assists, 0),
-      clean_sheets: p1History.reduce((x, y) => x + y.clean_sheets, 0),
-      own_goals: p1History.reduce((x, y) => x + y.own_goals, 0),
-      penalties_saved: p1History.reduce((x, y) => x + y.penalties_saved, 0),
-      penalties_missed: p1History.reduce((x, y) => x + y.penalties_missed, 0),
-      yellow_cards: p1History.reduce((x, y) => x + y.yellow_cards, 0),
-      red_cards: p1History.reduce((x, y) => x + y.red_cards, 0),
-      saves: p1History.reduce((x, y) => x + y.saves, 0),
-      starts: p1History.reduce((x, y) => x + y.starts, 0),
-      expected_goals: p1History.reduce((x, y) => x + +y.expected_goals, 0),
-      expected_assists: p1History.reduce((x, y) => x + +y.expected_assists, 0),
-      expected_goal_involvements: p1History.reduce(
+      minutes: p1History?.reduce((x, y) => x + y.minutes, 0),
+      goals_scored: p1History?.reduce((x, y) => x + y.goals_scored, 0),
+      assists: p1History?.reduce((x, y) => x + y.assists, 0),
+      clean_sheets: p1History?.reduce((x, y) => x + y.clean_sheets, 0),
+      own_goals: p1History?.reduce((x, y) => x + y.own_goals, 0),
+      penalties_saved: p1History?.reduce((x, y) => x + y.penalties_saved, 0),
+      penalties_missed: p1History?.reduce((x, y) => x + y.penalties_missed, 0),
+      yellow_cards: p1History?.reduce((x, y) => x + y.yellow_cards, 0),
+      red_cards: p1History?.reduce((x, y) => x + y.red_cards, 0),
+      saves: p1History?.reduce((x, y) => x + y.saves, 0),
+      starts: p1History?.reduce((x, y) => x + y.starts, 0),
+      expected_goals: p1History?.reduce((x, y) => x + +y.expected_goals, 0),
+      expected_assists: p1History?.reduce((x, y) => x + +y.expected_assists, 0),
+      expected_goal_involvements: p1History?.reduce(
         (x, y) => x + +y.expected_goal_involvements,
         0
       ),
-      expected_goals_conceded: p1History.reduce(
+      expected_goals_conceded: p1History?.reduce(
         (x, y) => x + +y.expected_goals_conceded,
         0
       ),
     };
     const p2 = {
-      minutes: p2History.reduce((x, y) => x + y.minutes, 0),
-      goals_scored: p2History.reduce((x, y) => x + y.goals_scored, 0),
-      assists: p2History.reduce((x, y) => x + y.assists, 0),
-      clean_sheets: p2History.reduce((x, y) => x + y.clean_sheets, 0),
-      own_goals: p2History.reduce((x, y) => x + y.own_goals, 0),
-      penalties_saved: p2History.reduce((x, y) => x + y.penalties_saved, 0),
-      penalties_missed: p2History.reduce((x, y) => x + y.penalties_missed, 0),
-      yellow_cards: p2History.reduce((x, y) => x + y.yellow_cards, 0),
-      red_cards: p2History.reduce((x, y) => x + y.red_cards, 0),
-      saves: p2History.reduce((x, y) => x + y.saves, 0),
-      starts: p2History.reduce((x, y) => x + y.starts, 0),
-      expected_goals: p2History.reduce((x, y) => x + +y.expected_goals, 0),
-      expected_assists: p2History.reduce((x, y) => x + +y.expected_assists, 0),
-      expected_goal_involvements: p2History.reduce(
+      minutes: p2History?.reduce((x, y) => x + y.minutes, 0),
+      goals_scored: p2History?.reduce((x, y) => x + y.goals_scored, 0),
+      assists: p2History?.reduce((x, y) => x + y.assists, 0),
+      clean_sheets: p2History?.reduce((x, y) => x + y.clean_sheets, 0),
+      own_goals: p2History?.reduce((x, y) => x + y.own_goals, 0),
+      penalties_saved: p2History?.reduce((x, y) => x + y.penalties_saved, 0),
+      penalties_missed: p2History?.reduce((x, y) => x + y.penalties_missed, 0),
+      yellow_cards: p2History?.reduce((x, y) => x + y.yellow_cards, 0),
+      red_cards: p2History?.reduce((x, y) => x + y.red_cards, 0),
+      saves: p2History?.reduce((x, y) => x + y.saves, 0),
+      starts: p2History?.reduce((x, y) => x + y.starts, 0),
+      expected_goals: p2History?.reduce((x, y) => x + +y.expected_goals, 0),
+      expected_assists: p2History?.reduce((x, y) => x + +y.expected_assists, 0),
+      expected_goal_involvements: p2History?.reduce(
         (x, y) => x + +y.expected_goal_involvements,
         0
       ),
-      expected_goals_conceded: p1History.reduce(
+      expected_goals_conceded: p1History?.reduce(
         (x, y) => x + +y.expected_goals_conceded,
         0
       ),
     };
-    setP1(p1);
-    setP2(p2);
-  };
+    return { p1, p2}
+  }, [data1, data2, start1, start2, end1, end2 ])
 
+  const { p1, p2 } = compare
   const nEvents = events
     .map((event) => event.finished && event.id)
     .sort((x, y) => (x.id > y.id ? -1 : 1));
@@ -238,7 +257,7 @@ const Compare = () => {
               id="player-from-1"
             >
               {nEvents.map((event, idx) => (
-                <option value={event} key={idx}>
+                <option selected={event === start1} value={event} key={idx}>
                   GW{event}
                 </option>
               ))}
@@ -253,7 +272,7 @@ const Compare = () => {
               id="player-to-1"
             >
               {nEvents.map((event, idx) => (
-                <option value={event} key={idx}>
+                <option selected={event === end1} value={event} key={idx}>
                   GW{event}
                 </option>
               ))}
@@ -270,7 +289,7 @@ const Compare = () => {
               id="player-from-2"
             >
               {nEvents.map((event, idx) => (
-                <option value={event} key={idx}>
+                <option selected={event === start2} value={event} key={idx}>
                   GW{event}
                 </option>
               ))}
@@ -285,7 +304,7 @@ const Compare = () => {
               id="player-to-2"
             >
               {nEvents.map((event, idx) => (
-                <option value={event} key={idx}>
+                <option selected={event === end2} value={event} key={idx}>
                   GW{event}
                 </option>
               ))}
@@ -293,17 +312,10 @@ const Compare = () => {
           </div>
         </div>
       </div>
-      <div className="p-2">
-        <Button
-          disabled={
-            !player1 || !player2 || !start1 || !end1 || !start2 || !end2
-          }
-          onClick={compare}
-        >
-          Compare
-        </Button>
+      <div className="compare-tabs">
+      <div style={{fontWeight: 700}} className="p-2">Player Statistics</div>
+      <div style={{fontWeight: 700}} className="p-2">Graphical display</div>
       </div>
-      <div style={{fontWeight: 700, fontSize: 0.8+'rem'}} className="p-2">Player Statistics</div>
       {
         player1 && player2 && start1 && end1 && start2 && end2 &&
         <>
