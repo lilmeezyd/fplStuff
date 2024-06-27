@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 
 html {
-  font-size: 16px;
+  font-size: 12px;
 }
 body {
   font-family: "Manrope", "Segoe UI", "Roboto", sans-serif;
@@ -205,6 +205,8 @@ footer {
   padding: 0.5rem;
   justify-content: space-between;
   align-items: center;
+  background: aquamarine;
+  border-radius: 1rem;
 }
 
 .custom-select{
@@ -224,7 +226,7 @@ footer {
 }
 
 .form-group label {
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 
@@ -233,6 +235,8 @@ footer {
   padding: 0.5rem;
   grid-template-columns: 1fr 1fr;
   gap: 5rem;
+  background: aquamarine;
+  border-radius: 1rem;
 }
 
 .range-contents {
@@ -254,7 +258,7 @@ footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 .compare-tabs div {
@@ -262,15 +266,24 @@ footer {
 }
 
 .select-active {
-  background: #8080803d;
-  box-shadow: black 0 0 5px;
+  box-shadow: black 0 0 2px;
+  border-radius: 0.5rem;
+}
+
+.graph-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  height: 250px;
+  margin-top: 1rem;
 }
 
 .comparison {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .compare-stat-wrap {

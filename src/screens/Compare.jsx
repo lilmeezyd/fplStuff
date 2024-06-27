@@ -2,6 +2,9 @@ import { Container} from "react-bootstrap";
 import { usePlayer } from "../PlayerContext";
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
+import { PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart, Legend,
+  ResponsiveContainer
+ } from "recharts";
 
 const Compare = () => {
   const { players, events, elementTypes, teams } = usePlayer();
@@ -12,6 +15,7 @@ const Compare = () => {
   const [data2, setData2] = useState([]);
   const [ view, setView] = useState({statView: true, graphView: false})
   const [graph, setGraph] = useState(false)
+  const [stat, setStat] = useState(true)
 
   const { player1, player2 } = playersId;
   const { start1, end1 } = playerData1;
@@ -99,7 +103,7 @@ const Compare = () => {
   }
   };
   const playerTo2 = (e) => {
-    if(+e.target.value < +start1) {
+    if(+e.target.value < +start2) {
       setPlayerData2(prevState => ({
           ...prevState, end2: start2, start2: +e.target.value
       }))
@@ -119,6 +123,7 @@ const Compare = () => {
     );
     const p1 = {
       minutes: p1History?.reduce((x, y) => x + y.minutes, 0),
+      total_points: p1History?.reduce((x,y) => x + y.total_points, 0),
       goals_scored: p1History?.reduce((x, y) => x + y.goals_scored, 0),
       assists: p1History?.reduce((x, y) => x + y.assists, 0),
       clean_sheets: p1History?.reduce((x, y) => x + y.clean_sheets, 0),
@@ -142,6 +147,7 @@ const Compare = () => {
     };
     const p2 = {
       minutes: p2History?.reduce((x, y) => x + y.minutes, 0),
+      total_points: p2History?.reduce((x,y) => x + y.total_points, 0),
       goals_scored: p2History?.reduce((x, y) => x + y.goals_scored, 0),
       assists: p2History?.reduce((x, y) => x + y.assists, 0),
       clean_sheets: p2History?.reduce((x, y) => x + y.clean_sheets, 0),
@@ -167,16 +173,41 @@ const Compare = () => {
   }, [data1, data2, start1, start2, end1, end2 ])
 
   const onStat = () => {
-    view.statView === false && setView({statView:true, graphView:false})
+    if(stat === false) {
+      setStat(true)
+      setGraph(false)
+    }
   }
   const onGraph = () => {
-    view.graphView === false && setView(prev =>({...prev, graphView:true}))
+    if(graph === false) {
+      setGraph(true)
+      setStat(false)
+    }
   }
 
   const { p1, p2 } = compare
   const nEvents = events
     .map((event) => event.finished && event.id)
     .sort((x, y) => (x.id > y.id ? -1 : 1));
+  console.log(p1)
+  /*
+  {"param" : "Minutes", 
+    "player1":p1.minutes, "player2":p2.minutes },
+    {"param" : "Points","player1":p1.total_points, "player2":p2.total_points
+    },
+  */
+  
+  const data = [
+    {"param" : "Minutes", 
+      "player1":p1.minutes/135, "player2":p2.minutes/135 },
+      {"param" : "Points","player1":p1.total_points/10, "player2":p2.total_points/10
+      },
+    {"param" : "Goals","player1":p1.goals_scored, "player2":p2.goals_scored},
+    {"param" : "xG","player1":p1.expected_goals, "player2":p2.expected_goals},
+    {"param" : "xA","player1":p1.expected_assists, "player2":p2.expected_assists},
+    {"param" : "xGi","player1":p1.expected_goal_involvements, "player2":p2.expected_goal_involvements},
+    {"param" : "xGc","player1":p1.expected_goals_conceded, "player2":p2.expected_goals_conceded},
+    {"param" : "Saves","player1":p1.saves, "player2":p2.saves}]
   return (
     <Container>
       <h4 style={{fontWeight: 700}} className="p-2">Select players to compare</h4>
@@ -326,11 +357,13 @@ const Compare = () => {
         </div>
       </div>
       <div className="compare-tabs">
-      <div style={{fontWeight: 700}} className="p-2">Player Statistics</div>
-      <div style={{fontWeight: 700}} className="p-2">Graphical display</div>
+      <div onClick={onStat} style={{fontWeight: 700}} 
+      className={`p-2 ${stat === true && 'select-active'}`}>Player Statistics</div>
+      <div onClick={onGraph} style={{fontWeight: 700}}
+       className={`p-2 ${graph === true && 'select-active'}`}>Graphical display</div>
       </div>
       {
-        player1 && player2 && start1 && end1 && start2 && end2 &&
+        stat &&
         <>
           <div className="player-stats">
             <div>{p1.minutes}</div>
@@ -350,6 +383,29 @@ const Compare = () => {
               style={{
                 width: p2.minutes > 0 ? (p2.minutes / (p1.minutes + p2.minutes)) * 100 + "%" : 0+'%',
                 background: p2.minutes > 0 && "red",
+                padding: 0.3 + "rem",
+              }}
+              className="player-two"
+            ></div>
+          </div>
+          <div className="player-stats">
+            <div>{p1.total_points}</div>
+            <div>Points</div>
+            <div>{p2.total_points}</div>
+          </div>
+          <div className="compare-stat-wrap">
+            <div
+              style={{
+                width: p1.total_points > 0 ? (p1.total_points / (p1.total_points + p2.total_points)) * 100 + "%": 0+'%',
+                background: p1.total_points > 0 && "blue",
+                padding: 0.3 + "rem",
+              }}
+              className="player-one"
+            ></div>
+            <div
+              style={{
+                width: p2.total_points > 0 ? (p2.total_points / (p1.total_points + p2.total_points)) * 100 + "%" : 0+'%',
+                background: p2.total_points > 0 && "red",
                 padding: 0.3 + "rem",
               }}
               className="player-two"
@@ -740,6 +796,18 @@ const Compare = () => {
           </div>
         </>
       }
+      {graph && <div className="graph-view">
+        <ResponsiveContainer width="100%" height="100%">
+        <RadarChart outerRadius={90} width={500} height={250} data={data}>
+          <PolarGrid />
+          <PolarAngleAxis dataKey="param" />
+          <PolarRadiusAxis angle={30}  />
+          <Radar name={playerToCompare1.name} dataKey="player1" stroke="red" fill="red" fillOpacity={0.6} />
+          <Radar name={playerToCompare2.name} dataKey="player2" stroke="blue" fill="blue" fillOpacity={0.6} />
+          <Legend />
+        </RadarChart>
+        </ResponsiveContainer>
+        </div>}
     </Container>
   );
 };
