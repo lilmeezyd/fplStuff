@@ -185,11 +185,12 @@ const Compare = () => {
       setStat(false)
     }
   }
-
   const { p1, p2 } = compare
   const nEvents = events
-    .map((event) => event.finished && event.id)
-    .sort((x, y) => (x.id > y.id ? -1 : 1));
+    .filter((event) => event.finished)
+    .map(event => event.id)
+    .sort((x, y) => (x.id > y.id ? 1 : -1));
+    console.log(nEvents)
   
   const data = [
     {"param" : "Minutes", 
@@ -212,20 +213,19 @@ const Compare = () => {
       <div className="playerison">
         <div className="player-wrapper">
         <select
+          defaultValue='1'
+          className="custom-select"
+          name=""
           onChange={(e) =>
             setPlayersId((prevState) => ({
               ...prevState,
               player1: e.target.value,
             }))
           }
-          defaultValue='1'
-          className="custom-select"
-          name=""
-          id=""
         >
           {players.map((player) => (
             <option value={player.id} key={player.id}>
-              {player.web_name}
+              {player.web_name} 
             </option>
           ))}
         </select>
@@ -789,6 +789,38 @@ const Compare = () => {
                     100 +
                   "%" : 0+'%',
                 background: p2.expected_goal_involvements > 0 && "red",
+                padding: 0.3 + "rem",
+              }}
+              className="player-two"
+            ></div>
+          </div>
+
+          <div className=" player-stats">
+            <div>{p1.expected_goals_conceded?.toFixed(2)}</div>
+            <div>xGc</div>
+            <div>{p2.expected_goals_conceded?.toFixed(2)}</div>
+          </div>
+          <div className="compare-stat-wrap">
+            <div
+              style={{
+                width:
+                p1.expected_goals_conceded > 0 ? 
+                (p1.expected_goals_conceded / (p1.expected_goals_conceded + p2.expected_goals_conceded)) *
+                    100 +
+                  "%": 0+'%',
+                background: p1.expected_goals_conceded > 0 && "blue",
+                padding: 0.3 + "rem",
+              }}
+              className="player-one"
+            ></div>
+            <div
+              style={{
+                width:
+                p2.expected_goals_conceded > 0 ?
+                 (p2.expected_goals_conceded / (p1.expected_goals_conceded + p2.expected_goals_conceded)) *
+                    100 +
+                  "%" : 0+'%',
+                background: p2.expected_goals_conceded > 0 && "red",
                 padding: 0.3 + "rem",
               }}
               className="player-two"
