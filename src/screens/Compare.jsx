@@ -223,7 +223,8 @@ const Compare = () => {
             }))
           }
         >
-          {players.map((player) => (
+          {players.sort((x,y) => x.web_name > y.web_name ? 1 : -1)
+          .map((player) => (
             <option value={player.id} key={player.id}>
               {player.web_name} 
             </option>
@@ -257,7 +258,7 @@ const Compare = () => {
           name=""
           id=""
         >
-          {players.map((player) => (
+          {players.sort((x,y) => x.web_name > y.web_name ? 1 : -1).map((player) => (
             <option value={player.id} key={player.id}>
               {player.web_name}
             </option>
