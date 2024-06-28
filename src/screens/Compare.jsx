@@ -190,7 +190,6 @@ const Compare = () => {
     .filter((event) => event.finished)
     .map(event => event.id)
     .sort((x, y) => (x.id > y.id ? 1 : -1));
-    console.log(nEvents)
   
   const data = [
     {"param" : "Minutes", 
@@ -222,6 +221,7 @@ const Compare = () => {
               player1: e.target.value,
             }))
           }
+          style={{border: `2px solid blue`}}
         >
           {players.sort((x,y) => x.web_name > y.web_name ? 1 : -1)
           .map((player) => (
@@ -253,6 +253,7 @@ const Compare = () => {
               player2: e.target.value,
             }))
           }
+          style={{border: `2px solid red`}}
           className="custom-select"
           defaultValue='1'
           name=""
@@ -835,8 +836,8 @@ const Compare = () => {
           <PolarGrid />
           <PolarAngleAxis dataKey="param" />
           <PolarRadiusAxis angle={30}  />
-          <Radar name={playerToCompare1.name} dataKey="player1" stroke="red" fill="red" fillOpacity={0.6} />
-          <Radar name={playerToCompare2.name} dataKey="player2" stroke="blue" fill="blue" fillOpacity={0.6} />
+          <Radar name={playerToCompare1.name} dataKey="player1" stroke="blue" fill="blue" fillOpacity={0.6} />
+          <Radar name={playerToCompare2.name} dataKey="player2" stroke="red" fill="red" fillOpacity={0.6} />
           <Legend />
         </RadarChart>
         </ResponsiveContainer>
