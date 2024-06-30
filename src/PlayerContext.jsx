@@ -14,6 +14,7 @@ function PlayerProvider({ children }){
     const [elementTypes, setElementTypes ] = useState([])
     const [events, setEvents] = useState([])
     //const [elements, setElements] = useState([])
+    //a.find(x => x.history.find(y => y.element === 605)).history.reduce((x,y) => x+y.total_points, 0) 
 
     useEffect(() => {
         const fetchData = async () => {

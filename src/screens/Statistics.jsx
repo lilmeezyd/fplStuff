@@ -1,17 +1,22 @@
-import { useState, useMemo, useReducer } from "react"
+import { useState, useMemo, useReducer, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { FaCaretUp, FaCaretDown } from "react-icons/fa"
    import { BsChevronLeft, BsChevronRight,
     BsChevronDoubleLeft, BsChevronDoubleRight
     } from "react-icons/bs"
-import { Row, Col, Form, Table, Container, OverlayTrigger, Tooltip } from "react-bootstrap"
+import { Spinner, Row, Col, Form, Table, Container, OverlayTrigger, Tooltip } from "react-bootstrap"
 import { usePlayer } from "../PlayerContext"
+import axios from "axios"
 const Statistics = () => {
 
   const { teams, elementTypes, players } = usePlayer()
   const [option, setOption] = useState('total')
   const [curPage, setCurPage] = useState(1)
   const [ page, setPage ] = useState(1)
+  const [ start, setStart ] = useState(1)
+  const [ end, setEnd ] = useState(2) 
+  const [ nPlayers, setNPlayers] = useState([])
+  const [error, setError] = useState('')
   const pageSize = 15
   let totalPages = Math.ceil(players.length / pageSize)
   
@@ -75,18 +80,110 @@ const Statistics = () => {
 
   const [state, dispatch] = useReducer(reducer, { name: 'now_cost', desc: -1})
   const { name, desc} = state
+
+  useEffect(() => {
+    const playersArray = players.map(player => player.id)
+    .map(x => `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${x}/`)
+
+    async function makeAPICall(endpoint) {
+      const response = await axios.get(endpoint)
+      const data = await response.data
+      return data
+    }
+    async function makeCalls(endpoints) {
+      const promises = endpoints.map(makeAPICall)
+      const responses = await Promise.all(promises)
+      return responses
+    }
+    const mapPlayers = async () => {
+      try {
+        const response = await makeCalls(playersArray)
+        setNPlayers(response)
+        //console.log(response.slice(0,4))
+      } catch (error) {
+        let errorMsg = error?.response?.data?.masg || error?.message
+        setError(errorMsg)
+      }
+    }
+
+    players && mapPlayers()
+  }, [players])
+  
   
   
   const newPlayers = useMemo(() => {
-    const nPlayers = players.sort((x, y) => x[name] > y[name] ? desc : -desc)
+    /*const nPlayers = players.sort((x, y) => x[name] > y[name] ? desc : -desc)
     .filter((player, key) => {
     let start = (curPage - 1) * pageSize
     let end = curPage * pageSize
     if (key >= start && key < end) return true
   })
-  return nPlayers
+  return nPlayers*/
+  const a1 = []
+  /*a.map(x => {
+    const y = Object.create({
+    })
+     y.now_cost = x.now_cost
+     y.element = x.element
+     y.position = x.position
+     y.web_name = x.web_name
+     y.team = x.team
+     y.history = x.history.filter(z => z.round >= 1 && z.round <= 4)
+     return y
+   })*/
+   nPlayers.forEach(player => {
+    const a = {}
+    let id
+    const {history} = player
+    history.forEach((x, idx) => {
+      if(idx === 0) { 
+        id = x.element
+        a.element = x.element}
+    })
+    const playerInfo = players.find(x => x.id === id)
+    a.web_name = playerInfo.web_name
+    a.now_cost = (playerInfo.now_cost / 10).toFixed(1)
+    a.team = teams.find(x => +x.id === +playerInfo.team).short_name
+    a.position = elementTypes.find(x => +x.id === +playerInfo.element_type).singular_name_short
+    
+    a.history = history
+    a1.push(a)
+   })
+   const a2 = a1.map(x => {
+    const y = Object.create({})
+    const filteredHis = x.history.filter(z => z.round >= start && z.round <= end)
+     y.now_cost = x.now_cost
+     y.element = x.element
+     y.position = x.position
+     y.web_name = x.web_name
+     y.team = x.team
+     y.assists = filteredHis.reduce((x,y) => x+y.assists,0)
+    y.clean_sheets = filteredHis.reduce((x,y) => x+y.clean_sheets,0)
+    y.expected_assists = filteredHis.reduce((x,y) => x+(+y.expected_assists),0)
+    y.expected_goal_involvements = filteredHis.reduce((x,y) => x+(+y.expected_goal_involvements),0)
+    y.expected_goals = filteredHis.reduce((x,y) => x+(+y.expected_goals),0)
+    y.expected_goals_conceded = filteredHis.reduce((x,y) => x+(+y.expected_goals_conceded),0)
+    y.goals_scored = filteredHis.reduce((x,y) => x+(+y.goals_scored),0)
+    y.minutes = filteredHis.reduce((x,y) => x+(+y.minutes),0)
+    y.own_goals = filteredHis.reduce((x,y) => x+(+y.own_goals),0)
+    y.penalties_missed = filteredHis.reduce((x,y) => x+(+y.penalties_missed),0)
+    y.penalties_saved = filteredHis.reduce((x,y) => x+(+y.penalties_saved),0)
+    y.red_cards = filteredHis.reduce((x,y) => x+(+y.red_cards),0)
+    y.yellow_cards = filteredHis.reduce((x,y) => x+(+y.yellow_cards),0)
+    y.saves = filteredHis.reduce((x,y) => x+(+y.saves),0)
+    y.starts = filteredHis.reduce((x,y) => x+(+y.starts),0)
+    y.total_points = filteredHis.reduce((x,y) => x+(+y.total_points),0)
+     return y
+   })
+  const ntPlayers = a2.sort((x, y) => +x[name] > +y[name] ? desc : -desc)
+    .filter((player, key) => {
+    let start = (curPage - 1) * pageSize
+    let end = curPage * pageSize
+    if (key >= start && key < end) return true
+  })
+  return ntPlayers
 }
-  , [players, name, desc, curPage, pageSize])
+  , [players, teams, elementTypes, nPlayers, start, end, name, desc, curPage, pageSize])
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -138,8 +235,13 @@ const Statistics = () => {
     setOption(e.target.value)
   }
   return (
+    
     <Container className="py-2 my-2">
-      {players.length === 0 ? <h1>Loading...</h1> : <>
+      {(error === 'Network Error' && newPlayers.length === 0) && 
+      <div className="py-5">Check your internet connection!</div>}
+      {newPlayers.length === 0 && error === '' && <Spinner />}
+      {(newPlayers.length > 0 && error === '') && <>
+      <>
       <h3 className="p-2">View Statistics by one of the options below</h3>
       <Form className="my-2">
         <Row className="my-2 py-2 justify-content-center">
@@ -193,15 +295,20 @@ const Statistics = () => {
           </Col>
         </Row>
       </>}
-      </>}
+      </>
 
-      {players.length === 0 ? <h1>Loading...</h1> : <Table striped bordered hover size="sm" responsive>
+      <Table striped bordered hover size="sm" responsive>
         <thead>
           <tr>
             <th></th>
             <th className="name">Player</th>
-            <th>Team</th>
-            <th><div className="sortWrapper">Pos</div></th>
+            <th className="th-w">Team</th>
+            <OverlayTrigger
+            placement="top"
+            overlay={<Tooltip>
+              <strong>Position</strong>
+            </Tooltip>}>
+            <th className="th-w">Pos</th></OverlayTrigger>
             <OverlayTrigger
               placement="top"
               overlay={
@@ -210,7 +317,7 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div onClick={() => {
+              <th className="th-w"><div onClick={() => {
                 dispatch({type: 'now_cost', nextName: 'now_cost'})
               }} className="sortWrapper">
               <div>£</div> <div className="sortBy"><FaCaretUp fill="gray" /> <FaCaretDown /></div></div></th>
@@ -223,16 +330,16 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div onClick={() => {
+              <th className="th-w"><div onClick={() => {
                 dispatch({type: 'total_points', nextName: 'total_points'})
               }} className="sortWrapper">
               <div>Pts</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
-            <th>
+            <th className="th-w"> 
             <div onClick={() => {
                 dispatch({type: 'starts', nextName: 'starts'})
               }} className="sortWrapper">
-              <div>Start</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+              <div>Starts</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             <OverlayTrigger
               placement="top"
               overlay={
@@ -241,7 +348,7 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div onClick={() => {
+              <th className="th-w"><div onClick={() => {
                 dispatch({type: 'minutes', nextName: 'minutes'})
               }} className="sortWrapper">
               <div>MP</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
@@ -254,7 +361,7 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div className="sortWrapper">
+              <th className="th-w"><div className="sortWrapper">
               <div>CS</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -265,7 +372,7 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div className="sortWrapper">
+              <th className="th-w"><div className="sortWrapper">
               <div>GS</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -276,7 +383,7 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div className="sortWrapper">
+              <th className="th-w"><div className="sortWrapper">
               <div>A</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -287,7 +394,7 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div className="sortWrapper">
+              <th className="th-w"><div className="sortWrapper">
               <div>xG</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -298,7 +405,7 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div className="sortWrapper">
+              <th className="th-w"><div className="sortWrapper">
               <div>xA</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -309,8 +416,56 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th><div className="sortWrapper">
+              <th className="th-w"><div className="sortWrapper">
               <div>xGi</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Saves</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div className="sortWrapper">
+              <div>Saves</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Yellow Cards</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div className="sortWrapper">
+              <div>YC</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Red Cards</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div className="sortWrapper">
+              <div>RC</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Expected Goal Conceded</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div className="sortWrapper">
+              <div>xGc</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             {/*<th>nPxG</th>
           <th>nPxGi</th>*/}
@@ -318,35 +473,32 @@ const Statistics = () => {
         </thead>
         <tbody>
           {newPlayers.map((player, key) => 
-          <tr key={player.id}>
+          <tr key={player.element}>
               <td>{key + 1 + (curPage - 1) * pageSize}</td>
               <td className="name">
-              <Link to={`/statistics/players/${player.id}`}>{player.web_name}</Link></td>
-              <td>{teams.find(x => +x.id === +player.team).short_name}</td>
-              <td>{elementTypes.find(x => +x.id === +player.element_type).singular_name_short}</td>
-              <td>{(player.now_cost / 10).toFixed(1)}</td>
+                <Link to={`/statistics/players/${player.element}`}>{player.web_name}</Link>
+              </td>
+              <td>{player.team}</td>
+              <td>{player.position}</td>
+              <td>{player.now_cost}</td>
               <td>{player.total_points}</td>
               <td>{player.starts}</td>
               <td>{player.minutes}</td>
               <td>{player.clean_sheets}</td>
               <td>{player.goals_scored}</td>
               <td>{player.assists}</td>
-              <td>{player.expected_goals}</td>
-              <td>{player.expected_assists}</td>
-              <td>{player.expected_goal_involvements}</td>
-              {/*<td>{player.penalties_text}</td>
-          <td>{player.starts}</td>*/}
+              <td>{player.expected_goals.toFixed(2)}</td>
+              <td>{player.expected_assists.toFixed(2)}</td>
+              <td>{player.expected_goal_involvements.toFixed(2)}</td>
+              <td>{player.saves}</td>
+              <td>{player.yellow_cards}</td>
+              <td>{player.red_cards}</td>
+              <td>{player.expected_goals_conceded.toFixed(2)}</td>
             </tr>)}
-
-          {/*<tr>
-          <td>3</td>
-          <td colSpan={2}>Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>*/}
         </tbody>
-      </Table>}
+      </Table>
 
-      {players.length === 0 ? <h1>Loading...</h1>:<div className="button-controls">
+      <div className="button-controls">
           <button disabled={curPage === 1 ? true : false} onClick={viewFirstPage} className="btn-controls" id="firstPage">
           <BsChevronDoubleLeft />
           </button>
@@ -374,8 +526,8 @@ const Statistics = () => {
           <button disabled={curPage === totalPages ? true : false} onClick={viewLastPage} className="btn-controls" id="lastPage">
             <BsChevronDoubleRight />
           </button>
-        </div>}
-
+        </div>
+            </>}
     </Container>
   )
 }

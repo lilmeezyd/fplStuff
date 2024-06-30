@@ -207,7 +207,7 @@ const Compare = () => {
     {players.length === 0 && error === '' && error1 === '' && <div className="py-5"><Spinner/></div>}
     {(error === 'Network Error' || error1 === 'Network Error')  && 
     <div className="py-5">Check your internet connection!</div>}
-      {players.length > 0 &&  <>
+      {(players.length > 0  && error === '' && error1 === '') &&  <>
       <h4 style={{fontWeight: 700}} className="p-2">Select players to compare</h4>
       <div className="playerison">
         <div className="player-wrapper">

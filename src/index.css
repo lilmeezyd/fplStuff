@@ -33,10 +33,24 @@ h6 {
   font-weight: 700;
 }
 
+.name {
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 0.2rem;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
 .name a {
     text-decoration: none;
     color: black;
+    font-weight: 700;
 }
+
+.th-w {
+  width: 50px;
+}
+
 
 footer {
   background: #f8f9fa;
@@ -50,7 +64,7 @@ footer {
 }
 .sortWrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   cursor: pointer;
 }
