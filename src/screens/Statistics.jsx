@@ -75,6 +75,145 @@ const Statistics = () => {
         name: action.nextName
       }
     }
+
+    if(action.type === 'clean_sheets' && state.name === 'clean_sheets') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'clean_sheets' && state.name !== 'clean_sheets') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'goals_scored' && state.name === 'goals_scored') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'goals_scored' && state.name !== 'goals_scored') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+    if(action.type === 'assists' && state.name === 'assists') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'assists' && state.name !== 'assists') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'expected_goals' && state.name === 'expected_goals') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'expected_goals' && state.name !== 'expected_goals') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'expected_assists' && state.name === 'expected_assists') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'expected_assists' && state.name !== 'expected_assists') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'expected_goal_involvements' && state.name === 'expected_goal_involvements') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'expected_goal_involvements' && state.name !== 'expected_goal_involvements') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'saves' && state.name === 'saves') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'saves' && state.name !== 'saves') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'yellow_cards' && state.name === 'yellow_cards') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'yellow_cards' && state.name !== 'yellow_cards') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'red_cards' && state.name === 'red_cards') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'red_cards' && state.name !== 'red_cards') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'expected_goals_conceded' && state.name === 'expected_goals_conceded') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'expected_goals_conceded' && state.name !== 'expected_goals_conceded') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
   }
 
   const [state, dispatch] = useReducer(reducer, { name: 'now_cost', desc: -1})
@@ -101,7 +240,7 @@ const Statistics = () => {
         //console.log(response.slice(0,4))
       } catch (error) {
         let errorMsg = error?.response?.data?.masg || error?.message
-        setError(errorMsg)
+        //setError(errorMsg)
       }
     }
 
@@ -224,24 +363,12 @@ const Statistics = () => {
       {newPlayers.length === 0 && error === '' && errorM === '' && <Spinner />}
       {(newPlayers.length > 0 && error === '' && errorM === '') && <>
       <>
-      {/*<Form className="my-2">
-        <Row className="my-2 py-2 justify-content-center">
-          <Col className="col-lg-2">
-            <Form.Check
-              checked={option === 'single'} type="radio" value="single" name="stats" label="Single GW"
-              onChange={onOptionChange} /></Col>
-          <Col className="col-lg-2">
-            <Form.Check
-              checked={option === 'multiple'}
-              type="radio" value="multiple" name="stats" label="Multiple Gws"
-              onChange={onOptionChange} /></Col>
-        </Row>
-      </Form>*/}
       <>
         <h4 className="p-2">Select Statistics over multiple Gameweeks or a single Gameweek</h4>
-        <Row className="m-2 p-2 justify-content-center align-items-center">
+        <Row className="m-2 p-2 d-flex justify-content-md-evenly justify-content-lg-center align-items-center">
           <Col className="col-md-1"><label className="gw" htmlFor="single">From:</label></Col>
           <Col className="col-md-1"><Form.Select name="gws" id="gws" size="sm"
+          style={{width: 65+'px'}}
           value={start}
           onChange={(e) => {
             setStart(+e.target.value)
@@ -261,6 +388,7 @@ const Statistics = () => {
           </Col>
           <Col className="col-md-1"><label className="gw" htmlFor="single">To:</label></Col>
           <Col className="col-md-1"><Form.Select name="gws" id="gws" size="sm"
+          style={{width: 65+'px'}}
           value={end}
           onChange={(e) => {
             if(+e.target.value < +start) {
@@ -345,7 +473,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th className="th-w"><div className="sortWrapper">
+              <th className="th-w"><div 
+              onClick={() => {
+                dispatch({type: 'clean_sheets', nextName: 'clean_sheets'})
+              }} className="sortWrapper">
               <div>CS</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -356,7 +487,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th className="th-w"><div className="sortWrapper">
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'goals_scored', nextName: 'goals_scored'})
+              }} className="sortWrapper">
               <div>GS</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -367,7 +501,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th className="th-w"><div className="sortWrapper">
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'assists', nextName: 'assists'})
+              }} className="sortWrapper">
               <div>A</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -378,7 +515,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th className="th-w"><div className="sortWrapper">
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'expected_goals', nextName: 'expected_goals'})
+              }} className="sortWrapper">
               <div>xG</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -389,7 +529,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th className="th-w"><div className="sortWrapper">
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'expected_assists', nextName: 'expected_assists'})
+              }} className="sortWrapper">
               <div>xA</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -400,7 +543,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th className="th-w"><div className="sortWrapper">
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'expected_goal_involvements', nextName: 'expected_goal_involvements'})
+              }} className="sortWrapper">
               <div>xGi</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
 
@@ -412,7 +558,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th className="th-w"><div className="sortWrapper">
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'saves', nextName: 'saves'})
+              }} className="sortWrapper">
               <div>Saves</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
 
@@ -424,7 +573,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th className="th-w"><div className="sortWrapper">
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'yellow_cards', nextName: 'yellow_cards'})
+              }} className="sortWrapper">
               <div>YC</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
 
@@ -436,7 +588,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th className="th-w"><div className="sortWrapper">
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'red_cards', nextName: 'red_cards'})
+              }} className="sortWrapper">
               <div>RC</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
 
@@ -448,7 +603,10 @@ const Statistics = () => {
                 </Tooltip>
               }
             >
-              <th className="th-w"><div className="sortWrapper">
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'expected_goals_conceded', nextName: 'expected_goals_conceded'})
+              }} className="sortWrapper">
               <div>xGc</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             {/*<th>nPxG</th>
