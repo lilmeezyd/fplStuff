@@ -5,7 +5,8 @@ export const PlayerContext = createContext({
     players: [],
     teams: [],
     events: [],
-    elementTypes: []
+    elementTypes: [],
+    error: ''
 })
 
 function PlayerProvider({ children }){
@@ -13,13 +14,10 @@ function PlayerProvider({ children }){
     const [teams, setTeams ] = useState([])
     const [elementTypes, setElementTypes ] = useState([])
     const [events, setEvents] = useState([])
-    //const [elements, setElements] = useState([])
-    //a.find(x => x.history.find(y => y.element === 605)).history.reduce((x,y) => x+y.total_points, 0) 
-
+    const [error, setError] = useState('')
     useEffect(() => {
         const fetchData = async () => {
             try {
-                ///api/element-summary/616/
                 const response = await axios.get('https://corsproxy.io/?https://fantasy.premierleague.com/api/bootstrap-static/')
                 const data = await response.data
                 const { teams, element_types, elements, events } = data
@@ -40,6 +38,7 @@ function PlayerProvider({ children }){
                 })*/
             } catch (error) {
                 let errorMsg = error?.response?.data?.msg || error?.message
+                setError(errorMsg)
                 console.log(errorMsg)
             }
         }
@@ -52,7 +51,8 @@ function PlayerProvider({ children }){
         players: players,
         teams: teams,
         events: events,
-        elementTypes: elementTypes
+        elementTypes: elementTypes,
+        error:error
     }
 
     return (

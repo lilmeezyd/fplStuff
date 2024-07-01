@@ -9,12 +9,11 @@ import { usePlayer } from "../PlayerContext"
 import axios from "axios"
 const Statistics = () => {
 
-  const { teams, elementTypes, players } = usePlayer()
-  const [option, setOption] = useState('total')
+  const { teams, elementTypes, players, events, error:errorM } = usePlayer()
   const [curPage, setCurPage] = useState(1)
   const [ page, setPage ] = useState(1)
   const [ start, setStart ] = useState(1)
-  const [ end, setEnd ] = useState(2) 
+  const [ end, setEnd ] = useState(1) 
   const [ nPlayers, setNPlayers] = useState([])
   const [error, setError] = useState('')
   const pageSize = 15
@@ -112,25 +111,7 @@ const Statistics = () => {
   
   
   const newPlayers = useMemo(() => {
-    /*const nPlayers = players.sort((x, y) => x[name] > y[name] ? desc : -desc)
-    .filter((player, key) => {
-    let start = (curPage - 1) * pageSize
-    let end = curPage * pageSize
-    if (key >= start && key < end) return true
-  })
-  return nPlayers*/
   const a1 = []
-  /*a.map(x => {
-    const y = Object.create({
-    })
-     y.now_cost = x.now_cost
-     y.element = x.element
-     y.position = x.position
-     y.web_name = x.web_name
-     y.team = x.team
-     y.history = x.history.filter(z => z.round >= 1 && z.round <= 4)
-     return y
-   })*/
    nPlayers.forEach(player => {
     const a = {}
     let id
@@ -231,25 +212,20 @@ const Statistics = () => {
     setPage(totalPages)
   }
 
-  const onOptionChange = (e) => {
-    setOption(e.target.value)
-  }
+  const nEvents = events
+    .filter((event) => event.finished)
+    .map(event => event.id)
+    .sort((x, y) => (x.id > y.id ? 1 : -1));
   return (
     
     <Container className="py-2 my-2">
-      {(error === 'Network Error' && newPlayers.length === 0) && 
+      {((error === 'Network Error' || errorM === 'Network Error') && newPlayers.length === 0) && 
       <div className="py-5">Check your internet connection!</div>}
-      {newPlayers.length === 0 && error === '' && <Spinner />}
-      {(newPlayers.length > 0 && error === '') && <>
+      {newPlayers.length === 0 && error === '' && errorM === '' && <Spinner />}
+      {(newPlayers.length > 0 && error === '' && errorM === '') && <>
       <>
-      <h3 className="p-2">View Statistics by one of the options below</h3>
-      <Form className="my-2">
+      {/*<Form className="my-2">
         <Row className="my-2 py-2 justify-content-center">
-          <Col className="col-lg-2">
-            <Form.Check
-              checked={option === 'total'}
-              type="radio" value="total" name="stats" label="Total"
-              onChange={onOptionChange} /></Col>
           <Col className="col-lg-2">
             <Form.Check
               checked={option === 'single'} type="radio" value="single" name="stats" label="Single GW"
@@ -260,41 +236,49 @@ const Statistics = () => {
               type="radio" value="multiple" name="stats" label="Multiple Gws"
               onChange={onOptionChange} /></Col>
         </Row>
-      </Form>
-      {option === 'total' && <h6 className="p-2">Total Statistics for the season so far</h6>}
-      {option === 'single' && <div>
-        <h6 className="p-2">Select Statistics for a specific Gameweek</h6>
-        <Row className="m-2 p-2 gx-2 justify-content-center align-items-center">
-          <Col className="col-sm-1"><label className="gw" htmlFor="single">GW:</label></Col>
-          <Col className="col-sm-1">
-            <Form.Select name="gws" id="gws" size="sm">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </Form.Select></Col>
-
-        </Row>
-
-      </div>}
-      {option === 'multiple' && <>
-        <h6 className="p-2">Select Statistics over multiple Gameweeks</h6>
+      </Form>*/}
+      <>
+        <h4 className="p-2">Select Statistics over multiple Gameweeks or a single Gameweek</h4>
         <Row className="m-2 p-2 justify-content-center align-items-center">
           <Col className="col-md-1"><label className="gw" htmlFor="single">From:</label></Col>
-          <Col className="col-md-1"><Form.Select name="gws" id="gws" size="sm">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+          <Col className="col-md-1"><Form.Select name="gws" id="gws" size="sm"
+          value={start}
+          onChange={(e) => {
+            setStart(+e.target.value)
+            if(+e.target.value > +end) {
+              setStart(end)
+              setEnd(+e.target.value)
+          } else {
+            setStart(+e.target.value)
+          }
+          }}>
+          {nEvents.map((event, idx) => (
+                <option value={event} key={idx}>
+                  GW{event}
+                </option>
+              ))}
           </Form.Select>
           </Col>
           <Col className="col-md-1"><label className="gw" htmlFor="single">To:</label></Col>
-          <Col className="col-md-1"><Form.Select name="gws" id="gws" size="sm">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+          <Col className="col-md-1"><Form.Select name="gws" id="gws" size="sm"
+          value={end}
+          onChange={(e) => {
+            if(+e.target.value < +start) {
+              setEnd(start)
+              setStart(+e.target.value)
+          } else {
+            setEnd(+e.target.value)
+          }
+          }}>
+          {nEvents.map((event, idx) => (
+                <option value={event} key={idx}>
+                  GW{event}
+                </option>
+              ))}
           </Form.Select>
           </Col>
         </Row>
-      </>}
+      </>
       </>
 
       <Table striped bordered hover size="sm" responsive>
