@@ -362,9 +362,9 @@ footer {
   width: 100%;
   text-align: left;
 }
-
 footer {
   font-size: 0.8rem;
+  font-weight: 700;
 }
 
 @media (max-width: 576px) {

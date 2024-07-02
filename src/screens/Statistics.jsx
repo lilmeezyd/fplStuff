@@ -214,6 +214,91 @@ const Statistics = () => {
         name: action.nextName
       }
     }
+
+       
+    if(action.type === 'expected_assists_per_90' && state.name === 'expected_assists_per_90') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'expected_assists_per_90' && state.name !== 'expected_assists_per_90') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+   
+    if(action.type === 'expected_goals_per_90' && state.name === 'expected_goals_per_90') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'expected_goals_per_90' && state.name !== 'expected_goals_per_90') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+    
+    if(action.type === 'expected_goals_conceded_per_90' && state.name === 'expected_goals_conceded_per_90') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'expected_goals_conceded_per_90' && state.name !== 'expected_goals_conceded_per_90') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+    
+    if(action.type === 'expected_goal_involvements_per_90' && state.name === 'expected_goal_involvements_per_90') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'expected_goal_involvements_per_90' && state.name !== 'expected_goal_involvements_per_90') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+    
+    if(action.type === 'saves_per_90' && state.name === 'saves_per_90') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'saves_per_90' && state.name !== 'saves_per_90') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
+
+    if(action.type === 'points_per_90' && state.name === 'points_per_90') {
+      return {
+        ...state,
+        desc: -state.desc
+      }
+    }
+
+    if(action.type === 'points_per_90' && state.name !== 'points_per_90') {
+      return {
+        ...state,
+        name: action.nextName
+      }
+    }
   }
 
   const [state, dispatch] = useReducer(reducer, { name: 'now_cost', desc: -1})
@@ -272,6 +357,7 @@ const Statistics = () => {
    const a2 = a1.map(x => {
     const y = Object.create({})
     const filteredHis = x.history.filter(z => z.round >= start && z.round <= end)
+    const actualMinutes = filteredHis.reduce((x,y) => x+(+y.minutes),0)
      y.now_cost = x.now_cost
      y.element = x.element
      y.position = x.position
@@ -284,7 +370,7 @@ const Statistics = () => {
     y.expected_goals = filteredHis.reduce((x,y) => x+(+y.expected_goals),0)
     y.expected_goals_conceded = filteredHis.reduce((x,y) => x+(+y.expected_goals_conceded),0)
     y.goals_scored = filteredHis.reduce((x,y) => x+(+y.goals_scored),0)
-    y.minutes = filteredHis.reduce((x,y) => x+(+y.minutes),0)
+    y.minutes = actualMinutes
     y.own_goals = filteredHis.reduce((x,y) => x+(+y.own_goals),0)
     y.penalties_missed = filteredHis.reduce((x,y) => x+(+y.penalties_missed),0)
     y.penalties_saved = filteredHis.reduce((x,y) => x+(+y.penalties_saved),0)
@@ -293,6 +379,12 @@ const Statistics = () => {
     y.saves = filteredHis.reduce((x,y) => x+(+y.saves),0)
     y.starts = filteredHis.reduce((x,y) => x+(+y.starts),0)
     y.total_points = filteredHis.reduce((x,y) => x+(+y.total_points),0)
+    y.expected_assists_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.expected_assists),0))/(actualMinutes/90) : 0
+    y.expected_goals_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.expected_goals),0))/(actualMinutes/90) : 0
+    y.expected_goals_conceded_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.expected_goals_conceded),0))/(actualMinutes/90) : 0
+    y.expected_goal_involvements_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.expected_goal_involvements),0))/(actualMinutes/90) : 0
+    y.saves_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.saves),0))/(actualMinutes/90) : 0
+    //y.points_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.total_points),0))/(actualMinutes/90) : 0
      return y
    })
   const ntPlayers = a2.sort((x, y) => +x[name] > +y[name] ? desc : -desc)
@@ -364,7 +456,7 @@ const Statistics = () => {
       {(newPlayers.length > 0 && error === '' && errorM === '') && <>
       <>
       <>
-        <h4 className="p-2">Select Statistics over multiple Gameweeks or a single Gameweek</h4>
+        <h5 className="p-2" style={{fontWeight: 700}}>Select Statistics over multiple Gameweeks or a single Gameweek</h5>
         <Row className="m-2 p-2 d-flex justify-content-md-evenly justify-content-lg-center align-items-center">
           <Col className="col-md-1"><label className="gw" htmlFor="single">From:</label></Col>
           <Col className="col-md-1"><Form.Select name="gws" id="gws" size="sm"
@@ -599,7 +691,7 @@ const Statistics = () => {
               placement="top"
               overlay={
                 <Tooltip>
-                  <strong>Expected Goal Conceded</strong>
+                  <strong>Expected Goals Conceded</strong>
                 </Tooltip>
               }
             >
@@ -609,8 +701,80 @@ const Statistics = () => {
               }} className="sortWrapper">
               <div>xGc</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
-            {/*<th>nPxG</th>
-          <th>nPxGi</th>*/}
+
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Expected Assists Per 90</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'expected_assists_per_90', nextName: 'expected_assists_per_90'})
+              }} className="sortWrapper">
+              <div>xA/90</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Expected Goals Per 90</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'expected_goals_per_90', nextName: 'expected_goals_per_90'})
+              }} className="sortWrapper">
+              <div>xG/90</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Expected Goals Conceded Per 90</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'expected_goals_conceded_per_90', nextName: 'expected_goals_conceded_per_90'})
+              }} className="sortWrapper">
+              <div>xGc/90</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Expected Goal Involvements Per 90</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'expected_goal_involvements_per_90', nextName: 'expected_goal_involvements_per_90'})
+              }} className="sortWrapper">
+              <div>xGi/90</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Saves Per 90</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'saves_per_90', nextName: 'saves_per_90'})
+              }} className="sortWrapper">
+              <div>Saves/90</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
           </tr>
         </thead>
         <tbody>
@@ -636,6 +800,11 @@ const Statistics = () => {
               <td>{player.yellow_cards}</td>
               <td>{player.red_cards}</td>
               <td>{player.expected_goals_conceded.toFixed(2)}</td>
+              <td>{player.expected_assists_per_90.toFixed(2)}</td>
+              <td>{player.expected_goals_per_90.toFixed(2)}</td>
+              <td>{player.expected_goals_conceded_per_90.toFixed(2)}</td>
+              <td>{player.expected_goal_involvements_per_90.toFixed(2)}</td>
+              <td>{player.saves_per_90.toFixed(2)}</td>
             </tr>)}
         </tbody>
       </Table>

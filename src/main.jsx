@@ -15,6 +15,7 @@ import Compare from './screens/Compare.jsx'
 import Planner from './screens/Planner.jsx'
 import PlayerScreen from './screens/PlayerScreen.jsx'
 import Unknown from './screens/Unknown.jsx'
+import AchievementsScreen from './screens/AchievementsScreen.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       <Route path='/compare' element={<Compare />} />
       <Route path='/planner' element={<Planner />} />
       <Route path='/statistics/players/:playerId' element={<PlayerScreen />} />
+      <Route path='/achievements' element={<AchievementsScreen />} />
       <Route path="*" element={<Unknown/>}/>
     </Route>
   )

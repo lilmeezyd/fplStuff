@@ -18,7 +18,7 @@ const Header = () => {
                                 <Nav.Link>Statistics</Nav.Link></LinkContainer>
                             <LinkContainer to='/compare'><Nav.Link>Comparison Tool</Nav.Link></LinkContainer>
                             <LinkContainer to='/planner'><Nav.Link>My Planner</Nav.Link></LinkContainer>
-
+                            <LinkContainer to='/achievements'><Nav.Link>Achievements</Nav.Link></LinkContainer>    
 
                             {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
