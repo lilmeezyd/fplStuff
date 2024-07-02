@@ -5,7 +5,7 @@ const Header = () => {
 
 
     return (
-        <header>
+        <header className='header'>
             <Navbar className="bg-body-tertiary" expand='lg' collapseOnSelect>
                 <Container>
                     <LinkContainer to='/'>

@@ -379,12 +379,10 @@ const Statistics = () => {
     y.saves = filteredHis.reduce((x,y) => x+(+y.saves),0)
     y.starts = filteredHis.reduce((x,y) => x+(+y.starts),0)
     y.total_points = filteredHis.reduce((x,y) => x+(+y.total_points),0)
-    y.expected_assists_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.expected_assists),0))/(actualMinutes/90) : 0
-    y.expected_goals_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.expected_goals),0))/(actualMinutes/90) : 0
-    y.expected_goals_conceded_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.expected_goals_conceded),0))/(actualMinutes/90) : 0
-    y.expected_goal_involvements_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.expected_goal_involvements),0))/(actualMinutes/90) : 0
-    y.saves_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.saves),0))/(actualMinutes/90) : 0
-    //y.points_per_90 = actualMinutes > 0 ? (filteredHis.reduce((x,y) => x+(+y.total_points),0))/(actualMinutes/90) : 0
+    y.expected_assists_per_90 = actualMinutes > 30 ? (filteredHis.reduce((x,y) => x+(+y.expected_assists),0))/(actualMinutes/90) : 0
+    y.expected_goals_per_90 = actualMinutes > 30 ? (filteredHis.reduce((x,y) => x+(+y.expected_goals),0))/(actualMinutes/90) : 0
+    y.expected_goal_involvements_per_90 = actualMinutes > 30 ? (filteredHis.reduce((x,y) => x+(+y.expected_goal_involvements),0))/(actualMinutes/90) : 0
+    y.saves_per_90 = actualMinutes > 30 ? (filteredHis.reduce((x,y) => x+(+y.saves),0))/(actualMinutes/90) : 0
      return y
    })
   const ntPlayers = a2.sort((x, y) => +x[name] > +y[name] ? desc : -desc)
@@ -501,7 +499,17 @@ const Statistics = () => {
       </>
       </>
 
-      <Table striped bordered hover size="sm" responsive>
+      <Table className="border-dark" striped bordered hover size="sm" responsive>
+        <thead>
+          <tr>
+            <th colSpan={5}></th>
+            <th colSpan={5}>General</th>
+            <th colSpan={2}>Attack</th>
+            <th colSpan={2}>Defence</th>
+              <th colSpan={3}>Expected Data</th>
+              <th colSpan={4}>Data Per 90 minutes</th>
+          </tr>
+        </thead>
         <thead>
           <tr>
             <th></th>
@@ -557,19 +565,35 @@ const Statistics = () => {
               }} className="sortWrapper">
               <div>MP</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
+
             <OverlayTrigger
               placement="top"
               overlay={
                 <Tooltip>
-                  <strong>Clean Sheets</strong>
+                  <strong>Yellow Cards</strong>
                 </Tooltip>
               }
             >
-              <th className="th-w"><div 
+              <th className="th-w"><div
               onClick={() => {
-                dispatch({type: 'clean_sheets', nextName: 'clean_sheets'})
+                dispatch({type: 'yellow_cards', nextName: 'yellow_cards'})
               }} className="sortWrapper">
-              <div>CS</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+              <div>YC</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Red Cards</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'red_cards', nextName: 'red_cards'})
+              }} className="sortWrapper">
+              <div>RC</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
               placement="top"
@@ -598,6 +622,36 @@ const Statistics = () => {
                 dispatch({type: 'assists', nextName: 'assists'})
               }} className="sortWrapper">
               <div>A</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+            
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Clean Sheets</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div 
+              onClick={() => {
+                dispatch({type: 'clean_sheets', nextName: 'clean_sheets'})
+              }} className="sortWrapper">
+              <div>CS</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+            </OverlayTrigger>
+            
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip>
+                  <strong>Saves</strong>
+                </Tooltip>
+              }
+            >
+              <th className="th-w"><div
+              onClick={() => {
+                dispatch({type: 'saves', nextName: 'saves'})
+              }} className="sortWrapper">
+              <div>Saves</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
               placement="top"
@@ -641,82 +695,8 @@ const Statistics = () => {
               }} className="sortWrapper">
               <div>xGi</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
-
-            <OverlayTrigger
-              placement="top"
-              overlay={
-                <Tooltip>
-                  <strong>Saves</strong>
-                </Tooltip>
-              }
-            >
-              <th className="th-w"><div
-              onClick={() => {
-                dispatch({type: 'saves', nextName: 'saves'})
-              }} className="sortWrapper">
-              <div>Saves</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
-            </OverlayTrigger>
-
-            <OverlayTrigger
-              placement="top"
-              overlay={
-                <Tooltip>
-                  <strong>Yellow Cards</strong>
-                </Tooltip>
-              }
-            >
-              <th className="th-w"><div
-              onClick={() => {
-                dispatch({type: 'yellow_cards', nextName: 'yellow_cards'})
-              }} className="sortWrapper">
-              <div>YC</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
-            </OverlayTrigger>
-
-            <OverlayTrigger
-              placement="top"
-              overlay={
-                <Tooltip>
-                  <strong>Red Cards</strong>
-                </Tooltip>
-              }
-            >
-              <th className="th-w"><div
-              onClick={() => {
-                dispatch({type: 'red_cards', nextName: 'red_cards'})
-              }} className="sortWrapper">
-              <div>RC</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
-            </OverlayTrigger>
-
-            <OverlayTrigger
-              placement="top"
-              overlay={
-                <Tooltip>
-                  <strong>Expected Goals Conceded</strong>
-                </Tooltip>
-              }
-            >
-              <th className="th-w"><div
-              onClick={() => {
-                dispatch({type: 'expected_goals_conceded', nextName: 'expected_goals_conceded'})
-              }} className="sortWrapper">
-              <div>xGc</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
-            </OverlayTrigger>
-
-            <OverlayTrigger
-              placement="top"
-              overlay={
-                <Tooltip>
-                  <strong>Expected Assists Per 90</strong>
-                </Tooltip>
-              }
-            >
-              <th className="th-w"><div
-              onClick={() => {
-                dispatch({type: 'expected_assists_per_90', nextName: 'expected_assists_per_90'})
-              }} className="sortWrapper">
-              <div>xA/90</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
-            </OverlayTrigger>
-
+            
+              
             <OverlayTrigger
               placement="top"
               overlay={
@@ -729,23 +709,24 @@ const Statistics = () => {
               onClick={() => {
                 dispatch({type: 'expected_goals_per_90', nextName: 'expected_goals_per_90'})
               }} className="sortWrapper">
-              <div>xG/90</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+              <div>xG</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
-
             <OverlayTrigger
               placement="top"
               overlay={
                 <Tooltip>
-                  <strong>Expected Goals Conceded Per 90</strong>
+                  <strong>Expected Assists Per 90</strong>
                 </Tooltip>
               }
             >
               <th className="th-w"><div
               onClick={() => {
-                dispatch({type: 'expected_goals_conceded_per_90', nextName: 'expected_goals_conceded_per_90'})
+                dispatch({type: 'expected_assists_per_90', nextName: 'expected_assists_per_90'})
               }} className="sortWrapper">
-              <div>xGc/90</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+              <div>xA</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
+
+
 
             <OverlayTrigger
               placement="top"
@@ -759,7 +740,7 @@ const Statistics = () => {
               onClick={() => {
                 dispatch({type: 'expected_goal_involvements_per_90', nextName: 'expected_goal_involvements_per_90'})
               }} className="sortWrapper">
-              <div>xGi/90</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+              <div>xGi</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
             <OverlayTrigger
               placement="top"
@@ -773,7 +754,7 @@ const Statistics = () => {
               onClick={() => {
                 dispatch({type: 'saves_per_90', nextName: 'saves_per_90'})
               }} className="sortWrapper">
-              <div>Saves/90</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
+              <div>Saves</div> <div className="sortBy"><FaCaretUp /> <FaCaretDown /></div></div></th>
             </OverlayTrigger>
           </tr>
         </thead>
@@ -790,19 +771,17 @@ const Statistics = () => {
               <td>{player.total_points}</td>
               <td>{player.starts}</td>
               <td>{player.minutes}</td>
-              <td>{player.clean_sheets}</td>
+              <td>{player.yellow_cards}</td>
+              <td>{player.red_cards}</td>
               <td>{player.goals_scored}</td>
               <td>{player.assists}</td>
+              <td>{player.clean_sheets}</td>
+              <td>{player.saves}</td>
               <td>{player.expected_goals.toFixed(2)}</td>
               <td>{player.expected_assists.toFixed(2)}</td>
               <td>{player.expected_goal_involvements.toFixed(2)}</td>
-              <td>{player.saves}</td>
-              <td>{player.yellow_cards}</td>
-              <td>{player.red_cards}</td>
-              <td>{player.expected_goals_conceded.toFixed(2)}</td>
-              <td>{player.expected_assists_per_90.toFixed(2)}</td>
               <td>{player.expected_goals_per_90.toFixed(2)}</td>
-              <td>{player.expected_goals_conceded_per_90.toFixed(2)}</td>
+              <td>{player.expected_assists_per_90.toFixed(2)}</td>
               <td>{player.expected_goal_involvements_per_90.toFixed(2)}</td>
               <td>{player.saves_per_90.toFixed(2)}</td>
             </tr>)}

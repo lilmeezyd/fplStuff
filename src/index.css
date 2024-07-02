@@ -33,6 +33,12 @@ h6 {
   font-weight: 700;
 }
 
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
 .name {
   white-space: nowrap;
   overflow: hidden;
