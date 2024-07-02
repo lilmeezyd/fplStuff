@@ -200,7 +200,6 @@ const Compare = () => {
     {"param" : "xG","player1":p1.expected_goals, "player2":p2.expected_goals},
     {"param" : "xA","player1":p1.expected_assists, "player2":p2.expected_assists},
     {"param" : "xGi","player1":p1.expected_goal_involvements, "player2":p2.expected_goal_involvements},
-    {"param" : "xGc","player1":p1.expected_goals_conceded, "player2":p2.expected_goals_conceded},
     {"param" : "Saves","player1":p1.saves, "player2":p2.saves}]
   return (
     <Container>
@@ -791,38 +790,6 @@ const Compare = () => {
                     100 +
                   "%" : 0+'%',
                 background: p2.expected_goal_involvements > 0 && "red",
-                padding: 0.3 + "rem",
-              }}
-              className="player-two"
-            ></div>
-          </div>
-
-          <div className=" player-stats">
-            <div>{p1.expected_goals_conceded?.toFixed(2)}</div>
-            <div>xGc</div>
-            <div>{p2.expected_goals_conceded?.toFixed(2)}</div>
-          </div>
-          <div className="compare-stat-wrap">
-            <div
-              style={{
-                width:
-                p1.expected_goals_conceded > 0 ? 
-                (p1.expected_goals_conceded / (p1.expected_goals_conceded + p2.expected_goals_conceded)) *
-                    100 +
-                  "%": 0+'%',
-                background: p1.expected_goals_conceded > 0 && "blue",
-                padding: 0.3 + "rem",
-              }}
-              className="player-one"
-            ></div>
-            <div
-              style={{
-                width:
-                p2.expected_goals_conceded > 0 ?
-                 (p2.expected_goals_conceded / (p1.expected_goals_conceded + p2.expected_goals_conceded)) *
-                    100 +
-                  "%" : 0+'%',
-                background: p2.expected_goals_conceded > 0 && "red",
                 padding: 0.3 + "rem",
               }}
               className="player-two"

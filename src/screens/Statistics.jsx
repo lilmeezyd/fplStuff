@@ -502,8 +502,9 @@ const Statistics = () => {
       <Table className="border-dark" striped bordered hover size="sm" responsive>
         <thead>
           <tr>
-            <th colSpan={5}></th>
-            <th colSpan={5}>General</th>
+            <th></th>
+            <th className="name"></th>
+            <th colSpan={8}>General</th>
             <th colSpan={2}>Attack</th>
             <th colSpan={2}>Defence</th>
               <th colSpan={3}>Expected Data</th>

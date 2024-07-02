@@ -39,12 +39,31 @@ h6 {
   z-index: 2;
 }
 
+@supports (animation-timeline: scroll()) {
+  .header {
+    animation: scroll-shadow linear both;
+    animation-timeline: scroll();
+    animation-range: 0 5rem;
+  }
+
+  @keyframes scroll-shadow {
+    from {
+      box-shadow: none;
+    }
+
+    to {
+      box-shadow: rgba(0, 0, 0, 0.116) 0 0 0 5px ;
+    }
+  }
+}
+
 .name {
   white-space: nowrap;
   overflow: hidden;
   padding: 0 0.2rem;
   text-overflow: ellipsis;
   max-width: 100px;
+  box-shadow: rgba(0, 0, 0, 0.116) 0 0 0 5px ;
 }
 
 .name a {
