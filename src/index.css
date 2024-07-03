@@ -3,9 +3,11 @@
 html {
   font-size: 12px;
 }
+
 body {
   font-family: "Manrope", "Segoe UI", "Roboto", sans-serif;
 }
+
 .navbar-brand {
   font-weight: 700;
 }
@@ -52,7 +54,7 @@ h6 {
     }
 
     to {
-      box-shadow: rgba(0, 0, 0, 0.116) 0 0 0 5px ;
+      box-shadow: rgba(0, 0, 0, 0.116) 0 0 0 5px;
     }
   }
 }
@@ -63,13 +65,13 @@ h6 {
   padding: 0 0.2rem;
   text-overflow: ellipsis;
   max-width: 100px;
-  box-shadow: rgba(0, 0, 0, 0.116) 0 0 0 5px ;
+  box-shadow: rgba(0, 0, 0, 0.116) 0 0 0 5px;
 }
 
 .name a {
-    text-decoration: none;
-    color: black;
-    font-weight: 700;
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
 }
 
 .th-w {
@@ -80,6 +82,7 @@ h6 {
 footer {
   background: #f8f9fa;
 }
+
 #root {
   /*max-width: 1280px;
     margin: 0 auto;
@@ -87,12 +90,14 @@ footer {
   font-family: "Manrope", "Segoe UI", "Roboto", sans-serif;
   text-align: center;
 }
+
 .sortWrapper {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   cursor: pointer;
 }
+
 .sortBy {
   display: flex;
   flex-direction: column;
@@ -138,6 +143,7 @@ footer {
   justify-content: center;
   align-items: center;
 }
+
 .pages .current {
   font-weight: 700;
 }
@@ -150,20 +156,20 @@ footer {
   justify-content: center;
   padding: 1rem;
   border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;  
+  border-top-right-radius: 1rem;
   background: #db1414;
   color: white;
 }
 
-.player-header > h3 {
+.player-header>h3 {
   font-weight: 700;
 }
 
-.player-header > h5 {
+.player-header>h5 {
   font-weight: 500;
 }
 
-.player-header > h6 {
+.player-header>h6 {
   font-weight: 300;
 }
 
@@ -171,6 +177,7 @@ footer {
   padding: 10px 0;
   margin: 25px 0;
 }
+
 .chart-heading {
   padding: 10px;
   font-weight: 600;
@@ -191,6 +198,7 @@ footer {
   display: flex;
   width: 1800px;
 }
+
 .graph-label {
   font-size: 0.8rem;
   font-weight: 700;
@@ -202,7 +210,7 @@ footer {
 .graph-wrap {
   display: flex;
   justify-content: center;
-  align-items: flex-end;  
+  align-items: flex-end;
   border-bottom: 1px solid;
   margin-bottom: 0.5rem;
 }
@@ -219,7 +227,7 @@ footer {
 
 .dnp {
   cursor: pointer;
-  padding: 1rem  0;
+  padding: 1rem 0;
 }
 
 .stat-wrap {
@@ -248,7 +256,7 @@ footer {
   border-radius: 1rem;
 }
 
-.custom-select{
+.custom-select {
   padding: .6rem 1.4rem .5rem .8rem;
   margin: 0.5rem 0;
   border: 1px solid #aaa;
@@ -256,7 +264,7 @@ footer {
   font-weight: 700;
 }
 
-.custom-select-2{
+.custom-select-2 {
   padding: .25rem .4rem;
   margin: 0.5rem 0;
   border: 1px solid #aaa;
@@ -332,13 +340,14 @@ footer {
   border: 1px solid gray;
   border-radius: 0.4rem;
 }
-.compare-stat-wrap > div.player-one {
+
+.compare-stat-wrap>div.player-one {
   justify-self: end;
   border-top-left-radius: 0.4rem;
   border-bottom-left-radius: 0.4rem;
 }
 
-.compare-stat-wrap > div.player-two {
+.compare-stat-wrap>div.player-two {
   border-top-right-radius: 0.4rem;
   border-bottom-right-radius: 0.4rem;
 }
@@ -366,7 +375,7 @@ footer {
   gap: 0.5rem;
 }
 
-.details  div:first-child {
+.details div:first-child {
   font-weight: 700;
   justify-self: baseline;
   white-space: nowrap;
@@ -374,7 +383,7 @@ footer {
   text-overflow: ellipsis;
   width: 100%;
   text-align: left;
-  
+
 }
 
 .details div:last-child {
@@ -387,6 +396,58 @@ footer {
   width: 100%;
   text-align: left;
 }
+
+/* Achievements */
+.achievements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
+  padding: 30p 0;
+}
+
+summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border: 1px solid #93a8bd;
+  box-shadow: #93a8bd 0 0 2px;;
+  text-align: left;
+  border-radius: 0.5rem;
+  font-weight: 700;
+}
+
+summary::after {
+  content: '';
+  width: 18px;
+  height: 18px;
+  background: url('./assets/chevron-down.svg') no-repeat;
+  background-size: cover;
+  transition: 0.2s;
+}
+
+details[open]>summary::after {
+  transform: rotate(180deg);
+}
+
+details[open]>summary {
+  
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+details p {
+  background: aquamarine;
+  padding: 1rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  box-shadow: aquamarine 0 0 2px;
+  border: 1px solid aquamarine;
+}
+
 footer {
   font-size: 0.8rem;
   font-weight: 700;
@@ -396,10 +457,12 @@ footer {
   html {
     font-size: 12px;
   }
+
   .custom-select {
     padding: .3rem 0.7rem .25rem .4rem;
-  margin: 0.25rem 0;
-    width: 100px;}
+    margin: 0.25rem 0;
+    width: 100px;
+  }
 }
 
 @media (min-width: 300px) {

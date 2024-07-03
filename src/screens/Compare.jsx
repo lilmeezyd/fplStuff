@@ -197,6 +197,7 @@ const Compare = () => {
       {"param" : "Points","player1":p1.total_points/10, "player2":p2.total_points/10
       },
     {"param" : "Goals","player1":p1.goals_scored, "player2":p2.goals_scored},
+    {"param" : "Assists","player1":p1.assists, "player2":p2.assists},
     {"param" : "xG","player1":p1.expected_goals, "player2":p2.expected_goals},
     {"param" : "xA","player1":p1.expected_assists, "player2":p2.expected_assists},
     {"param" : "xGi","player1":p1.expected_goal_involvements, "player2":p2.expected_goal_involvements},
