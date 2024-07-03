@@ -1,6 +1,27 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { BiLock } from "react-icons/bi";
 const AchievementsScreen = () => {
+
+  const [ picks, setPicks ] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/10199/event/38/picks/`)
+        const data = await response.data
+        setPicks(data)
+        console.log(data)
+      } catch (error) {
+        const errMsg = error?.response?.data?.msg || error?.message
+        console.log(errMsg)
+      }
+    }
+
+    fetchData()
+  },[])
+  
   return (
     <Container>
       <h1 className="py-5">Achievements</h1>
@@ -16,21 +37,21 @@ const AchievementsScreen = () => {
 
         <details>
           <summary style={{display: "flex", listStyle: "none"}}>Captaincy</summary>
-          <p>
-            <div className="achieve-wrapper my-2">
-              <div className="achieve-details">
-                <div className="achieve-header">Sunday league skipper</div>
-                <div className="achieve-note">Your captain scores more than 6 points</div>
-              </div>
-              <div><BiLock /></div>
-            </div>
-            <div className="achieve-wrapper my-2">
-              <div className="achieve-details">
-                <div className="achieve-header">Amateur skipper</div>
-                <div className="achieve-note">Your captain scores more than 10 points</div>
-              </div>
-              <div><BiLock /></div>
-            </div>
+          <p className="first">
+            <p className="achieve-wrapper my-1">
+              <p className="achieve-details">
+                <p className="achieve-header">Sunday league skipper</p>
+                <p className="achieve-note">Your captain scores more than 6 points</p>
+              </p>
+              <p><BiLock /></p>
+            </p>
+            <p className="achieve-wrapper my-1">
+              <p className="achieve-details">
+                <p className="achieve-header">Amateur skipper</p>
+                <p className="achieve-note">Your captain scores more than 10 points</p>
+              </p>
+              <p><BiLock /></p>
+            </p>
           </p>
         </details>
 

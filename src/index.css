@@ -2,6 +2,8 @@
 
 html {
   font-size: 12px;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -443,13 +445,13 @@ details[open]>summary {
   border-bottom-right-radius: 0;
 }
 
-details p {
+details p.first {
   background: aquamarine;
-  padding: 1rem;
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
   box-shadow: aquamarine 0 0 2px;
   border: 1px solid aquamarine;
+  padding: 0 0.5rem;
 }
 
 .achieve-wrapper {

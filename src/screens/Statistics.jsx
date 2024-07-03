@@ -324,7 +324,7 @@ const Statistics = () => {
         setNPlayers(response)
         //console.log(response.slice(0,4))
       } catch (error) {
-        let errorMsg = error?.response?.data?.masg || error?.message
+        let errorMsg = error?.response?.data?.msg || error?.message
         //setError(errorMsg)
       }
     }
