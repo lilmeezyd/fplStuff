@@ -416,6 +416,7 @@ summary {
   text-align: left;
   border-radius: 0.5rem;
   font-weight: 700;
+  font-size: 1.2rem;
 }
 
 summary::after {
