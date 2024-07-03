@@ -1,4 +1,5 @@
 import { Container } from "react-bootstrap";
+import { BiLock } from "react-icons/bi";
 const AchievementsScreen = () => {
   return (
     <Container>
@@ -16,9 +17,20 @@ const AchievementsScreen = () => {
         <details>
           <summary style={{display: "flex", listStyle: "none"}}>Captaincy</summary>
           <p>
-            Epcot is a theme park at Walt Disney World Resort featuring exciting
-            attractions, international pavilions, award-winning fireworks and
-            seasonal special events.
+            <div className="achieve-wrapper my-2">
+              <div className="achieve-details">
+                <div className="achieve-header">Sunday league skipper</div>
+                <div className="achieve-note">Your captain scores more than 6 points</div>
+              </div>
+              <div><BiLock /></div>
+            </div>
+            <div className="achieve-wrapper my-2">
+              <div className="achieve-details">
+                <div className="achieve-header">Amateur skipper</div>
+                <div className="achieve-note">Your captain scores more than 10 points</div>
+              </div>
+              <div><BiLock /></div>
+            </div>
           </p>
         </details>
 

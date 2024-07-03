@@ -402,7 +402,7 @@ footer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-  padding: 30p 0;
+  padding: 0 30px;
 }
 
 summary {
@@ -417,6 +417,10 @@ summary {
   border-radius: 0.5rem;
   font-weight: 700;
   font-size: 1.2rem;
+}
+
+summary::marker {
+  content: none;
 }
 
 summary::after {
@@ -448,6 +452,28 @@ details p {
   box-shadow: aquamarine 0 0 2px;
   border: 1px solid aquamarine;
 }
+
+.achieve-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.achieve-details {
+  text-align: left;
+}
+
+.achieve-header {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.achieve-wrapper svg {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.achieve-note
 
 footer {
   font-size: 0.8rem;
