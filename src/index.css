@@ -1,9 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 
-html {
-  font-size: 12px;
+* {
   margin: 0;
   padding: 0;
+}
+html {
+  font-size: 12px;
 }
 
 body {
@@ -35,6 +37,10 @@ h4,
 h5,
 h6 {
   font-weight: 700;
+}
+
+p {
+  margin: 0;
 }
 
 .header {
@@ -445,7 +451,7 @@ details[open]>summary {
   border-bottom-right-radius: 0;
 }
 
-details p.first {
+details div.first {
   background: aquamarine;
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
@@ -462,6 +468,7 @@ details p.first {
 
 .achieve-details {
   text-align: left;
+  margin-bottom: 0.5rem;
 }
 
 .achieve-header {
@@ -474,7 +481,15 @@ details p.first {
   width: 1.5rem;
 }
 
-.achieve-note
+.achieve-header,
+.achieve-note {
+  margin-bottom: 0.5rem;
+}
+
+.times {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
 
 footer {
   font-size: 0.8rem;

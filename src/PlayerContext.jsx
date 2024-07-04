@@ -25,17 +25,6 @@ function PlayerProvider({ children }){
                 setPlayers(elements)
                 setTeams(teams)
                 setElementTypes(element_types)
-                /*
-                elements.forEach(async(element) => {
-                    const a = {}
-                    a.id = element.id
-                    const response1 = await axios.get(`/api/element-summary/${element.id}/`)
-                    const data1 = await response1.data
-                    a.data = data1
-                    setPlayers(prevState => ([
-                        ...prevState, a
-                    ]))
-                })*/
             } catch (error) {
                 let errorMsg = error?.response?.data?.msg || error?.message
                 setError(errorMsg)
