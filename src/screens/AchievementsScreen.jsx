@@ -1,14 +1,31 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useReducer, useCallback } from "react";
 import { Container } from "react-bootstrap";
 import { BiLock } from "react-icons/bi";
 import { usePlayer } from "../PlayerContext"
 import { usePlayerStats } from "../PlayerStatContext";
+import Captaincy from "../components/Captaincy";
 const AchievementsScreen = () => {
   const [picks, setPicks] = useState([]);
+  const [show, setShow] = useState(false)
   const { teams, elementTypes, players, events } = usePlayer()
   const { playerStats } = usePlayerStats()
-  console.log(playerStats)
+
+  function reducer(state, action) {
+    if(action.type === 'captain_by_6') {
+      return {
+        value: 6
+      }
+    }
+
+    if(action.type === 'captain_by_10') {
+      return {
+        value: 10
+      }
+    }
+  }
+  const [ state, dispatch ] = useReducer(reducer, { value: 0})
+  const { value } = state
 
   useEffect(() => {
     const a = [];
@@ -43,26 +60,62 @@ const AchievementsScreen = () => {
     fetchData();
   }, []);
 
+  const handleClose = () => setShow(false)
+
+  const handleSix = () => {
+    setShow(true)
+    dispatch({type: 'captain_by_6'})
+  }
+
+  const handleTen = () => {
+    setShow(true)
+    dispatch({type: 'captain_by_10'})
+  }
+
   //console.log(playerStats.find(player => player.history[0].element === 20)?.history.find(x => x.round === 3))
 
-  const getCaptains = () => {
+  const getCaptains = useCallback(
+    () => {
+      const a3 = picks?.map(pick => {
+        const y = Object.create({})
+        const event = pick?.entry_history?.event
+        const playerId = pick?.picks?.find(x => x.multiplier > 1)?.element
+        const web_name = players?.find(x => x.id === playerId)?.web_name
+        const stats = playerStats.find(player => player.history[0].element === playerId)?.history.find(x => x.round === event)
+        const teamId = players?.find(x => x.id === playerId)?.team
+        const playerTeam = teams?.find(x => x.id === teamId)?.short_name
+        //const elementTypeId = players?.find(x => x.id === playerId).element_type
+        y.event = pick?.entry_history?.event
+        y.captain = web_name
+        y.total_points = stats?.total_points
+        y.playerId = playerId
+        y.stats = stats
+        y.goals_scored = stats?.goals_scored
+        y.assists = stats?.assists
+        y.yellow_cards = stats?.yellow_cards
+        y.red_cards = stats?.red_cards
+        y.penalties_saved = stats?.penalties_saved
+        y.penalties_missed = stats?.penalties_missed
+        y.opponent_team = teams?.find(x => x.id === stats?.opponent_team)?.short_name
+        y.was_home = stats?.was_home
+        y.own_goals = stats?.own_goals
+        y.saves = stats?.saves
+        y.playerTeam = playerTeam
+        y.team_a_score  = stats?.team_a_score
+        y.team_h_score = stats?.team_h_score
+        y.bonus = stats?.bonus
   
-   const a3 = picks?.map(pick => {
-      const y = Object.create({})
-      const event = pick?.entry_history?.event
-      const playerId = pick?.picks?.find(x => x.multiplier > 1)?.element
-      const web_name = players?.find(x => x.id === playerId)?.web_name
-      const stats = playerStats.find(player => player.history[0].element === playerId)?.history.find(x => x.round === event)
-      //const teamId = players?.find(x => x.id === playerId).team
-      //const elementTypeId = players?.find(x => x.id === playerId).element_type
-      y.event = pick?.entry_history?.event
-      y.captain = web_name
-      y.total_points = stats?.total_points
-      y.playerId = playerId
-      return y
-    })
-    return a3
-  }
+        
+        return y
+      })
+      return a3
+    },
+    [picks, playerStats, players, teams]
+  )
+  
+
+  const captainDetails = useMemo(() => 
+    getCaptains().filter(cap => (cap.total_points*2) >= value), [getCaptains, value])
 
   const sixOrMore = getCaptains().filter(cap => (cap.total_points*2) >= 6)
   const tenOrMore = getCaptains().filter(cap => (cap.total_points*2) >= 10)
@@ -71,12 +124,8 @@ const AchievementsScreen = () => {
   const thirtyOrMore = getCaptains().filter(cap => (cap.total_points*2) >= 30)
   const thirtyFiveOrMore = getCaptains().filter(cap => (cap.total_points*2) >= 35)
 
-  console.log(sixOrMore)
-  
-
-  console.log(sixOrMore)
-
   return (
+    <>
     <Container>
       <h1 className="py-5">Achievements</h1>
       <div className="achievements">
@@ -103,8 +152,9 @@ const AchievementsScreen = () => {
                   Your captain scores more than 6 points
                 </div>
               </div>
-              <div className="times">
-                {sixOrMore.length > 0 ? sixOrMore.length : <BiLock />}
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
               </div>
             </div>
             <div className="achieve-wrapper my-1">
@@ -114,7 +164,7 @@ const AchievementsScreen = () => {
                   Your captain scores more than 10 points
                 </div>
               </div>
-              <div className="times">
+              <div onClick={handleTen} className="times">
               {tenOrMore.length > 0 ? tenOrMore.length : <BiLock />}
               </div>
             </div>
@@ -199,6 +249,8 @@ const AchievementsScreen = () => {
         </details>
       </div>
     </Container>
+    <Captaincy captainDetails={captainDetails} show={show} handleClose={handleClose} />
+    </>
   );
 };
 

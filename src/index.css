@@ -489,6 +489,7 @@ details div.first {
 .times {
   font-weight: 700;
   font-size: 1.2rem;
+  cursor: pointer;
 }
 
 footer {
