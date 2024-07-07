@@ -1,15 +1,11 @@
 import axios from "axios";
 import { useEffect, useState, useMemo, useReducer, useCallback } from "react";
-import { usePlayer } from "../PlayerContext";
-import { usePlayerStats } from "../PlayerStatContext";
-import Ranking from "../components/Captaincy";
+import Ranking from "../components/Ranking";
 import { BiLock } from "react-icons/bi";
 
 const RankingMain = () => {
   const [history, setHistory] = useState([]);
   const [show, setShow] = useState(false);
-  const { teams, elementTypes, players, events } = usePlayer();
-  const { playerStats } = usePlayerStats();
 
   const handleClose = () => setShow(false);
 
@@ -204,11 +200,11 @@ const RankingMain = () => {
               </div>
             </div>
           </div>
-      {/*<Ranking
+      <Ranking
         historyDetails={historyDetails}
         show={show}
         handleClose={handleClose}
-      />*/}
+      />
     </>
   );
 };

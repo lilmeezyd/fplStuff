@@ -1,15 +1,11 @@
 import axios from "axios";
 import { useEffect, useState, useMemo, useReducer, useCallback } from "react";
-import { usePlayer } from "../PlayerContext";
-import { usePlayerStats } from "../PlayerStatContext";
 import Score from "../components/Score";
 import { BiLock } from "react-icons/bi";
 
 const ScoreMain = () => {
   const [history, setHistory] = useState([]);
   const [show, setShow] = useState(false);
-  const { teams, elementTypes, players, events } = usePlayer();
-  const { playerStats } = usePlayerStats();
 
   const handleClose = () => setShow(false);
 
@@ -111,8 +107,6 @@ const ScoreMain = () => {
     [getHistory, value]
   );
 
-  console.log(historyDetails);
-
   const _40 = getHistory()?.filter((x) => x.points >= 40).length;
   const _50 = getHistory()?.filter((x) => x.points >= 50).length;
   const _60 = getHistory()?.filter((x) => x.points >= 60).length;
@@ -202,11 +196,11 @@ const ScoreMain = () => {
           </div>
         </div>
       </div>
-      {/*<Score
+      <Score
         historyDetails={historyDetails}
         show={show}
         handleClose={handleClose}
-      />*/}
+      />
     </>
   );
 };
