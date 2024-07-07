@@ -175,11 +175,80 @@ const AchievementsScreen = () => {
           <summary style={{ display: "flex", listStyle: "none" }}>
             Getting Started
           </summary>
-          <p>
-            Epcot is a theme park at Walt Disney World Resort featuring exciting
-            attractions, international pavilions, award-winning fireworks and
-            seasonal special events.
-          </p>
+          <div className="first">
+          <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Hattrick hero</div>
+                <div className="achieve-note">
+                  A player in your team scores 3 or more goals
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Unlikely hero</div>
+                <div className="achieve-note">
+                  Goal Keeper scores a goal
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Lethal strike force</div>
+                <div className="achieve-note">
+                  All your forwards score a goal in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">The main man</div>
+                <div className="achieve-note">
+                  Own the highest points scorer in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Solid at the back</div>
+                <div className="achieve-note">
+                  Your defence does not concede in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Captain fantastic</div>
+                <div className="achieve-note">
+                  Your captain is the highest points scorer in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+          </div>
         </details>
 
         <details>
@@ -283,22 +352,162 @@ const AchievementsScreen = () => {
           <summary style={{ display: "flex", listStyle: "none" }}>
             Gameweek Ranking
           </summary>
-          <p>
-            Epcot is a theme park at Walt Disney World Resort featuring exciting
-            attractions, international pavilions, award-winning fireworks and
-            seasonal special events.
-          </p>
+          
+          <div className="first">
+          <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Sunday league rank</div>
+                <div className="achieve-note">
+                  Rank inside the top 2m in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Amatuer rank</div>
+                <div className="achieve-note">
+                  Rank inside the top 1m in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Semi pro rank</div>
+                <div className="achieve-note">
+                  Rank inside the top 500k in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Pro rank</div>
+                <div className="achieve-note">
+                  Rank inside the top 250k in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">World class rank</div>
+                <div className="achieve-note">
+                  Rank inside the top 100k in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Legendary rank</div>
+                <div className="achieve-note">
+                  Rank inside the top 10k in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+          </div>
         </details>
 
         <details>
           <summary style={{ display: "flex", listStyle: "none" }}>
             Gameweek Score
           </summary>
-          <p>
-            Epcot is a theme park at Walt Disney World Resort featuring exciting
-            attractions, international pavilions, award-winning fireworks and
-            seasonal special events.
-          </p>
+          
+          <div className="first">
+          <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Sunday league score</div>
+                <div className="achieve-note">
+                  Score more than 40 points in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Amatuer score</div>
+                <div className="achieve-note">
+                  Score more than 50 points in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Semi pro score</div>
+                <div className="achieve-note">
+                  Score more than 60 points in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Pro score</div>
+                <div className="achieve-note">
+                  Score more than 80 points in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">World class score</div>
+                <div className="achieve-note">
+                  Score more than 90 points in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+            <div className="achieve-wrapper my-1">
+              <div className="achieve-details">
+                <div className="achieve-header">Legendary score</div>
+                <div className="achieve-note">
+                  Score more than 100 points in a gameweek
+                </div>
+              </div>
+              <div>
+                {sixOrMore.length > 0 ? 
+                <div onClick={handleSix} className="times">{sixOrMore.length}</div> : <BiLock />}
+              </div>
+            </div>
+          </div>
         </details>
 
         <details>
