@@ -492,6 +492,35 @@ details div.first {
   cursor: pointer;
 }
 
+.achieve-record {
+  text-align: center;
+  background: aquamarine;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.gw {
+  font-weight: 700;
+}
+
+.gw-data {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  place-items: center;
+}
+
+.achieve-stats {
+  display: flex;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: space-evenly;
+  background: aliceblue;
+  border-radius: 0.5rem;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border: 1px solid #8080804a;
+}
+
 footer {
   font-size: 0.8rem;
   font-weight: 700;
