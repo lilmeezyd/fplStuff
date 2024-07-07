@@ -13,40 +13,46 @@ const ScoreMain = () => {
     if (action.type === "score_by_40") {
       return {
         value: 40,
+        heading: 'Score 40 or more points in a gameweek'
       };
     }
 
     if (action.type === "score_by_50") {
       return {
         value: 50,
+        heading: 'Score 50 or more points in a gameweek'
       };
     }
 
     if (action.type === "score_by_60") {
       return {
         value: 60,
+        heading: 'Score 60 or more points in a gameweek'
       };
     }
 
     if (action.type === "score_by_80") {
       return {
         value: 80,
+        heading: 'Score 80 or more points in a gameweek'
       };
     }
     if (action.type === "score_by_90") {
       return {
         value: 90,
+        heading: 'Score 90 or more points in a gameweek'
       };
     }
 
     if (action.type === "score_by_100") {
       return {
         value: 100,
+        heading: 'Score 100 or more points in a gameweek'
       };
     }
   }
-  const [state, dispatch] = useReducer(reducer, { value: 0 });
-  const { value } = state;
+  const [state, dispatch] = useReducer(reducer, { value: 0, heading: '' });
+  const { value, heading } = state;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -200,6 +206,7 @@ const ScoreMain = () => {
         historyDetails={historyDetails}
         show={show}
         handleClose={handleClose}
+        heading={heading}
       />
     </>
   );

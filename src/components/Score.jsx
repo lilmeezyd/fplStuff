@@ -1,14 +1,14 @@
 import { Modal} from "react-bootstrap"
 
 const Score = (props) => {
-    const {show, handleClose, historyDetails} = props
+    const {show, handleClose, historyDetails, heading} = props
     return (
       <Modal
           show={show}
           onHide={handleClose}
         >
           <Modal.Header style={{background: 'aquamarine'}} closeButton>
-            <Modal.Title style={{fontWeight: 700}}>Gameweek Score</Modal.Title>
+            <Modal.Title style={{fontWeight: 500}}>{heading}</Modal.Title>
           </Modal.Header>
           <Modal.Body className="p-3">
             {historyDetails?.map((x, idx) => 

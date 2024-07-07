@@ -13,40 +13,46 @@ const RankingMain = () => {
     if (action.type === "ranking_by_2m") {
       return {
         value: 2,
+        heading: 'Rank inside the top 2m in a gameweek'
       };
     }
 
     if (action.type === "ranking_by_1m") {
       return {
         value: 1,
+        heading: 'Rank inside the top 1m in a gameweek'
       };
     }
 
     if (action.type === "ranking_by_500k") {
       return {
         value: 0.5,
+        heading: 'Rank inside the top 500k in a gameweek'
       };
     }
 
     if (action.type === "ranking_by_250k") {
       return {
         value: .25,
+        heading: 'Rank inside the top 250k in a gameweek'
       };
     }
     if (action.type === "ranking_by_100k") {
       return {
         value: .1,
+        heading: 'Rank inside the top 100k in a gameweek'
       };
     }
 
     if (action.type === "ranking_by_10k") {
       return {
         value: .01,
+        heading: 'Rank inside the top 10k in a gameweek'
       };
     }
   }
-  const [state, dispatch] = useReducer(reducer, { value: 0 });
-  const { value } = state;
+  const [state, dispatch] = useReducer(reducer, { value: 0, heading: '' });
+  const { value, heading } = state;
 
   useEffect(() => {
     
@@ -204,6 +210,7 @@ const RankingMain = () => {
         historyDetails={historyDetails}
         show={show}
         handleClose={handleClose}
+        heading={heading}
       />
     </>
   );
