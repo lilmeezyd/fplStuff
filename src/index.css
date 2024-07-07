@@ -507,6 +507,7 @@ details div.first {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   place-items: center;
+  padding: 0 0.5rem;
 }
 
 .achieve-stats {
