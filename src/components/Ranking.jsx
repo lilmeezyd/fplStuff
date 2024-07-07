@@ -1,9 +1,8 @@
 import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap"
 import Yellow from "../assets/Yellow_card.png"
 import Red from "../assets/Red_card.png"
-const Captaincy = (props) => {
+const Ranking = (props) => {
     const {show, handleClose, captainDetails} = props
-    console.log(captainDetails)
   return (
     <Modal
         show={show}
@@ -13,7 +12,7 @@ const Captaincy = (props) => {
           <Modal.Title style={{fontWeight: 700}}>Captain Points</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-3">
-          {captainDetails?.map((x, idx) => 
+          {captainDetails.map((x, idx) => 
           <div className="achieve-record" key={idx}>
             <div className="gw py-1">Gameweek {x.event}</div>
             <div className="gw-data py-2">
@@ -128,4 +127,4 @@ const Captaincy = (props) => {
   )
 }
 
-export default Captaincy
+export default Ranking

@@ -501,6 +501,12 @@ details div.first {
 
 .gw {
   font-weight: 700;
+  background: aliceblue;
+  border-radius: 0.5rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border: 1px solid #8080804a;
+  border-bottom: none;
 }
 
 .gw-data {
@@ -520,6 +526,7 @@ details div.first {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border: 1px solid #8080804a;
+  border-top: none;
 }
 
 footer {
