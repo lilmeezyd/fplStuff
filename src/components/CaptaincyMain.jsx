@@ -194,8 +194,9 @@ const CaptaincyMain = () => {
               Your captain scores more than 10 points
             </div>
           </div>
-          <div onClick={handleTen} className="times">
-            {tenOrMore.length > 0 ? tenOrMore.length : <BiLock />}
+          <div className="times">
+          {tenOrMore.length > 0 ? 
+                  <div onClick={handleTen}>{tenOrMore.length}</div>: <BiLock />}
           </div>
         </div>
         <div className="achieve-wrapper my-1">
@@ -205,8 +206,9 @@ const CaptaincyMain = () => {
               Your captain scores more than 16 points
             </div>
           </div>
-          <div onClick={handleSixteen} className="times">
-            {sixteenOrMore.length > 0 ? sixteenOrMore.length : <BiLock />}
+          <div className="times">
+          {sixteenOrMore.length > 0 ? 
+                  <div onClick={handleSixteen}>{sixteenOrMore.length}</div>: <BiLock />}
           </div>
         </div>
         <div className="achieve-wrapper my-1">
@@ -216,8 +218,9 @@ const CaptaincyMain = () => {
               Your captain scores more than 20 points
             </div>
           </div>
-          <div onClick={handleTwenty} className="times">
-            {twentyOrMore.length > 0 ? twentyOrMore.length : <BiLock />}
+          <div className="times">
+            {twentyOrMore.length > 0 ? 
+                  <div onClick={handleTwenty}>{twentyOrMore.length}</div>: <BiLock />}
           </div>
         </div>
         <div className="achieve-wrapper my-1">
@@ -227,8 +230,9 @@ const CaptaincyMain = () => {
               Your captain scores more than 30 points
             </div>
           </div>
-          <div onClick={handleThirty} className="times">
-            {thirtyOrMore.length > 0 ? thirtyOrMore.length : <BiLock />}
+          <div className="times">
+            {thirtyOrMore.length > 0 ? 
+                  <div onClick={handleThirty}>{thirtyOrMore.length}</div>: <BiLock />}
           </div>
         </div>
         <div className="achieve-wrapper my-1">
@@ -238,8 +242,9 @@ const CaptaincyMain = () => {
               Your captain scores more than 35 points
             </div>
           </div>
-          <div onClick={handleThirtyFive} className="times">
-            {thirtyFiveOrMore.length > 0 ? thirtyFiveOrMore.length : <BiLock />}
+          <div className="times">
+            {thirtyFiveOrMore.length > 0 ? 
+                  <div onClick={handleThirtyFive}>{thirtyFiveOrMore.length}</div>: <BiLock />}
           </div>
         </div>
       </div>

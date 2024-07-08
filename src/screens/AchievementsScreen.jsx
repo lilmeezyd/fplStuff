@@ -1,4 +1,5 @@
 import { Container } from "react-bootstrap";
+import GettingStartedMain from "../components/GettingStartedMain";
 import CaptaincyMain from "../components/CaptaincyMain";
 import RankingMain from "../components/RankingMain";
 import ScoreMain from "../components/ScoreMain";
@@ -13,74 +14,7 @@ const AchievementsScreen = () => {
           <summary style={{ display: "flex", listStyle: "none" }}>
             Getting Started
           </summary>
-          <div className="first">
-          <div className="achieve-wrapper my-1">
-              <div className="achieve-details">
-                <div className="achieve-header">Hattrick hero</div>
-                <div className="achieve-note">
-                  A player in your team scores 3 or more goals
-                </div>
-              </div>
-              <div>
-                <div className="times"></div>
-              </div>
-            </div>
-            <div className="achieve-wrapper my-1">
-              <div className="achieve-details">
-                <div className="achieve-header">Unlikely hero</div>
-                <div className="achieve-note">
-                  Goal Keeper scores a goal
-                </div>
-              </div>
-              <div> 
-                <div className="times"></div>
-              </div>
-            </div>
-            <div className="achieve-wrapper my-1">
-              <div className="achieve-details">
-                <div className="achieve-header">Lethal strike force</div>
-                <div className="achieve-note">
-                  All your forwards score a goal in a gameweek
-                </div>
-              </div>
-              <div>
-                <div className="times"></div>
-              </div>
-            </div>
-            <div className="achieve-wrapper my-1">
-              <div className="achieve-details">
-                <div className="achieve-header">The main man</div>
-                <div className="achieve-note">
-                  Own the highest points scorer in a gameweek
-                </div>
-              </div>
-              <div>
-                <div className="times"></div>
-              </div>
-            </div>
-            <div className="achieve-wrapper my-1">
-              <div className="achieve-details">
-                <div className="achieve-header">Solid at the back</div>
-                <div className="achieve-note">
-                  Your defence does not concede in a gameweek
-                </div>
-              </div>
-              <div>
-                <div className="times"></div>
-              </div>
-            </div>
-            <div className="achieve-wrapper my-1">
-              <div className="achieve-details">
-                <div className="achieve-header">Captain fantastic</div>
-                <div className="achieve-note">
-                  Your captain is the highest points scorer in a gameweek
-                </div>
-              </div>
-              <div>
-                <div className="times"></div>
-              </div>
-            </div>
-          </div>
+          <GettingStartedMain />
         </details>
 
         <details>
