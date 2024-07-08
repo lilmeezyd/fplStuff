@@ -10,7 +10,7 @@ const Captaincy = (props) => {
         onHide={handleClose}
       >
         <Modal.Header style={{background: 'aquamarine'}} closeButton>
-          <Modal.Title style={{fontWeight: 700}}>Captain Points</Modal.Title>
+          <Modal.Title style={{fontWeight: 500}}>Captain Points</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-3">
           {captainDetails?.map((x, idx) => 

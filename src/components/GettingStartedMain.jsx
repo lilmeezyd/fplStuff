@@ -36,7 +36,7 @@ const GettingStartedMain = () => {
       try {
         const response = await makeCalls(picksArray);
         setPicks(response);
-        //console.log(response);
+        console.log(response);
       } catch (error) {
         const errMsg = error?.response?.data?.msg || error?.message;
         console.log(errMsg);
