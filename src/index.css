@@ -26,7 +26,7 @@ label {
   font-weight: 600;
 }
 
-label.gw {
+label.gw-x {
   text-align: right;
 }
 
@@ -78,7 +78,7 @@ p {
 
 .name a {
   text-decoration: none;
-  color: black;
+  color: white;
   font-weight: 700;
 }
 
