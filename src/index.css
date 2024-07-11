@@ -514,6 +514,26 @@ details div.first {
   grid-template-columns: repeat(4, 1fr);
   place-items: center;
   padding: 0 0.5rem;
+  font-weight: 500;
+}
+
+.gw-data-1 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
+  padding: 0 0.5rem;
+}
+
+.date {
+  background: aliceblue;
+  text-align: center;
+  font-weight: 600;
+    border-radius: 0.5rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border: 1px solid #8080804a;
+    border-top: none;
+    padding: 0.5rem 0;
 }
 
 .achieve-stats {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState, useMemo, useReducer, useCallback } from "react";
 import Score from "../components/Score";
-import { BiLock } from "react-icons/bi";
+import { Button } from "react-bootstrap";
 
 const ScoreMain = () => {
   const [history, setHistory] = useState([]);
@@ -13,41 +13,41 @@ const ScoreMain = () => {
     if (action.type === "score_by_40") {
       return {
         value: 40,
-        heading: 'Score 40 or more points in a gameweek'
+        heading: 'Sunday league score'
       };
     }
 
     if (action.type === "score_by_50") {
       return {
         value: 50,
-        heading: 'Score 50 or more points in a gameweek'
+        heading: 'Amatuer score'
       };
     }
 
     if (action.type === "score_by_60") {
       return {
         value: 60,
-        heading: 'Score 60 or more points in a gameweek'
+        heading: 'Semi pro score'
       };
     }
 
     if (action.type === "score_by_80") {
       return {
         value: 80,
-        heading: 'Score 80 or more points in a gameweek'
+        heading: 'Pro score'
       };
     }
     if (action.type === "score_by_90") {
       return {
         value: 90,
-        heading: 'Score 90 or more points in a gameweek'
+        heading: 'World class score'
       };
     }
 
     if (action.type === "score_by_100") {
       return {
         value: 100,
-        heading: 'Score 100 or more points in a gameweek'
+        heading: 'Legendary score'
       };
     }
   }
@@ -132,7 +132,7 @@ const ScoreMain = () => {
           </div>
           <div>
             <div className="times">
-              {_40 > 0 ? <div onClick={handle40}>{_40}</div> : <BiLock />}
+            <Button className="btn-dark" onClick={handle40}>Check</Button>
             </div>
           </div>
         </div>
@@ -145,7 +145,7 @@ const ScoreMain = () => {
           </div>
           <div>
             <div className="times">
-              {_50 > 0 ? <div onClick={handle50}>{_50}</div> : <BiLock />}
+            <Button className="btn-dark" onClick={handle50}>Check</Button>
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ const ScoreMain = () => {
           </div>
           <div>
             <div className="times">
-              {_60 > 0 ? <div onClick={handle60}>{_60}</div> : <BiLock />}
+            <Button className="btn-dark" onClick={handle60}>Check</Button>
             </div>
           </div>
         </div>
@@ -171,7 +171,7 @@ const ScoreMain = () => {
           </div>
           <div>
             <div className="times">
-              {_80 > 0 ? <div onClick={handle80}>{_80}</div> : <BiLock />}
+            <Button className="btn-dark" onClick={handle80}>Check</Button>
             </div>
           </div>
         </div>
@@ -184,7 +184,7 @@ const ScoreMain = () => {
           </div>
           <div>
             <div className="times">
-              {_90 > 0 ? <div onClick={handle90}>{_90}</div> : <BiLock />}
+            <Button className="btn-dark" onClick={handle90}>Check</Button>
             </div>
           </div>
         </div>
@@ -197,7 +197,7 @@ const ScoreMain = () => {
           </div>
           <div>
             <div className="times">
-              {_100 > 0 ? <div onClick={handle100}>{_100}</div> : <BiLock />}
+            <Button className="btn-dark" onClick={handle100}>Check</Button>
             </div>
           </div>
         </div>

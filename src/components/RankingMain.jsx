@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState, useMemo, useReducer, useCallback } from "react";
 import Ranking from "../components/Ranking";
-import { BiLock } from "react-icons/bi";
+import { Button } from "react-bootstrap"
 
 const RankingMain = () => {
   const [history, setHistory] = useState([]);
@@ -13,41 +13,41 @@ const RankingMain = () => {
     if (action.type === "ranking_by_2m") {
       return {
         value: 2,
-        heading: 'Rank inside the top 2m in a gameweek'
+        heading: 'Sunday league rank'
       };
     }
 
     if (action.type === "ranking_by_1m") {
       return {
         value: 1,
-        heading: 'Rank inside the top 1m in a gameweek'
+        heading: 'Amatuer rank'
       };
     }
 
     if (action.type === "ranking_by_500k") {
       return {
         value: 0.5,
-        heading: 'Rank inside the top 500k in a gameweek'
+        heading: 'Semi pro rank'
       };
     }
 
     if (action.type === "ranking_by_250k") {
       return {
         value: .25,
-        heading: 'Rank inside the top 250k in a gameweek'
+        heading: 'Pro rank'
       };
     }
     if (action.type === "ranking_by_100k") {
       return {
         value: .1,
-        heading: 'Rank inside the top 100k in a gameweek'
+        heading: 'World class rank'
       };
     }
 
     if (action.type === "ranking_by_10k") {
       return {
         value: .01,
-        heading: 'Rank inside the top 10k in a gameweek'
+        heading: 'Legendary rank'
       };
     }
   }
@@ -132,8 +132,7 @@ const RankingMain = () => {
               </div>
               <div>
                 <div className="times">
-                  {_2m > 0 ? 
-                  <div onClick={handleTwoMil}>{_2m}</div>: <BiLock />}
+                <Button className="btn-dark" onClick={handleTwoMil}>Check</Button>
                 </div>
               </div>
             </div>
@@ -146,8 +145,7 @@ const RankingMain = () => {
               </div>
               <div>
                 <div className="times">
-                {_1m > 0 ? 
-                <div onClick={handleOneMil}>{_1m}</div>: <BiLock />}
+                <Button className="btn-dark" onClick={handleOneMil}>Check</Button>
                 </div>
               </div>
             </div>
@@ -160,8 +158,7 @@ const RankingMain = () => {
               </div>
               <div>
                 <div className="times">
-                {_500k > 0 ? 
-                <div onClick={handleFive}>{_500k}</div>:<BiLock />}
+                <Button className="btn-dark" onClick={handleFive}>Check</Button>
                 </div>
               </div>
             </div>
@@ -174,8 +171,7 @@ const RankingMain = () => {
               </div>
               <div>
                 <div className="times">
-                {_250k > 0 ? 
-                <div onClick={handleTwoFifty}>{_250k}</div>: <BiLock />}
+                <Button className="btn-dark" onClick={handleTwoFifty}>Check</Button>
                 </div>
               </div>
             </div>
@@ -188,7 +184,7 @@ const RankingMain = () => {
               </div>
               <div> 
                 <div className="times">
-                {_100k > 0 ? <div onClick={handleHundred}>{_100k}</div>: <BiLock />}
+                <Button className="btn-dark" onClick={handleHundred}>Check</Button>
                 </div>
               </div>
             </div>
@@ -201,7 +197,7 @@ const RankingMain = () => {
               </div>
               <div>
                 <div className="times">
-                {_10k > 0 ? <div onClick={handleTen}>{_10k}</div> : <BiLock />}
+                <Button className="btn-dark" onClick={handleTen}>Check</Button>
                 </div>
               </div>
             </div>

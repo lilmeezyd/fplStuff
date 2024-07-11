@@ -50,37 +50,43 @@ const GettingStartedMain = () => {
     if (action.type === "hattrick") {
       return {
         value: "hattrick",
+        heading: "Hattrick Hero"
       };
     }
     if (action.type === "goalie") {
       return {
         value: "goalie",
+        heading: "Unlikely hero"
       };
     }
     if (action.type === "strike_force") {
       return {
         value: "strike_force",
+        heading: "Lethal strike force"
       };
     }
     if (action.type === "main_man") {
       return {
         value: "main_man",
+        heading: "The main man"
       };
     }
     if (action.type === "solid") {
       return {
         value: "solid",
+        heading: "Solid at the back"
       };
     }
     if (action.type === "fantastic") {
       return {
         value: "fantastic",
+        heading: "Captain fantastic"
       };
     }
   }
 
-  const [state, dispatch] = useReducer(reducer, { value: "" });
-  const { value } = state;
+  const [state, dispatch] = useReducer(reducer, { value: "", heading: "" });
+  const { value, heading } = state;
 
   const getPicksStatsFunc = useCallback(() => {
     const a = picks?.map((pick) => {
@@ -117,7 +123,9 @@ const GettingStartedMain = () => {
         z.team_a_score = stats?.team_a_score;
         z.team_h_score = stats?.team_h_score;
         z.team = playerTeam;
+        z.kickoff_time = new Date(stats?.kickoff_time)
         z.element = stats?.element
+        z.total_points = stats?.total_points
         return z;
       });
 
@@ -221,7 +229,7 @@ const GettingStartedMain = () => {
           </div>
           <div>
             <div className="times">
-              <Button onClick={handleHat}>Check</Button>
+              <Button className="btn-dark" onClick={handleHat}>Check</Button>
             </div>
           </div>
         </div>
@@ -232,7 +240,7 @@ const GettingStartedMain = () => {
           </div>
           <div>
             <div className="times">
-              <Button onClick={goalie}>Check</Button>
+              <Button className="btn-dark" onClick={goalie}>Check</Button>
             </div>
           </div>
         </div>
@@ -245,7 +253,7 @@ const GettingStartedMain = () => {
           </div>
           <div>
             <div className="times">
-              <Button onClick={strikeForce}>Check</Button>
+              <Button className="btn-dark" onClick={strikeForce}>Check</Button>
             </div>
           </div>
         </div>
@@ -258,7 +266,7 @@ const GettingStartedMain = () => {
           </div>
           <div>
             <div className="times">
-              <Button onClick={mainMan}>Check</Button>
+              <Button className="btn-dark" onClick={mainMan}>Check</Button>
             </div>
           </div>
         </div>
@@ -271,7 +279,7 @@ const GettingStartedMain = () => {
           </div>
           <div>
             <div className="times">
-              <Button onClick={solid}>Check</Button>
+              <Button className="btn-dark" onClick={solid}>Check</Button>
             </div>
           </div>
         </div>
@@ -284,7 +292,7 @@ const GettingStartedMain = () => {
           </div>
           <div>
             <div className="times">
-              <Button onClick={fantastic}>Check</Button>
+              <Button className="btn-dark" onClick={fantastic}>Check</Button>
             </div>
           </div>
         </div>
@@ -293,6 +301,7 @@ const GettingStartedMain = () => {
         show={show}
         handleClose={handleClose}
         picksStats={picksStats}
+        heading={heading}
       />
     </>
   );

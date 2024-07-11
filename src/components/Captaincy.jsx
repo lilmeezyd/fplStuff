@@ -2,7 +2,7 @@ import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap"
 import Yellow from "../assets/Yellow_card.png"
 import Red from "../assets/Red_card.png"
 const Captaincy = (props) => {
-    const {show, handleClose, captainDetails} = props
+    const {show, handleClose, captainDetails, heading} = props
     console.log(captainDetails)
   return (
     <Modal
@@ -10,19 +10,22 @@ const Captaincy = (props) => {
         onHide={handleClose}
       >
         <Modal.Header style={{background: 'aquamarine'}} closeButton>
-          <Modal.Title style={{fontWeight: 500}}>Captain Points</Modal.Title>
+          <Modal.Title style={{fontWeight: 500}}>{heading}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-3">
           {captainDetails?.map((x, idx) => 
           <div className="achieve-record" key={idx}>
             <div className="gw py-1">Gameweek {x.event}</div>
             <div className="gw-data py-2">
-              <div style={{fontWeight: 700}}>{x.captain}&nbsp;{x.was_home ? `(H)`:`(A)`}&nbsp;V</div>
+              <div style={{fontWeight: 500}}>{x.captain}&nbsp;{x.was_home ? `(H)`:`(A)`}&nbsp;V</div>
               <div>{x.opponent_team}</div>
               <div>{x.team_h_score}:{x.team_a_score}</div>
               <div>{x.total_points} {x.total_points !== 1 ? 'points': 'points'}</div>
             </div>
-            <div className="achieve-stats" style={{fontWeight: 700}}>
+            <div className="achieve-stats" style={{fontWeight: 500,
+              borderBottomLeftRadius: 0, borderBottomRightRadius: 0, 
+              borderBottom: 'none'
+            }}>
               <div>{x.goals_scored > 1 && x.goals_scored}
                 {x.goals_scored > 1 && 'X'}
                 {x.goals_scored > 0 && 
@@ -122,6 +125,9 @@ const Captaincy = (props) => {
               {x.bonus > 0 && 'Bonus'}
               </div>
             </div>
+            <div style={{paddingTop: 0.5+'rem',
+              paddingBottom: 0.5+'rem', fontWeight: 500
+            }}>{x?.kickoff_time?.toDateString()}</div>
           </div>)}
         </Modal.Body>
       </Modal>

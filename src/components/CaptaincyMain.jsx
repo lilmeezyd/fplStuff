@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo, useReducer, useCallback } from "react";
 import { usePlayer } from "../PlayerContext";
 import { usePlayerStats } from "../PlayerStatContext";
 import Captaincy from "../components/Captaincy";
-import { BiLock } from "react-icons/bi";
+import { Button } from "react-bootstrap";
 
 const CaptaincyMain = () => {
   const [picks, setPicks] = useState([]);
@@ -17,40 +17,46 @@ const CaptaincyMain = () => {
     if (action.type === "captain_by_6") {
       return {
         value: 6,
-      };
+        heading: "Sunday league skipper"
+            };
     }
 
     if (action.type === "captain_by_10") {
       return {
         value: 10,
+        heading:"Amateur skipper"
       };
     }
 
     if (action.type === "captain_by_16") {
       return {
         value: 16,
+        heading: "Semi Pro skipper"
       };
     }
 
     if (action.type === "captain_by_20") {
       return {
         value: 20,
+        heading: "Pro skipper"
       };
     }
     if (action.type === "captain_by_30") {
       return {
         value: 30,
+        heading: "WorldClass skipper"
       };
     }
 
     if (action.type === "captain_by_35") {
       return {
         value: 35,
+        heading: "Legendary skipper"
       };
     }
   }
-  const [state, dispatch] = useReducer(reducer, { value: 0 });
-  const { value } = state;
+  const [state, dispatch] = useReducer(reducer, { value: 0, heading: "" });
+  const { value, heading } = state;
 
   useEffect(() => {
     const a = [];
@@ -148,6 +154,7 @@ const CaptaincyMain = () => {
       y.playerTeam = playerTeam;
       y.team_a_score = stats?.team_a_score;
       y.team_h_score = stats?.team_h_score;
+      y.kickoff_time = new Date(stats?.kickoff_time)
       y.bonus = stats?.bonus;
       return y;
     });
@@ -178,13 +185,7 @@ const CaptaincyMain = () => {
             </div>
           </div>
           <div>
-            {sixOrMore.length > 0 ? (
-              <div onClick={handleSix} className="times">
-                {sixOrMore.length}
-              </div>
-            ) : (
-              <BiLock />
-            )}
+          <Button className="btn-dark" onClick={handleSix}>Check</Button>
           </div>
         </div>
         <div className="achieve-wrapper my-1">
@@ -195,8 +196,7 @@ const CaptaincyMain = () => {
             </div>
           </div>
           <div className="times">
-          {tenOrMore.length > 0 ? 
-                  <div onClick={handleTen}>{tenOrMore.length}</div>: <BiLock />}
+          <Button className="btn-dark" onClick={handleTen}>Check</Button>
           </div>
         </div>
         <div className="achieve-wrapper my-1">
@@ -207,8 +207,7 @@ const CaptaincyMain = () => {
             </div>
           </div>
           <div className="times">
-          {sixteenOrMore.length > 0 ? 
-                  <div onClick={handleSixteen}>{sixteenOrMore.length}</div>: <BiLock />}
+          <Button className="btn-dark" onClick={handleSixteen}>Check</Button>
           </div>
         </div>
         <div className="achieve-wrapper my-1">
@@ -219,8 +218,7 @@ const CaptaincyMain = () => {
             </div>
           </div>
           <div className="times">
-            {twentyOrMore.length > 0 ? 
-                  <div onClick={handleTwenty}>{twentyOrMore.length}</div>: <BiLock />}
+          <Button className="btn-dark" onClick={handleTwenty}>Check</Button>
           </div>
         </div>
         <div className="achieve-wrapper my-1">
@@ -231,8 +229,7 @@ const CaptaincyMain = () => {
             </div>
           </div>
           <div className="times">
-            {thirtyOrMore.length > 0 ? 
-                  <div onClick={handleThirty}>{thirtyOrMore.length}</div>: <BiLock />}
+          <Button className="btn-dark" onClick={handleThirty}>Check</Button>
           </div>
         </div>
         <div className="achieve-wrapper my-1">
@@ -243,8 +240,7 @@ const CaptaincyMain = () => {
             </div>
           </div>
           <div className="times">
-            {thirtyFiveOrMore.length > 0 ? 
-                  <div onClick={handleThirtyFive}>{thirtyFiveOrMore.length}</div>: <BiLock />}
+          <Button className="btn-dark" onClick={handleThirtyFive}>Check</Button>
           </div>
         </div>
       </div>
@@ -252,6 +248,7 @@ const CaptaincyMain = () => {
         captainDetails={captainDetails}
         show={show}
         handleClose={handleClose}
+        heading={heading}
       />
     </>
   );
