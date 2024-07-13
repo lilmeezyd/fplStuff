@@ -6,13 +6,13 @@ import ScoreMain from "../components/ScoreMain";
 import { useState, useEffect } from "react";
 import axios from "axios";
 const AchievementsScreen = () => {
-  const [fplId, setFplId] = useState('');
-  const [ submitId, setSubmitId ] = useState(null)
+  const [fplId, setFplId] = useState("");
+  const [submitId, setSubmitId] = useState(null);
 
   const useFetch = (dep) => {
-    
-  const [picks, setPicks] = useState([]);
-  const [history, setHistory] = useState([]);
+    const [picks, setPicks] = useState([]);
+    const [history, setHistory] = useState([]);
+    const [manager, SetManager] = useState("");
     useEffect(() => {
       const a = [];
       for (let i = 1; i <= 38; i++) {
@@ -38,9 +38,14 @@ const AchievementsScreen = () => {
           const response1 = await axios.get(
             `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/history/`
           );
+          const response2 = await axios.get(
+            `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/`
+          );
           const data = await response1.data;
+          const data1 = await response2.data;
           setHistory(data);
           setPicks(response);
+          SetManager(data1);
           console.log(response);
         } catch (error) {
           const errMsg = error?.response?.data?.msg || error?.message;
@@ -50,23 +55,23 @@ const AchievementsScreen = () => {
 
       dep >= 1 && fetchData();
     }, [dep]);
-    return { picks, history}
+    return { picks, history, manager };
   };
-
 
   const onSubmit = (e) => {
     e.preventDefault();
     setSubmitId(fplId);
-    setFplId(null)
+    setFplId(null);
   };
 
-  const { picks, history } = useFetch(submitId)
+  const { picks, history, manager } = useFetch(submitId);
+  console.log(picks);
+  console.log(manager)
 
   return (
     <>
       <Container>
-        <h1 className="py-5">Achievements</h1>
-        {submitId === null ? (
+        {submitId === null && (
           <div className="form py-2">
             <form onSubmit={onSubmit}>
               <div className="fpl-id py-2">
@@ -87,38 +92,65 @@ const AchievementsScreen = () => {
               </div>
             </form>
           </div>
-        ) : (
-          <div className="achievements">
-            <details>
-              <summary style={{ display: "flex", listStyle: "none" }}>
-                Getting Started
-              </summary>
-              <GettingStartedMain picks={picks} />
-            </details>
-
-            <details>
-              <summary style={{ display: "flex", listStyle: "none" }}>
-                Captaincy
-              </summary>
-              <CaptaincyMain picks={picks} />
-            </details>
-
-            <details>
-              <summary style={{ display: "flex", listStyle: "none" }}>
-                Gameweek Ranking
-              </summary>
-
-              <RankingMain history={history} />
-            </details>
-
-            <details>
-              <summary style={{ display: "flex", listStyle: "none" }}>
-                Gameweek Score
-              </summary>
-              <ScoreMain history={history} />
-            </details>
-          </div>
         )}
+
+        <div className="row">
+          <div className="col-md-8 py-5">
+            <div className="manager-stats-achieve mb-2">
+            <div className="ms-header py-2 m-3">Achievements</div>
+            <div className="ms-header py-2 m-3">Statistics</div>
+            </div>
+            
+
+            <div className="achievements">
+              <details>
+                <summary style={{ display: "flex", listStyle: "none" }}>
+                  Getting Started
+                </summary>
+                <GettingStartedMain picks={picks} />
+              </details>
+
+              <details>
+                <summary style={{ display: "flex", listStyle: "none" }}>
+                  Captaincy
+                </summary>
+                <CaptaincyMain picks={picks} />
+              </details>
+
+              <details>
+                <summary style={{ display: "flex", listStyle: "none" }}>
+                  Gameweek Ranking
+                </summary>
+
+                <RankingMain history={history} />
+              </details>
+
+              <details>
+                <summary style={{ display: "flex", listStyle: "none" }}>
+                  Gameweek Score
+                </summary>
+                <ScoreMain history={history} />
+              </details>
+            </div>
+          </div>
+
+          <div className="py-5 col-md-4">
+            <div className="manager-wrap">
+              <div className="manager-header">Manager:</div>
+              <div className="manager-data">
+                {manager?.player_first_name} {manager?.player_last_name}
+              </div>
+            </div>
+            <div  className="manager-wrap">
+              <div className="manager-header">Team Name:</div>
+              <div className="manager-data">{manager?.name}</div>
+            </div>
+            <div  className="manager-wrap">
+              <div className="manager-header">Overall Rank</div>
+              <div className="manager-data">{manager?.summary_overall_rank}</div>
+            </div>
+          </div>
+        </div>
       </Container>
     </>
   );
