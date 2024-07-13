@@ -5,46 +5,13 @@ import { usePlayerStats } from "../PlayerStatContext";
 import GettingStarted from "./GettingStarted";
 import { Button } from "react-bootstrap";
 import { BiLock } from "react-icons/bi";
-const GettingStartedMain = () => {
-  const [picks, setPicks] = useState([]);
+const GettingStartedMain = (props) => {
+  const {picks } = props
   const [show, setShow] = useState(false);
   const { teams, elementTypes, players, events } = usePlayer();
   const { playerStats } = usePlayerStats();
 
   const handleClose = () => setShow(false);
-
-  useEffect(() => {
-    const a = [];
-    for (let i = 1; i <= 38; i++) {
-      a.push(i);
-    }
-    const picksArray = a.map(
-      (x) =>
-        `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/10199/event/${x}/picks/`
-    );
-    async function makeAPICall(endpoint) {
-      const response = await axios.get(endpoint);
-      const data = await response.data;
-      return data;
-    }
-    async function makeCalls(endpoints) {
-      const promises = endpoints.map(makeAPICall);
-      const responses = await Promise.all(promises);
-      return responses;
-    }
-    const fetchData = async () => {
-      try {
-        const response = await makeCalls(picksArray);
-        setPicks(response);
-        console.log(response);
-      } catch (error) {
-        const errMsg = error?.response?.data?.msg || error?.message;
-        console.log(errMsg);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   function reducer(state, action) {
     if (action.type === "hattrick") {

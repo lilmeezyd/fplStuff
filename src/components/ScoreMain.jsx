@@ -1,10 +1,9 @@
-import axios from "axios";
-import { useEffect, useState, useMemo, useReducer, useCallback } from "react";
+import { useState, useMemo, useReducer, useCallback } from "react";
 import Score from "../components/Score";
 import { Button } from "react-bootstrap";
 
-const ScoreMain = () => {
-  const [history, setHistory] = useState([]);
+const ScoreMain = (props) => {
+  const {history} = props;
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -54,24 +53,6 @@ const ScoreMain = () => {
   const [state, dispatch] = useReducer(reducer, { value: 0, heading: '' });
   const { value, heading } = state;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/10199/history/`
-        );
-        const data = await response.data;
-        setHistory(data);
-        console.log(data);
-        //console.log(response);
-      } catch (error) {
-        const errMsg = error?.response?.data?.msg || error?.message;
-        console.log(errMsg);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const handle40 = () => {
     setShow(true);
