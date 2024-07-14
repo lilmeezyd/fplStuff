@@ -1,4 +1,4 @@
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Spinner } from "react-bootstrap";
 import GettingStartedMain from "../components/GettingStartedMain";
 import CaptaincyMain from "../components/CaptaincyMain";
 import RankingMain from "../components/RankingMain";
@@ -7,12 +7,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 const AchievementsScreen = () => {
   const [fplId, setFplId] = useState("");
-  const [submitId, setSubmitId] = useState(null);
+  const [submitId, setSubmitId] = useState(localStorage.getItem('submitId') || null);
 
   const useFetch = (dep) => {
     const [picks, setPicks] = useState([]);
     const [history, setHistory] = useState([]);
     const [manager, SetManager] = useState("");
+    const [ error, setError] = useState("")
     useEffect(() => {
       const a = [];
       for (let i = 1; i <= 38; i++) {
@@ -49,24 +50,30 @@ const AchievementsScreen = () => {
           console.log(response);
         } catch (error) {
           const errMsg = error?.response?.data?.msg || error?.message;
+          setError(errMsg)
           console.log(errMsg);
         }
       };
 
       dep >= 1 && fetchData();
     }, [dep]);
-    return { picks, history, manager };
+    return { picks, history, manager, error };
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     setSubmitId(fplId);
+    localStorage.setItem('submitId', fplId)
     setFplId(null);
   };
 
-  const { picks, history, manager } = useFetch(submitId);
-  console.log(picks);
-  console.log(manager)
+  const { picks, history, manager, error } = useFetch(submitId);
+  //console.log(picks);
+  //console.log(history)
+
+  if(!!submitId && picks.length === 0 && Object.keys(history).length === 0 && error === '') {
+    return <Spinner />
+  }
 
   return (
     <>
@@ -86,7 +93,7 @@ const AchievementsScreen = () => {
                 />
               </div>
               <div className="py-2">
-                <Button type="submit" className="fpl-id-btn btn-dark">
+                <Button type="submit" className="fpl-id-btn btn-dark py-2">
                   Submit ID
                 </Button>
               </div>
@@ -94,15 +101,21 @@ const AchievementsScreen = () => {
           </div>
         )}
 
-        <div className="row">
+        {!!submitId && picks.length > 0 && Object.keys(history).length > 0 && <div className="row">
           <div className="col-md-8 py-5">
             <div className="manager-stats-achieve mb-2">
-            <div className="ms-header py-2 m-3">Achievements</div>
-            <div className="ms-header py-2 m-3">Statistics</div>
+            <div onClick={() => console.log('acievements')} className="ms-header py-2 m-3">Achievements</div>
+            <div onClick={() => console.log('statistics')} className="ms-header py-2 m-3">Statistics</div>
             </div>
             
 
             <div className="achievements">
+              {/*<div className="details_1">
+                <div className="summary">
+                Getting Started
+                </div>
+                <GettingStartedMain picks={picks} />
+              </div>*/}
               <details>
                 <summary style={{ display: "flex", listStyle: "none" }}>
                   Getting Started
@@ -149,8 +162,15 @@ const AchievementsScreen = () => {
               <div className="manager-header">Overall Rank</div>
               <div className="manager-data">{manager?.summary_overall_rank}</div>
             </div>
+            <div  className="border">
+            <Button onClick={(e) => {
+              e.preventDefault()
+              localStorage.removeItem('submitId')
+              setSubmitId(null)
+            }} className="py-2 btn-dark" style={{width: 100+'%'}}>Change FPL ID</Button>
+            </div>
           </div>
-        </div>
+        </div>}
       </Container>
     </>
   );

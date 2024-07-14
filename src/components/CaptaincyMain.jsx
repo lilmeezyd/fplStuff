@@ -15,47 +15,53 @@ const CaptaincyMain = (props) => {
   function reducer(state, action) {
     if (action.type === "captain_by_6") {
       return {
-        value: 6,
+        value_1: 6,
+        value_2: 10,
         heading: "Sunday league skipper"
             };
     }
 
     if (action.type === "captain_by_10") {
       return {
-        value: 10,
+        value_1: 10,
+        value_2: 16,
         heading:"Amateur skipper"
       };
     }
 
     if (action.type === "captain_by_16") {
       return {
-        value: 16,
+        value_1: 16,
+        value_2: 20,
         heading: "Semi Pro skipper"
       };
     }
 
     if (action.type === "captain_by_20") {
       return {
-        value: 20,
+        value_1: 20,
+        value_2: 30,
         heading: "Pro skipper"
       };
     }
     if (action.type === "captain_by_30") {
       return {
-        value: 30,
+        value_1: 30,
+        value_2: 35,
         heading: "WorldClass skipper"
       };
     }
 
     if (action.type === "captain_by_35") {
       return {
-        value: 35,
+        value_1: 35,
+        value_2: 2000,
         heading: "Legendary skipper"
       };
     }
   }
-  const [state, dispatch] = useReducer(reducer, { value: 0, heading: "" });
-  const { value, heading } = state;
+  const [state, dispatch] = useReducer(reducer, { value_1: 0, value_2: 0, heading: "" });
+  const { value_1, value_2, heading } = state;
 
 
   const handleSix = () => {
@@ -129,10 +135,10 @@ const CaptaincyMain = (props) => {
   }, [picks, playerStats, players, teams]);
 
   const captainDetails = useMemo(
-    () => getCaptains().filter((cap) => cap.total_points >= value),
-    [getCaptains, value]
+    () => getCaptains().filter((cap) => cap.total_points >= value_1 && cap.total_points < value_2),
+    [getCaptains, value_1, value_2]
   );
-
+/*
   const sixOrMore = getCaptains().filter((cap) => cap.total_points >= 6);
   const tenOrMore = getCaptains().filter((cap) => cap.total_points >= 10);
   const sixteenOrMore = getCaptains().filter((cap) => cap.total_points >= 16);
@@ -140,7 +146,7 @@ const CaptaincyMain = (props) => {
   const thirtyOrMore = getCaptains().filter((cap) => cap.total_points >= 30);
   const thirtyFiveOrMore = getCaptains().filter(
     (cap) => cap.total_points >= 35
-  );
+  );*/
   return (
     <>
       <div className="first">
@@ -148,7 +154,7 @@ const CaptaincyMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Sunday league skipper</div>
             <div className="achieve-note">
-              Your captain scores more than 6 points
+              Your captain scores between 5 & 10 points
             </div>
           </div>
           <div>
@@ -159,7 +165,7 @@ const CaptaincyMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Amateur skipper</div>
             <div className="achieve-note">
-              Your captain scores more than 10 points
+              Your captain scores between 9 & 16 points
             </div>
           </div>
           <div className="times">
@@ -170,7 +176,7 @@ const CaptaincyMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Semi Pro skipper</div>
             <div className="achieve-note">
-              Your captain scores more than 16 points
+              Your captain scores between 15 & 20 points
             </div>
           </div>
           <div className="times">
@@ -181,7 +187,7 @@ const CaptaincyMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Pro skipper</div>
             <div className="achieve-note">
-              Your captain scores more than 20 points
+              Your captain scores between 19 & 30 points
             </div>
           </div>
           <div className="times">
@@ -192,7 +198,7 @@ const CaptaincyMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">WorldClass skipper</div>
             <div className="achieve-note">
-              Your captain scores more than 30 points
+              Your captain scores between 29 & 35 points
             </div>
           </div>
           <div className="times">
@@ -203,7 +209,7 @@ const CaptaincyMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Legendary skipper</div>
             <div className="achieve-note">
-              Your captain scores more than 35 points
+              Your captain scores above 34 points
             </div>
           </div>
           <div className="times">

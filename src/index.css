@@ -92,6 +92,8 @@ p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: left;
+  padding-left: 0.5rem;
 }
 
 .manager-wrap {
@@ -113,6 +115,9 @@ p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: left;
+  padding-left: 0.5rem;
+  font-weight: 500;
 }
 
 .ms-header {
@@ -450,6 +455,20 @@ footer {
   gap: 20px;
 }
 
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border: 1px solid #93a8bd;
+  box-shadow: #93a8bd 0 0 2px;
+  text-align: left;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
 summary {
   list-style: none;
   display: flex;
@@ -458,7 +477,6 @@ summary {
   padding: 1rem;
   border: 1px solid #93a8bd;
   box-shadow: #93a8bd 0 0 2px;
-  ;
   text-align: left;
   border-radius: 0.5rem;
   font-weight: 700;
@@ -469,7 +487,7 @@ summary::marker {
   content: none;
 }
 
-summary::after {
+summary::after, .summary::after {
   content: '';
   width: 18px;
   height: 18px;
@@ -490,7 +508,7 @@ details[open]>summary {
   border-bottom-right-radius: 0;
 }
 
-details div.first {
+details div.first, .details_1 div.first {
   background: aquamarine;
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;

@@ -11,47 +11,53 @@ const ScoreMain = (props) => {
   function reducer(state, action) {
     if (action.type === "score_by_40") {
       return {
-        value: 40,
+        value_1: 40,
+        value_2: 50,
         heading: 'Sunday league score'
       };
     }
 
     if (action.type === "score_by_50") {
       return {
-        value: 50,
+        value_1: 50,
+        value_2: 60,
         heading: 'Amatuer score'
       };
     }
 
     if (action.type === "score_by_60") {
       return {
-        value: 60,
+        value_1: 60,
+        value_2: 80,
         heading: 'Semi pro score'
       };
     }
 
     if (action.type === "score_by_80") {
       return {
-        value: 80,
+        value_1: 80,
+        value_2: 90,
         heading: 'Pro score'
       };
     }
     if (action.type === "score_by_90") {
       return {
-        value: 90,
+        value_1: 90,
+        value_2: 100,
         heading: 'World class score'
       };
     }
 
     if (action.type === "score_by_100") {
       return {
-        value: 100,
+        value_1: 100,
+        value_2: 500,
         heading: 'Legendary score'
       };
     }
   }
-  const [state, dispatch] = useReducer(reducer, { value: 0, heading: '' });
-  const { value, heading } = state;
+  const [state, dispatch] = useReducer(reducer, { value_1: 0, value_2: 0, heading: '' });
+  const { value_1, value_2, heading } = state;
 
 
   const handle40 = () => {
@@ -90,17 +96,17 @@ const ScoreMain = (props) => {
   }, [history]);
 
   const historyDetails = useMemo(
-    () => getHistory()?.filter((x) => x.points >= value),
-    [getHistory, value]
+    () => getHistory()?.filter((x) => x.points >= value_1 && x.points < value_2),
+    [getHistory, value_1, value_2]
   );
-
+/*
   const _40 = getHistory()?.filter((x) => x.points >= 40).length;
   const _50 = getHistory()?.filter((x) => x.points >= 50).length;
   const _60 = getHistory()?.filter((x) => x.points >= 60).length;
   const _80 = getHistory()?.filter((x) => x.points >= 80).length;
   const _90 = getHistory()?.filter((x) => x.points >= 90).length;
   const _100 = getHistory()?.filter((x) => x.points >= 100).length;
-
+*/
   return (
     <>
       <div className="first">
@@ -108,7 +114,7 @@ const ScoreMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Sunday league score</div>
             <div className="achieve-note">
-              Score 40 or more points in a gameweek
+              Score between 39 & 50 points in a gameweek
             </div>
           </div>
           <div>
@@ -121,7 +127,7 @@ const ScoreMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Amatuer score</div>
             <div className="achieve-note">
-              Score 50 or more points in a gameweek
+              Score between 49 & 60 points in a gameweek
             </div>
           </div>
           <div>
@@ -134,7 +140,7 @@ const ScoreMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Semi pro score</div>
             <div className="achieve-note">
-              Score 60 or more points in a gameweek
+              Score 59 & 80 points in a gameweek
             </div>
           </div>
           <div>
@@ -147,7 +153,7 @@ const ScoreMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Pro score</div>
             <div className="achieve-note">
-              Score 80 or more points in a gameweek
+              Score 79 & 90 points in a gameweek
             </div>
           </div>
           <div>
@@ -160,7 +166,7 @@ const ScoreMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">World class score</div>
             <div className="achieve-note">
-              Score 90 or more points in a gameweek
+              Score 89 & 100 points in a gameweek
             </div>
           </div>
           <div>

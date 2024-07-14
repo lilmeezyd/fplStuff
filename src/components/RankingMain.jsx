@@ -11,47 +11,53 @@ const RankingMain = (props) => {
   function reducer(state, action) {
     if (action.type === "ranking_by_2m") {
       return {
-        value: 2,
+        value_1: 2,
+        value_2: 1,
         heading: 'Sunday league rank'
       };
     }
 
     if (action.type === "ranking_by_1m") {
       return {
-        value: 1,
+        value_1: 1,
+        value_2: 0.5,
         heading: 'Amatuer rank'
       };
     }
 
     if (action.type === "ranking_by_500k") {
       return {
-        value: 0.5,
+        value_1: 0.5,
+        value_2: .25,
         heading: 'Semi pro rank'
       };
     }
 
     if (action.type === "ranking_by_250k") {
       return {
-        value: .25,
+        value_1: .25,
+        value_2: .1,
         heading: 'Pro rank'
       };
     }
     if (action.type === "ranking_by_100k") {
       return {
-        value: .1,
+        value_1: .1,
+        value_2: 0.01,
         heading: 'World class rank'
       };
     }
 
     if (action.type === "ranking_by_10k") {
       return {
-        value: .01,
+        value_1: .01,
+        value_2: 0.00001,
         heading: 'Legendary rank'
       };
     }
   }
-  const [state, dispatch] = useReducer(reducer, { value: 0, heading: '' });
-  const { value, heading } = state;
+  const [state, dispatch] = useReducer(reducer, { value_1: 0, value_2: 0, heading: '' });
+  const { value_1, value_2, heading } = state;
 
 
   const handleTwoMil = () => {
@@ -90,18 +96,18 @@ const RankingMain = (props) => {
   }, [history]);
 
   const historyDetails = useMemo(
-    () => getHistory()?.filter(x => x.rank <= 1000000*value),
-    [getHistory, value]
+    () => getHistory()?.filter(x => x.rank <= 1000000*value_1 && x.rank > 1000000*value_2),
+    [getHistory, value_1, value_2]
   );
   console.log(historyDetails)
-  
+  /*
   const _2m = getHistory()?.filter(x => x.rank <= 1000000*2).length
   const _1m = getHistory()?.filter(x => x.rank <= 1000000*1).length
   const _500k = getHistory()?.filter(x => x.rank <= 1000000*.5).length
   const _250k = getHistory()?.filter(x => x.rank <= 1000000*.25).length
   const _100k = getHistory()?.filter(x => x.rank <= 1000000*.1).length
   const _10k = getHistory()?.filter(x => x.rank <= 1000000*.01).length
-
+*/
   return (
     <>
     <div className="first">
@@ -109,7 +115,7 @@ const RankingMain = (props) => {
               <div className="achieve-details">
                 <div className="achieve-header">Sunday league rank</div>
                 <div className="achieve-note">
-                  Rank inside the top 2m in a gameweek
+                  Rank between 2M & 1M in a gameweek
                 </div>
               </div>
               <div>
@@ -122,7 +128,7 @@ const RankingMain = (props) => {
               <div className="achieve-details">
                 <div className="achieve-header">Amatuer rank</div>
                 <div className="achieve-note">
-                  Rank inside the top 1m in a gameweek
+                  Rank between 1M & 500K in a gameweek
                 </div>
               </div>
               <div>
@@ -135,7 +141,7 @@ const RankingMain = (props) => {
               <div className="achieve-details">
                 <div className="achieve-header">Semi pro rank</div>
                 <div className="achieve-note">
-                  Rank inside the top 500k in a gameweek
+                  Rank between 500K & 250K in a gameweek
                 </div>
               </div>
               <div>
@@ -148,7 +154,7 @@ const RankingMain = (props) => {
               <div className="achieve-details">
                 <div className="achieve-header">Pro rank</div>
                 <div className="achieve-note">
-                  Rank inside the top 250k in a gameweek
+                  Rank between 250k & 100K in a gameweek
                 </div>
               </div>
               <div>
@@ -161,7 +167,7 @@ const RankingMain = (props) => {
               <div className="achieve-details">
                 <div className="achieve-header">World class rank</div>
                 <div className="achieve-note">
-                  Rank inside the top 100k in a gameweek
+                  Rank between 100k & 10K in a gameweek
                 </div>
               </div>
               <div> 
