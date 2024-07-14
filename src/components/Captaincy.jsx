@@ -13,7 +13,7 @@ const Captaincy = (props) => {
           <Modal.Title style={{fontWeight: 500}}>{heading}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-3">
-          {captainDetails?.map((x, idx) => 
+          {captainDetails?.length > 0 ? captainDetails?.map((x, idx) => 
           <div className="achieve-record" key={idx}>
             <div className="gw py-1">Gameweek {x.event}</div>
             <div className="gw-data py-2">
@@ -128,7 +128,7 @@ const Captaincy = (props) => {
             <div style={{paddingTop: 0.5+'rem',
               paddingBottom: 0.5+'rem', fontWeight: 500
             }}>{x?.kickoff_time?.toDateString()}</div>
-          </div>)}
+          </div>): <div className="date">Yet to be unlocked</div>}
         </Modal.Body>
       </Modal>
   )

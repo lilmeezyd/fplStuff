@@ -3,11 +3,49 @@ import GettingStartedMain from "../components/GettingStartedMain";
 import CaptaincyMain from "../components/CaptaincyMain";
 import RankingMain from "../components/RankingMain";
 import ScoreMain from "../components/ScoreMain";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 const AchievementsScreen = () => {
   const [fplId, setFplId] = useState("");
   const [submitId, setSubmitId] = useState(localStorage.getItem('submitId') || null);
+  const reducer = (state, action) => {
+    if(action.type === 'started') {
+      if(state.value === 'start' ) {
+        return { value: ''}
+      }
+      return {
+        value: 'start'
+      }
+    }
+    if(action.type === 'captain') {
+      if(state.value === 'cap') {
+        return { value: ''}
+      }
+      return {
+        value: 'cap'
+      }
+    }
+
+    if(action.type === 'scoring') {
+      if(state.value === 'score') {
+        return { value: ''}
+      }
+      return {
+        value: 'score'
+      }
+    }
+
+    if(action.type === 'ranking') {
+      if(state.value === 'rank') {
+        return { value: ''}
+      }
+      return {
+        value: 'rank'
+      }
+    }
+  }
+  const [state, dispatch] = useReducer(reducer, { value: ''})
+  const { value } = state
 
   const useFetch = (dep) => {
     const [picks, setPicks] = useState([]);
@@ -67,6 +105,19 @@ const AchievementsScreen = () => {
     setFplId(null);
   };
 
+  const showCaptain = () => {
+    dispatch({type:'captain'})
+  }
+  const showStarted = () => {
+    dispatch({type: 'started'})
+  }
+  const showRank = () => {
+    dispatch({type: 'ranking'})
+  }
+  const showScore = () => {
+    dispatch({type: 'scoring'})
+  }
+
   const { picks, history, manager, error } = useFetch(submitId);
   //console.log(picks);
   //console.log(history)
@@ -101,7 +152,9 @@ const AchievementsScreen = () => {
           </div>
         )}
 
-        {!!submitId && picks.length > 0 && Object.keys(history).length > 0 && <div className="row">
+        {/*!!submitId && picks.length > 0 && Object.keys(history).length > 0 &&  */}
+
+        {<div className="row">
           <div className="col-md-8 py-5">
             <div className="manager-stats-achieve mb-2">
             <div onClick={() => console.log('acievements')} className="ms-header py-2 m-3">Achievements</div>
@@ -110,40 +163,33 @@ const AchievementsScreen = () => {
             
 
             <div className="achievements">
-              {/*<div className="details_1">
-                <div className="summary">
+              <div open={!!(value === 'start')} className="details_1">
+                <div onClick={showStarted}  className="summary">
                 Getting Started
                 </div>
-                <GettingStartedMain picks={picks} />
-              </div>*/}
-              <details>
-                <summary style={{ display: "flex", listStyle: "none" }}>
-                  Getting Started
-                </summary>
-                <GettingStartedMain picks={picks} />
-              </details>
+                {value === 'start' && <GettingStartedMain picks={picks} />}
+              </div>
 
-              <details>
-                <summary style={{ display: "flex", listStyle: "none" }}>
-                  Captaincy
-                </summary>
-                <CaptaincyMain picks={picks} />
-              </details>
+              <div open={!!(value === 'cap')} className="details_1">
+                <div onClick={showCaptain} className="summary">
+                Captaincy
+                </div>
+                {value === 'cap' && <CaptaincyMain picks={picks} />}
+              </div>
 
-              <details>
-                <summary style={{ display: "flex", listStyle: "none" }}>
-                  Gameweek Ranking
-                </summary>
+              <div open={!!(value === 'rank')} className="details_1">
+                <div onClick={showRank} className="summary">
+                Gameweek Ranking
+                </div>
+                {value === 'rank' && <RankingMain history={history} />}
+              </div>
 
-                <RankingMain history={history} />
-              </details>
-
-              <details>
-                <summary style={{ display: "flex", listStyle: "none" }}>
-                  Gameweek Score
-                </summary>
-                <ScoreMain history={history} />
-              </details>
+              <div open={!!(value === 'score')} className="details_1">
+                <div onClick={showScore} className="summary">
+                Gameweek Score
+                </div>
+                {value === 'score' && <ScoreMain history={history} />}
+              </div>
             </div>
           </div>
 

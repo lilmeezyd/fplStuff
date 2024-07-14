@@ -140,7 +140,7 @@ const ScoreMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Semi pro score</div>
             <div className="achieve-note">
-              Score 59 & 80 points in a gameweek
+              Score between 59 & 80 points in a gameweek
             </div>
           </div>
           <div>
@@ -153,7 +153,7 @@ const ScoreMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">Pro score</div>
             <div className="achieve-note">
-              Score 79 & 90 points in a gameweek
+              Score between 79 & 90 points in a gameweek
             </div>
           </div>
           <div>
@@ -166,7 +166,7 @@ const ScoreMain = (props) => {
           <div className="achieve-details">
             <div className="achieve-header">World class score</div>
             <div className="achieve-note">
-              Score 89 & 100 points in a gameweek
+              Score between 89 & 100 points in a gameweek
             </div>
           </div>
           <div>

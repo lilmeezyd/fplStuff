@@ -11,14 +11,14 @@ const Score = (props) => {
             <Modal.Title style={{fontWeight: 500}}>{heading}</Modal.Title>
           </Modal.Header>
           <Modal.Body className="p-3">
-            {historyDetails?.map((x, idx) => 
+            {historyDetails?.length > 0 ? historyDetails?.map((x, idx) => 
             <div className="achieve-record" key={idx}>
               <div className="gw py-1">Gameweek {x.event}</div>
               <div className="rank-score">
                 <div>Score</div>
                 <div>{x.points}</div>
               </div>
-            </div>)}
+            </div>): <div className="date">Yet to be unlocked</div>}
           </Modal.Body>
         </Modal>
     )

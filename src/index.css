@@ -469,46 +469,27 @@ footer {
   cursor: pointer;
 }
 
-summary {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  border: 1px solid #93a8bd;
-  box-shadow: #93a8bd 0 0 2px;
-  text-align: left;
-  border-radius: 0.5rem;
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-
-summary::marker {
-  content: none;
-}
-
-summary::after, .summary::after {
+.summary::after {
   content: '';
   width: 18px;
   height: 18px;
   background: url('./assets/chevron-down.svg') no-repeat;
   background-size: cover;
-  transition: 0.2s;
+  transition: 0.5s;
 }
 
-details[open]>summary::after {
+.details_1[open]>.summary::after {
   transform: rotate(180deg);
 }
 
-details[open]>summary {
-
+.details_1[open]>.summary {
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-details div.first, .details_1 div.first {
+.details_1 div.first {
   background: aquamarine;
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
