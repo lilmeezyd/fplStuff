@@ -152,9 +152,7 @@ const AchievementsScreen = () => {
           </div>
         )}
 
-        {/*!!submitId && picks.length > 0 && Object.keys(history).length > 0 &&  */}
-
-        {<div className="row">
+        {!!submitId && picks.length > 0 && Object.keys(history).length > 0 &&  <div className="row">
           <div className="col-md-8 py-5">
             <div className="manager-stats-achieve mb-2">
             <div onClick={() => console.log('acievements')} className="ms-header py-2 m-3">Achievements</div>
