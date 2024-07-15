@@ -57,7 +57,7 @@ const PlayerScreen = () => {
         <h5>{team}</h5>
         <h6>{elementType}</h6>
       </div>
-      {error === 'Network Error' && <div>Check Your internet Connection!</div>}
+      {error === 'Network Error' && <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Check your internet connection!</div>}
       {!!(error === '') && <div>
         <div className="chart border">
           <div className='chart-heading'>Player Performance</div>

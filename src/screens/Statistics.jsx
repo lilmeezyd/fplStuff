@@ -449,7 +449,7 @@ const Statistics = () => {
     
     <Container className="py-2 my-2">
       {((error === 'Network Error' || errorM === 'Network Error') && newPlayers.length === 0) && 
-      <div className="py-5">Check your internet connection!</div>}
+      <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Check your internet connection!</div>}
       {newPlayers.length === 0 && error === '' && errorM === '' && <Spinner />}
       {(newPlayers.length > 0 && error === '' && errorM === '') && <>
       <>

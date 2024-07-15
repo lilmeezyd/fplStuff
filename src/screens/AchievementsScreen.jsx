@@ -119,12 +119,14 @@ const AchievementsScreen = () => {
   }
 
   const { picks, history, manager, error } = useFetch(submitId);
-  //console.log(picks);
+  console.log(picks);
   //console.log(history)
 
   if(!!submitId && picks.length === 0 && Object.keys(history).length === 0 && error === '') {
     return <Spinner />
   }
+
+  if(error === 'Network Error') return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Check your internet connection!</div>
 
   return (
     <>

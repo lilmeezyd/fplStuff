@@ -145,6 +145,9 @@ const Compare = () => {
         (x, y) => x + +y.expected_goals_conceded,
         0
       ),
+      expected_assists_per_90: p1History?.reduce((x, y) => x + y.minutes, 0) > 30 ? (p1History?.reduce((x,y) => x+(+y.expected_assists),0))/(p1History?.reduce((x, y) => x + y.minutes, 0)/90) : 0,
+      expected_goals_per_90: p1History?.reduce((x, y) => x + y.minutes, 0) > 30 ? (p1History?.reduce((x,y) => x+(+y.expected_goals),0))/(p1History?.reduce((x, y) => x + y.minutes, 0)/90) : 0,
+      expected_goal_involvements_per_90: p1History?.reduce((x, y) => x + y.minutes, 0) > 30 ? (p1History?.reduce((x,y) => x+(+y.expected_goal_involvements),0))/(p1History?.reduce((x, y) => x + y.minutes, 0)/90) : 0,
     };
     const p2 = {
       minutes: p2History?.reduce((x, y) => x + y.minutes, 0),
@@ -165,13 +168,17 @@ const Compare = () => {
         (x, y) => x + +y.expected_goal_involvements,
         0
       ),
-      expected_goals_conceded: p1History?.reduce(
+      expected_goals_conceded: p2History?.reduce(
         (x, y) => x + +y.expected_goals_conceded,
         0
       ),
+      expected_assists_per_90: p2History?.reduce((x, y) => x + y.minutes, 0) > 30 ? (p2History?.reduce((x,y) => x+(+y.expected_assists),0))/(p2History?.reduce((x, y) => x + y.minutes, 0)/90) : 0,
+      expected_goals_per_90: p2History?.reduce((x, y) => x + y.minutes, 0) > 30 ? (p2History?.reduce((x,y) => x+(+y.expected_goals),0))/(p2History?.reduce((x, y) => x + y.minutes, 0)/90) : 0,
+      expected_goal_involvements_per_90: p2History?.reduce((x, y) => x + y.minutes, 0) > 30 ? (p2History?.reduce((x,y) => x+(+y.expected_goal_involvements),0))/(p2History?.reduce((x, y) => x + y.minutes, 0)/90) : 0,
     };
     return { p1, p2}
   }, [data1, data2, start1, start2, end1, end2 ])
+  console.log(compare)
 
   const onStat = () => {
     if(stat === false) {
@@ -201,12 +208,16 @@ const Compare = () => {
     {"param" : "xG","player1":p1.expected_goals, "player2":p2.expected_goals},
     {"param" : "xA","player1":p1.expected_assists, "player2":p2.expected_assists},
     {"param" : "xGi","player1":p1.expected_goal_involvements, "player2":p2.expected_goal_involvements},
-    {"param" : "Saves","player1":p1.saves, "player2":p2.saves}]
+    {"param": "xG/90", "player1":p1.expected_goals_per_90*25, "player2":p2.expected_goals_per_90*25},
+    {"param": "xA/90", "player1":p1.expected_assists_per_90*25, "player2":p2.expected_assists_per_90*25},
+    {"param": "xGi/90", "player1":p1.expected_goal_involvements_per_90*25, "player2":p2.expected_goal_involvements_per_90*25},
+    ]
+    /*{"param" : "Saves","player1":p1.saves, "player2":p2.saves} */
   return (
     <Container>
     {players.length === 0 && error === '' && error1 === '' && <div className="py-5"><Spinner/></div>}
     {(error === 'Network Error' || error1 === 'Network Error')  && 
-    <div className="py-5">Check your internet connection!</div>}
+    <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Check your internet connection!</div>}
       {(players.length > 0  && error === '' && error1 === '') &&  <>
       <h4 style={{fontWeight: 700}} className="p-2">Select players to compare</h4>
       <div className="playerison">
@@ -791,6 +802,102 @@ const Compare = () => {
                     100 +
                   "%" : 0+'%',
                 background: p2.expected_goal_involvements > 0 && "red",
+                padding: 0.3 + "rem",
+              }}
+              className="player-two"
+            ></div>
+          </div>
+
+          <div className=" player-stats">
+            <div>{p1.expected_goals_per_90?.toFixed(2)}</div>
+            <div>xG/90</div>
+            <div>{p2.expected_goals_per_90?.toFixed(2)}</div>
+          </div>
+          <div className="compare-stat-wrap">
+            <div
+              style={{
+                width:
+                p1.expected_goals_per_90 > 0 ? 
+                (p1.expected_goals_per_90 / (p1.expected_goals_per_90 + p2.expected_goals_per_90)) *
+                    100 +
+                  "%": 0+'%',
+                background: p1.expected_goals_per_90 > 0 && "blue",
+                padding: 0.3 + "rem",
+              }}
+              className="player-one"
+            ></div>
+            <div
+              style={{
+                width:
+                p2.expected_goals_per_90 > 0 ?
+                 (p2.expected_goals_per_90 / (p1.expected_goals_per_90 + p2.expected_goals_per_90)) *
+                    100 +
+                  "%" : 0+'%',
+                background: p2.expected_goals_per_90 > 0 && "red",
+                padding: 0.3 + "rem",
+              }}
+              className="player-two"
+            ></div>
+          </div>
+          <div className=" player-stats">
+            <div>{p1.expected_assists_per_90?.toFixed(2)}</div>
+            <div>xA/90</div>
+            <div>{p2.expected_assists_per_90?.toFixed(2)}</div>
+          </div>
+          <div className="compare-stat-wrap">
+            <div
+              style={{
+                width:
+                p1.expected_assists_per_90 > 0 ? 
+                (p1.expected_assists_per_90 / (p1.expected_assists_per_90 + p2.expected_assists_per_90)) *
+                    100 +
+                  "%": 0+'%',
+                background: p1.expected_assists_per_90 > 0 && "blue",
+                padding: 0.3 + "rem",
+              }}
+              className="player-one"
+            ></div>
+            <div
+              style={{
+                width:
+                p2.expected_assists_per_90 > 0 ?
+                 (p2.expected_assists_per_90 / (p1.expected_assists_per_90 + p2.expected_assists_per_90)) *
+                    100 +
+                  "%" : 0+'%',
+                background: p2.expected_assists_per_90 > 0 && "red",
+                padding: 0.3 + "rem",
+              }}
+              className="player-two"
+            ></div>
+          </div>
+
+          
+          <div className=" player-stats">
+            <div>{p1.expected_goal_involvements_per_90?.toFixed(2)}</div>
+            <div>xGi/90</div>
+            <div>{p2.expected_goal_involvements_per_90?.toFixed(2)}</div>
+          </div>
+          <div className="compare-stat-wrap">
+            <div
+              style={{
+                width:
+                p1.expected_goal_involvements_per_90 > 0 ? 
+                (p1.expected_goal_involvements_per_90 / (p1.expected_goal_involvements_per_90 + p2.expected_goal_involvements_per_90)) *
+                    100 +
+                  "%": 0+'%',
+                background: p1.expected_goal_involvements_per_90 > 0 && "blue",
+                padding: 0.3 + "rem",
+              }}
+              className="player-one"
+            ></div>
+            <div
+              style={{
+                width:
+                p2.expected_goal_involvements_per_90 > 0 ?
+                 (p2.expected_goal_involvements_per_90 / (p1.expected_goal_involvements_per_90 + p2.expected_goal_involvements_per_90)) *
+                    100 +
+                  "%" : 0+'%',
+                background: p2.expected_goal_involvements_per_90 > 0 && "red",
                 padding: 0.3 + "rem",
               }}
               className="player-two"
