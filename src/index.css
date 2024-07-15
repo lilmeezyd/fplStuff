@@ -17,6 +17,11 @@ body {
   font-weight: 700;
 }
 
+.nav-link.active {
+  border-bottom: 5px solid black;
+  background: rgb(127, 255, 212, 0.5);
+}
+
 .name:nth-of-type(2) {
   position: sticky;
   left: 0;
