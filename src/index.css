@@ -575,6 +575,7 @@ form {
   place-items: center;
   padding: 0 0.5rem;
   font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .gw-data-1 {
@@ -594,6 +595,7 @@ form {
   border: 1px solid #8080804a;
   border-top: none;
   padding: 0.5rem 0;
+  font-size: 0.9rem;
 }
 
 .achieve-stats {

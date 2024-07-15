@@ -511,7 +511,7 @@ const Compare = () => {
               className="player-two"
             ></div>
           </div>
-          <div className=" player-stats">
+          {/*<div className=" player-stats">
             <div>{p1.own_goals}</div>
             <div>Own Goals</div>
             <div>{p2.own_goals}</div>
@@ -601,7 +601,7 @@ const Compare = () => {
               }}
               className="player-two"
             ></div>
-          </div>
+          </div>*/}
           <div className=" player-stats">
             <div>{p1.yellow_cards}</div>
             <div>Yellow Cards</div>
