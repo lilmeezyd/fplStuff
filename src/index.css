@@ -20,6 +20,8 @@ body {
 .nav-link.active {
   border-bottom: 5px solid black;
   background: rgb(127, 255, 212, 0.5);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .name:nth-of-type(2) {
