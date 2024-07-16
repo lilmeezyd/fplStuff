@@ -505,6 +505,8 @@ footer {
   padding: 0 0.5rem;
 }
 
+.details_1[open] div.first {}
+
 .form {
   display: flex;
   justify-content: center;
@@ -559,11 +561,22 @@ form {
   cursor: pointer;
 }
 
+.achieve-record-wrap {
+  display: grid;
+  /*grid-template-columns: 72.5% 22.5%;
+  grid-gap: 5%;*/
+}
+
 .achieve-record {
   text-align: center;
   background: aquamarine;
   margin-bottom: 1rem;
   border-radius: 0.5rem;
+}
+
+.achieve-img {
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
 }
 
 .gw {

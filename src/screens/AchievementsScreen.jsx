@@ -5,9 +5,13 @@ import RankingMain from "../components/RankingMain";
 import ScoreMain from "../components/ScoreMain";
 import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
+import StarPerformancesMain from "../components/StarPerformancesMain";
+import { usePlayer } from "../PlayerContext";
 const AchievementsScreen = () => {
   const [fplId, setFplId] = useState("");
   const [submitId, setSubmitId] = useState(localStorage.getItem('submitId') || null);
+  const { events } = usePlayer()
+  const maxEvent = events.filter(x => x.finished).map(x => x.id)
   const reducer = (state, action) => {
     if(action.type === 'started') {
       if(state.value === 'start' ) {
@@ -43,18 +47,27 @@ const AchievementsScreen = () => {
         value: 'rank'
       }
     }
+
+    if(action.type === 'starring') {
+      if(state.value === 'star') {
+        return { value: ''}
+      }
+      return {
+        value: 'star'
+      }
+    }
   }
   const [state, dispatch] = useReducer(reducer, { value: ''})
   const { value } = state
 
-  const useFetch = (dep) => {
+  const useFetch = (dep, dep1) => {
     const [picks, setPicks] = useState([]);
     const [history, setHistory] = useState([]);
     const [manager, SetManager] = useState("");
     const [ error, setError] = useState("")
     useEffect(() => {
       const a = [];
-      for (let i = 1; i <= 38; i++) {
+      for (let i = 1; i <= Math.max(...dep1); i++) {
         a.push(i);
       }
       const picksArray = a.map(
@@ -93,8 +106,8 @@ const AchievementsScreen = () => {
         }
       };
 
-      dep >= 1 && fetchData();
-    }, [dep]);
+      dep >= 1 && a.length > 0 && fetchData();
+    }, [dep, dep1]);
     return { picks, history, manager, error };
   };
 
@@ -118,16 +131,27 @@ const AchievementsScreen = () => {
     dispatch({type: 'scoring'})
   }
 
-  const { picks, history, manager, error } = useFetch(submitId);
-  console.log(picks);
+  const showStar = () => {
+    dispatch({type: 'starring'})
+  }
+
+  const { picks, history, manager, error } = useFetch(submitId, maxEvent);
+  //console.log(picks);
   //console.log(history)
+  console.log(Math.max(...events.filter(x => x.finished).map(x => x.id)))
+  if(maxEvent?.length === 0) return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Gameweeks are yet to start or finish</div>
 
   if(!!submitId && picks.length === 0 && Object.keys(history).length === 0 && error === '') {
-    return <Spinner />
+    return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5"><Spinner /></div>
   }
 
   if(error === 'Network Error') return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Check your internet connection!</div>
-
+  if(error === 'Request failed with status code 404') return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">
+    <p>Manager not found!</p>
+    <Button onClick={() => {
+      localStorage.removeItem('submitId')
+      setSubmitId(null)}} className="btn-dark">Reset</Button>
+    </div>
   return (
     <>
       <Container>
@@ -189,6 +213,13 @@ const AchievementsScreen = () => {
                 Gameweek Score
                 </div>
                 {value === 'score' && <ScoreMain history={history} />}
+              </div>
+
+              <div open={!!(value === 'star')} className="details_1">
+                <div onClick={showStar} className="summary">
+                Star Performances
+                </div>
+                {value === 'star' && <StarPerformancesMain picks={picks} />}
               </div>
             </div>
           </div>

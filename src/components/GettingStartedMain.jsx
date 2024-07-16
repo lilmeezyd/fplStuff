@@ -29,7 +29,7 @@ const GettingStartedMain = (props) => {
     if (action.type === "strike_force") {
       return {
         value: "strike_force",
-        heading: "Lethal strike force"
+        heading: `Lethal strike force (Atleast 2 forwards)`
       };
     }
     if (action.type === "main_man") {
@@ -143,16 +143,40 @@ const GettingStartedMain = (props) => {
         }
       }
       if (value === "strike_force") {
+        const strike = x?.picks?.filter(pick => pick.element_type === 4 && pick.multiplier > 0 && 
+          pick.goals_scored > 0
+          )
+        if(strike.length >= 2) {
+          strike.map((y) => (y.event = x.event));
+          a.event = x.event;
+          a.players = strike
+          filteredData.push(a)
+        }
       }
       if (value === "solid") {
+        const solid = x?.picks?.filter(pick => (pick.element_type === 1 || pick.element_type === 2) && pick.multiplier > 0 && 
+          pick.clean_sheets === 1
+          )
+          const defenders = x?.picks?.filter(pick => pick.element_type === 2 && pick.multiplier > 0 && pick.clean_sheets === 1)
+          const goalie = x?.picks?.filter(pick => pick.element_type === 1 && pick.multiplier > 0 && pick.clean_sheets === 1)
+        if(defenders.length >= 3 && goalie.length === 1) {
+          solid.map((y) => (y.event = x.event));
+          a.event = x.event;
+          a.players = solid
+          filteredData.push(a)
+        }
       }
       if (value === "goalie") {
+        const goalie = x?.picks?.filter(pick => pick.element_type === 1 && pick.multiplier > 0 && 
+          pick.goals_scored > 0
+          )
+        if(goalie.length > 0) {
+          goalie.map((y) => (y.event = x.event));
+          a.event = x.event;
+          a.players = goalie
+          filteredData.push(a)
+        }
       }
-      /*const lethalStrikeForce = x?.picks?.filter(pick => pick.goals_scored >= 1 && pick.element_type === 4)
-     if(lethalStrikeForce.length > 0) {
-      lethalStrikeForce.map(y => y.event = x.event)
-        filteredData.push(...lethalStrikeForce)
-     }*/
     });
     return filteredData;
   }, [getPicksStatsFunc, value]);
