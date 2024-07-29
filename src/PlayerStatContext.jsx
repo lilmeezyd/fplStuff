@@ -13,7 +13,7 @@ function PlayerStatProvider({children}) {
 
     useEffect(() => {
         const playersArray = players.map(player => player.id)
-    .map(x => `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${x}/`)
+    .map(x => `https://fpl-stuff-proxy.vercel.app/element-summary/${x}/`)
 
     async function makeAPICall(endpoint) {
       const response = await axios.get(endpoint)

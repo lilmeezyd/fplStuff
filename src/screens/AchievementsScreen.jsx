@@ -96,10 +96,10 @@ const AchievementsScreen = () => {
           };
           //const response = await makeCalls(picksArray);
           const response1 = await axios.get(
-            `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/history/`
+            `https://fpl-stuff-proxy.vercel.app/history/${dep}`
           );
           const response2 = await axios.get(
-            `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/`
+            `https://fpl-stuff-proxy.vercel.app/${dep}/`
           );
           axios.request(config)
 .then((response) => {

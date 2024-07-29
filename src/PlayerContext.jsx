@@ -18,7 +18,7 @@ function PlayerProvider({ children }){
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://corsproxy.io/?https://fantasy.premierleague.com/api/bootstrap-static/')
+                const response = await axios.get('https://fpl-stuff-proxy.vercel.app/bootstrap-static/')
                 const data = await response.data
                 const { teams, element_types, elements, events } = data
                 setEvents(events)
