@@ -5,7 +5,7 @@ import RankingMain from "../components/RankingMain";
 import ScoreMain from "../components/ScoreMain";
 import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
-import StarPerformancesMain from "../components/StarPerformancesMain";
+//import StarPerformancesMain from "../components/StarPerformancesMain";
 import { usePlayer } from "../PlayerContext";
 const AchievementsScreen = () => {
   const [fplId, setFplId] = useState("");
@@ -60,13 +60,13 @@ const AchievementsScreen = () => {
   const [state, dispatch] = useReducer(reducer, { value: ''})
   const { value } = state
 
-  const useFetch = (dep, dep1) => {
+  const useFetch = (dep) => {
     const [picks, setPicks] = useState([]);
     const [history, setHistory] = useState([]);
     const [manager, SetManager] = useState("");
     const [ error, setError] = useState("")
     useEffect(() => {
-      const a = [];
+      /*const a = [];
       for (let i = 1; i <= Math.max(...dep1); i++) {
         a.push(i);
       }
@@ -83,22 +83,37 @@ const AchievementsScreen = () => {
         const promises = endpoints.map(makeAPICall);
         const responses = await Promise.all(promises);
         return responses;
-      }
+      }*/
       const fetchData = async () => {
         try {
-          const response = await makeCalls(picksArray);
+          let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'https://fantasy.premierleague.com/api/bootstrap-static/',
+            headers: { 
+              
+            }
+          };
+          //const response = await makeCalls(picksArray);
           const response1 = await axios.get(
             `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/history/`
           );
           const response2 = await axios.get(
             `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/`
           );
+          axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
           const data = await response1.data;
           const data1 = await response2.data;
           setHistory(data);
-          setPicks(response);
+          //setPicks(response);
           SetManager(data1);
-          console.log(response);
+          console.log(data1);
         } catch (error) {
           const errMsg = error?.response?.data?.msg || error?.message;
           setError(errMsg)
@@ -106,8 +121,10 @@ const AchievementsScreen = () => {
         }
       };
 
-      dep >= 1 && a.length > 0 && fetchData();
-    }, [dep, dep1]);
+      
+      //dep >= 1 && a.length > 0 && fetchData();
+      dep >= 1 && fetchData();
+    }, [dep]);
     return { picks, history, manager, error };
   };
 
@@ -130,14 +147,14 @@ const AchievementsScreen = () => {
   const showScore = () => {
     dispatch({type: 'scoring'})
   }
-
+/*
   const showStar = () => {
     dispatch({type: 'starring'})
-  }
+  }*/
 
   const { picks, history, manager, error } = useFetch(submitId, maxEvent);
-  //console.log(picks);
-  //console.log(history)
+  console.log(useFetch(submitId, maxEvent))
+  console.log(maxEvent)
   console.log(Math.max(...events.filter(x => x.finished).map(x => x.id)))
   if(maxEvent?.length === 0) return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Gameweeks are yet to start or finish</div>
 
@@ -146,12 +163,12 @@ const AchievementsScreen = () => {
   }
 
   if(error === 'Network Error') return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Check your internet connection!</div>
-  if(error === 'Request failed with status code 404') return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">
+  /*if(error === 'Request failed with status code 404') return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">
     <p>Manager not found!</p>
     <Button onClick={() => {
       localStorage.removeItem('submitId')
       setSubmitId(null)}} className="btn-dark">Reset</Button>
-    </div>
+    </div>*/
   return (
     <>
       <Container>
@@ -177,8 +194,8 @@ const AchievementsScreen = () => {
             </form>
           </div>
         )}
-
-        {!!submitId && picks.length > 0 && Object.keys(history).length > 0 &&  <div className="row">
+        {/*&& picks.length > 0 && Object.keys(history).length > 0 */}
+        {!!submitId  && <div className="row">
           <div className="col-md-8 py-5">
             <div className="manager-stats-achieve mb-2">
             <div onClick={() => console.log('acievements')} className="ms-header py-2 m-3">Achievements</div>
@@ -215,12 +232,12 @@ const AchievementsScreen = () => {
                 {value === 'score' && <ScoreMain history={history} />}
               </div>
 
-              <div open={!!(value === 'star')} className="details_1">
+              {/*<div open={!!(value === 'star')} className="details_1">
                 <div onClick={showStar} className="summary">
                 Star Performances
                 </div>
                 {value === 'star' && <StarPerformancesMain picks={picks} />}
-              </div>
+              </div>*/}
             </div>
           </div>
 

@@ -57,6 +57,48 @@ p {
   z-index: 2;
 }
 
+.home {
+  background: url('../src/assets/1.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 400px;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.home-pos {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.link-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+.pos-link {
+  border: 1px solid;
+  height: 100px;
+  border-radius: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: black;
+  color: aquamarine;
+}
+
+.pos-link:hover {
+  color: black;
+  background-color: aquamarine;
+  border: aquamarine;
+  transition: 1s;
+}
+
 @supports (animation-timeline: scroll()) {
   .header {
     animation: scroll-shadow linear both;
@@ -668,6 +710,10 @@ footer {
 @media (max-width: 576px) {
   html {
     font-size: 12px;
+  }
+
+  .home {
+    height: 30vh;
   }
 
   .custom-select {
