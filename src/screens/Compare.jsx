@@ -16,8 +16,7 @@ const Compare = () => {
   const { players, events, elementTypes, teams } = usePlayer();
   const [playersId, setPlayersId] = useState({ player1: 1, player2: 1 });
   const [ playerNames, setPlayerNames ] = useState({playerName1: 
-    players?.find(player => player?.id === 1)?.web_name, playerName2: 
-    players?.find(player => player?.id === 1)?.web_name})
+    '', playerName2: ''})
   const [ playerSet, setPlayerSet] = useState({playerSet1: false, playerSet2: false})
   const [playerData1, setPlayerData1] = useState({ start1: 1, end1: 1 });
   const [playerData2, setPlayerData2] = useState({ start2: 1, end2: 1 });
@@ -67,8 +66,8 @@ const Compare = () => {
   }, [player2]);
 
   const playersForUl = useMemo(() => {
-    const playersForUl1 = players.filter(player => player.web_name.toLowerCase().startsWith(playerName1.toLowerCase()))
-    const playersForUl2 = players.filter(player => player.web_name.toLowerCase().startsWith(playerName2.toLowerCase()))
+    const playersForUl1 = players.filter(player => player.web_name.toLowerCase().startsWith(playerName1?.toLowerCase()))
+    const playersForUl2 = players.filter(player => player.web_name.toLowerCase().startsWith(playerName2?.toLowerCase()))
     return { playersForUl1, playersForUl2}
   }, [players, playerName1, playerName2])
 
@@ -309,7 +308,7 @@ const Compare = () => {
             Select players to compare
           </h4>
           <div className="playerison">
-            <div className="player-wrapper border">
+            <div className="player-wrapper">
               <div className="p1">
                 <input
                 onClick={() => {
@@ -365,7 +364,7 @@ const Compare = () => {
                 </div>
               )}
             </div>
-            <div className="player-wrapper border">
+            <div className="player-wrapper">
               <div className="p1">
                 <input
                 onClick={() => {
@@ -423,11 +422,15 @@ const Compare = () => {
               )}
             </div>
           </div>
-          <div className="comparison">
-            <div onClick={onStat} style={{ fontWeight: 700 }} className="p-2">
+          <div className="comparison py-2">
+            <div onClick={onStat} style={{ fontWeight: 700,
+            background: '#0000ff1f',
+              borderRadius: 0.8+'rem', border: '2px solid blue' }} className="p-2">
               Select Gameweeks range for {playerToCompare1.name}
             </div>
-            <div onClick={onGraph} style={{ fontWeight: 700 }} className="p-2">
+            <div onClick={onGraph} style={{ fontWeight: 700,
+              borderRadius: 0.8+'rem',
+              background: '#ff000029', border: '2px solid red'  }} className="p-2">
               Select Gameweeks range for {playerToCompare2.name}
             </div>
           </div>
