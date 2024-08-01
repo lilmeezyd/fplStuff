@@ -6,6 +6,7 @@ export const PlayerContext = createContext({
     teams: [],
     events: [],
     elementTypes: [],
+    fixtures: [],
     error: ''
 })
 
@@ -13,9 +14,20 @@ function PlayerProvider({ children }){
     const [players, setPlayers ] = useState([])
     const [teams, setTeams ] = useState([])
     const [elementTypes, setElementTypes ] = useState([])
+    const [fixtures, setFixtures] = useState([])
     const [events, setEvents] = useState([])
     const [error, setError] = useState('')
     useEffect(() => {
+        const fetchFixtures = async () => {
+            try {
+                const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
+                const data = await response.data
+                setFixtures(data)
+            } catch (error) {
+                let errorMsg = error?.response?.data?.msg || error?.message
+                console.log(errorMsg)
+            }
+        }
         const fetchData = async () => {
             try {
                 const response = await axios.get('https://fpl-stuff-proxy.vercel.app/bootstrap-static/')
@@ -32,6 +44,7 @@ function PlayerProvider({ children }){
             }
         }
       fetchData()
+      fetchFixtures()
     }, [])
   
     
@@ -41,6 +54,7 @@ function PlayerProvider({ children }){
         teams: teams,
         events: events,
         elementTypes: elementTypes,
+        fixtures:fixtures,
         error:error
     }
 

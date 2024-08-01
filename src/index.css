@@ -724,6 +724,25 @@ form {
   padding: 0.5rem 0;
 }
 
+/* Fixtures */
+.fixtures-col {
+  width: 100%;
+}
+
+.fixtures-col > div:first-of-type {
+  overflow: auto;
+  padding: 0.5rem;
+}
+
+.gw-headers {
+  font-weight: 700;
+}
+
+.fix-gw {
+  display: grid;
+  grid-gap: 0.5rem;
+}
+
 footer {
   font-size: 0.8rem;
   font-weight: 700;

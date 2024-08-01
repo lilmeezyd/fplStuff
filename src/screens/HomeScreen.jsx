@@ -8,9 +8,9 @@ const HomeScreen = () => {
         <div className="home-pos">Welcome to the captain&lsquo;s lounge</div>
       </div>
       <div className="link-wrap py-3">
-      <LinkContainer to='/statistics'>
+      <LinkContainer to='/fixtures'>
         <div className="pos-link position-relative">
-          <div className="home-pos">Statistics</div>
+          <div className="home-pos">Fixture Ticker</div>
         </div>
         </LinkContainer>
         <LinkContainer to='/compare'><div className="pos-link position-relative">
