@@ -741,6 +741,13 @@ form {
 .fix-gw {
   display: grid;
   grid-gap: 0.5rem;
+  position: relative;
+}
+
+.fix-gw > div:first-of-type {
+  position: sticky;
+  left: 0;
+  background: white;
 }
 
 footer {
