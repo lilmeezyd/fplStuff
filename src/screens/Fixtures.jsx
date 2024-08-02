@@ -27,7 +27,8 @@ const Fixtures = () => {
         const blanks = fixtures.filter(fix => (fix.team_a === team.id || fix.team_h === team.id) && fix.event === null )
         const fixsWithBlanksIds = fixtures.filter(fix => fix.team_a === team.id || fix.team_h === team.id).map(x => x.event)
         const setB = new Set(fixsWithBlanksIds)
-        const diff = Array.from(setA.difference(setB)).sort((a,b) => a > b ? 1 : -1)
+        const diffSet = setA.difference(setB)
+        const diff = Array.from(diffSet).sort((a,b) => a > b ? 1 : -1)
         
         const teamBlanks = blanks.
         sort((a,b) => a.kickoff_time > b.kickoff_time ? 1 : -1).map((fix, index) => {
