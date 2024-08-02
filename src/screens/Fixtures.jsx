@@ -24,12 +24,12 @@ const Fixtures = () => {
         const a = Object.create({})
         const teamFixsHome = fixtures.filter(fix => fix.team_h === team.id && !fix.finished && fix.event !== null && eventIds.includes(fix.event))
         const teamFixsAway = fixtures.filter(fix => fix.team_a === team.id && !fix.finished && fix.event !== null && eventIds.includes(fix.event))
-        const blanks = fixtures.filter(fix => (fix.team_a === team.id || fix.team_h === team.id) && fix.event === null )
-        const fixsWithBlanksIds = fixtures.filter(fix => fix.team_a === team.id || fix.team_h === team.id).map(x => x.event)
-        const setB = new Set(fixsWithBlanksIds)
-        const diffSet = setA.difference(setB)
-        const diff = Array.from(diffSet).sort((a,b) => a > b ? 1 : -1)
-        
+        //const blanks = fixtures.filter(fix => (fix.team_a === team.id || fix.team_h === team.id) && fix.event === null )
+        //const fixsWithBlanksIds = fixtures.filter(fix => fix.team_a === team.id || fix.team_h === team.id).map(x => x.event)
+        //const setB = new Set(fixsWithBlanksIds)
+        //const diffSet = setA.difference(setB)
+        //const diff = Array.from(diffSet).sort((a,b) => a > b ? 1 : -1)
+        /*
         const teamBlanks = blanks.
         sort((a,b) => a.kickoff_time > b.kickoff_time ? 1 : -1).map((fix, index) => {
           return {
@@ -38,7 +38,7 @@ const Fixtures = () => {
             team_a_difficulty: 0,
             team_h_difficulty: 0
           }
-        })
+        })*/
 
 
         const teamA = teamFixsAway.map(fix => {
@@ -60,7 +60,8 @@ const Fixtures = () => {
         })
 
         const teamFixt = []
-        const teamFixs = [...teamH, ...teamA, ...teamBlanks]
+        //const teamFixs = [...teamH, ...teamA, ...teamBlanks]
+        const teamFixs = [...teamH, ...teamA ]
         const teamFixIds = []
         teamFixs.forEach(team => {
           if(!(teamFixIds.includes(team.event))) {
