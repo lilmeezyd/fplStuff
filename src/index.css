@@ -745,9 +745,25 @@ form {
 }
 
 .fix-gw > div:first-of-type {
-  position: sticky;
+  /*position: sticky;
   left: 0;
-  background: white;
+  background: white;*/
+}
+
+.nxt-fixture-wrapper {
+  display: grid;
+  grid-template-columns: 27.5% 27.5% 35%;
+  grid-gap: 5%;
+  border-top-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  background: aquamarine;
+}
+
+.fix-wrap {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid gold;
+  align-items: center;
 }
 
 footer {
@@ -778,7 +794,7 @@ footer {
 
 @media (max-width: 576px) {
   html {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .home {
