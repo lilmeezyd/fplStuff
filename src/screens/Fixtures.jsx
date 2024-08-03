@@ -183,17 +183,26 @@ const Fixtures = () => {
           
         </div>
       </div>
-      <div className="fixtures-col">
-        <div>
+      <div className="fixtures-col relative">
+        <div className="side-bar-teams">
+        <div  style={{width: 70+'px', height: 20+'px'}} className="border"></div>
+        {fixtureBody.map(team => (
+          <div key={team.id} className="border" style={{ width: 70+'px', fontWeight: 700 }}>
+          {team.team}
+        </div>
+        ))}
+        </div>
+
+        
+        <div className="team-fixs">
           <div
             style={{
-              gridTemplateColumns: `repeat(${fixtureHeader.length + 1}, 70px)`,
+              gridTemplateColumns: `repeat(${fixtureHeader.length}, 70px)`,
             }}
             className="fix-gw gw-headers"
           >
-            <div className="border"></div>
             {fixtureHeader.map((header) => (
-              <div className="border" key={header.id}>
+              <div style={{background: 'white'}} className="border curve" key={header.id}>
                 GW&nbsp;{header.id}
               </div>
             ))}
@@ -203,15 +212,12 @@ const Fixtures = () => {
               <div
                 style={{
                   gridTemplateColumns: `repeat(${
-                    fixtureHeader.length + 1
+                    fixtureHeader.length
                   }, 70px)`,
                 }}
                 className="fix-gw gw-body"
                 key={team.id}
               >
-                <div className="border" style={{ fontWeight: 700 }}>
-                  {team.team}
-                </div>
                 {team?.teamFixs
                   ?.sort((a, b) => (a.event > b.event ? 1 : -1))
                   .map((x) => (
@@ -236,7 +242,7 @@ const Fixtures = () => {
                                 : "rgb(0,0,0)",
                             fontWeight: 700,
                           }}
-                          className="border"
+                          className="border curve"
                           key={idx}
                         >
                           {team.id === y.team_a ? y.team_h : y.team_a} &nbsp;

@@ -727,9 +727,16 @@ form {
 /* Fixtures */
 .fixtures-col {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  background: #aaa;
+  margin-top: 0.5rem;
+  border-radius: 1rem;
 }
 
-.fixtures-col > div:first-of-type {
+.fixtures-col > .team-fixs {
   overflow: auto;
   padding: 0.5rem;
 }
@@ -744,10 +751,14 @@ form {
   position: relative;
 }
 
-.fix-gw > div:first-of-type {
-  /*position: sticky;
+.side-bar-teams {
+  position: sticky;
   left: 0;
-  background: white;*/
+  background: white;
+}
+
+.curve {
+  border-radius: 0.5rem;
 }
 
 .nxt-fixture-wrapper {
