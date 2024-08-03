@@ -187,7 +187,7 @@ const Fixtures = () => {
         <div className="side-bar-teams">
         <div  style={{width: 70+'px', height: 20+'px'}} className="border"></div>
         {fixtureBody.map(team => (
-          <div key={team.id} className="border" style={{ width: 70+'px', fontWeight: 700 }}>
+          <div key={team.id} className="border" style={{ width: 70+'px', height: 20+'px', fontWeight: 700 }}>
           {team.team}
         </div>
         ))}
@@ -202,7 +202,7 @@ const Fixtures = () => {
             className="fix-gw gw-headers"
           >
             {fixtureHeader.map((header) => (
-              <div style={{background: 'white'}} className="border curve" key={header.id}>
+              <div style={{background: 'white',  height: 20+'px'}} className="border curve" key={header.id}>
                 GW&nbsp;{header.id}
               </div>
             ))}
@@ -225,6 +225,7 @@ const Fixtures = () => {
                       {x.fixtures.map((y, idx) => (
                         <div
                           style={{
+                             height: 20+'px',
                             borderRadius: 5 + "px",
                             color:
                               y.difficulty === 4 || y.difficulty === 5
