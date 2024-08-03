@@ -734,10 +734,10 @@ form {
   background: #aaa;
   margin-top: 0.5rem;
   border-radius: 1rem;
+  overflow: auto;
 }
 
 .fixtures-col > .team-fixs {
-  overflow: auto;
   padding: 0.5rem;
 }
 
@@ -755,6 +755,7 @@ form {
   position: sticky;
   left: 0;
   background: white;
+  z-index: 2;
 }
 
 .curve {
