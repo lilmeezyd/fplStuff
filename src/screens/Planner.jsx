@@ -1,6 +1,11 @@
+import Players from '../components/Players'
+import Pitch from '../components/Pitch'
 const Planner = () => {
   return (
-    <div>Coming Soon...</div>
+    <div className="main">
+        <Pitch />
+        <Players />
+    </div>
   )
 }
 
