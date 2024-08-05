@@ -812,6 +812,7 @@ footer {
 .view, .sort, .search, .cost {
   margin: 1rem 0;
   font-size: 1rem;
+  text-align: left;
 }
 
 .plan-form > select, .plan-form > input {
