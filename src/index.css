@@ -1078,10 +1078,11 @@ footer {
 }
 
 .namesection {
-  padding: 0.8rem;
-  margin-bottom: 0.2rem;
   color: rgba(22, 22, 68, 1);
-  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  font-size: 1rem;
 }
 
 
