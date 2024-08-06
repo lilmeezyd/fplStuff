@@ -7,10 +7,12 @@ import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 //import StarPerformancesMain from "../components/StarPerformancesMain";
 import { usePlayer } from "../PlayerContext";
+import { useManager } from "../ManagerContext";
 const AchievementsScreen = () => {
   const [fplId, setFplId] = useState("");
-  const [submitId, setSubmitId] = useState(localStorage.getItem('submitId') || null);
+  const [managerId, setManagerId] = useState(localStorage.getItem('managerId') || null);
   const { events } = usePlayer()
+  const { getManagerInfo } = useManager()
   const maxEvent = events.filter(x => x.finished).map(x => x.id)
   const reducer = (state, action) => {
     if(action.type === 'started') {
@@ -130,8 +132,8 @@ const AchievementsScreen = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setSubmitId(fplId);
-    localStorage.setItem('submitId', fplId)
+    setManagerId(fplId);
+    localStorage.setItem('managerId', fplId)
     setFplId(null);
   };
 
@@ -152,13 +154,13 @@ const AchievementsScreen = () => {
     dispatch({type: 'starring'})
   }*/
 
-  const { picks, history, manager, error } = useFetch(submitId, maxEvent);
-  console.log(useFetch(submitId, maxEvent))
+  const { picks, history, manager, error } = useFetch(managerId, maxEvent);
+  console.log(useFetch(managerId, maxEvent))
   console.log(maxEvent)
   console.log(Math.max(...events.filter(x => x.finished).map(x => x.id)))
-  if(maxEvent?.length === 0) return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Gameweeks are yet to start or finish</div>
+  //if(maxEvent?.length === 0) return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Gameweeks are yet to start or finish</div>
 
-  if(!!submitId && picks.length === 0 && Object.keys(history).length === 0 && error === '') {
+  if(!!managerId && picks.length === 0 && Object.keys(history).length === 0 && error === '') {
     return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5"><Spinner /></div>
   }
 
@@ -166,13 +168,13 @@ const AchievementsScreen = () => {
   /*if(error === 'Request failed with status code 404') return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">
     <p>Manager not found!</p>
     <Button onClick={() => {
-      localStorage.removeItem('submitId')
+      localStorage.removeItem('managerId')
       setSubmitId(null)}} className="btn-dark">Reset</Button>
     </div>*/
   return (
     <>
       <Container>
-        {submitId === null && (
+        {managerId === null && (
           <div className="form py-2">
             <form onSubmit={onSubmit}>
               <div className="fpl-id py-2">
@@ -195,7 +197,7 @@ const AchievementsScreen = () => {
           </div>
         )}
         {/*&& picks.length > 0 && Object.keys(history).length > 0 */}
-        {!!submitId  && <div className="row">
+        {!!managerId  && <div className="row">
           <div className="col-md-8 py-5">
             <div className="manager-stats-achieve mb-2">
             <div onClick={() => console.log('acievements')} className="ms-header py-2 m-3">Achievements</div>
@@ -259,8 +261,8 @@ const AchievementsScreen = () => {
             <div  className="border">
             <Button onClick={(e) => {
               e.preventDefault()
-              localStorage.removeItem('submitId')
-              setSubmitId(null)
+              localStorage.removeItem('managerId')
+              setManagerId(null)
             }} className="py-2 btn-dark" style={{width: 100+'%'}}>Change FPL ID</Button>
             </div>
           </div>

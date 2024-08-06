@@ -1109,6 +1109,151 @@ footer {
 }
 
 
+.drafts {
+  padding: 0.8rem;
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+  
+  .draft-cell {
+    cursor: pointer;
+    border: 1px solid #aaa;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .transfer-data {
+    display: flex;
+    background: aquamarine;
+  }
+
+  .transfer-item {
+    font-weight: 700;
+    flex: 1 0 0%;
+  }
+
+  .trans-reset {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .chip-buttons {
+    display: flex;
+  }
+
+  .chip-buttons Button {
+    flex: 1 0 0%;
+    margin: 0 0.5rem;
+  }
+
+  .no-picks-team {
+    border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  background: #008000a3;
+  }
+
+  .default-player {
+    min-height: 7rem;
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  }
+
+  .default-bench {
+    min-height: 7rem;
+    margin: 0.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .default-player .squad-player,
+  .default-bench .squad-player {
+    width: 20%;
+  }
+  .data_name {
+    width: 100%;
+    padding: 0.2rem;
+    background-color: rgba(0, 0, 55, 0.9);
+    color: white;
+    font-size: 0.825rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: 600;
+  }
+
+  .element {
+    display: flex;
+    justify-content: center;
+  }
+
+  .data_fixtures {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 0.825rem;
+  }
+
+
+
+  .button-wrapper {
+    /*border: 1px solid;*/
+  width: 80%;
+  border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;
+  }
+
+  .player-btn {
+    background: transparent;
+    outline: none;
+    border: 0;
+    width: 100%;
+  }
+
+  .next-fix {
+    padding: 0.2rem;
+    border-top-right-radius: 0.5rem;
+    border: 1px solid transparent;
+    border-left: 0;
+  border-top: 0;
+  border-bottom: 0;
+  background: white;
+  }
+
+  .deadlines {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  @media (max-width: 620px) {
+  .image_pic {
+    width: 44px;
+    height: 65px;
+  }
+}
+  @media (max-width: 620px) {
+    .image_pic {
+      width: 33px;
+      height: 46.5px;
+    }
+  }
+  @media (max-width: 515px) {
+    .image_pic {
+      width: 33px;
+      height: 46.5px;
+    }
+  }
+
+
 @media (max-width: 970px) {
   .main {
     width: 100%;

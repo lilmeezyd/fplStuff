@@ -40,11 +40,8 @@ const PlayerCard = (props) => {
     
   
       const transferIn = (player, positiion, team) => {
-        /*addToTransfersIn(player, positiion, team)
-        addedPlayer(team, player)*/
-        console.log(player)
-        console.log(positiion)
-        console.log(team)
+        addToTransfersIn(player, positiion, team)
+        addedPlayer(team, player)
         handleCloseTransfer()
     }
       const playerIds = () => {
