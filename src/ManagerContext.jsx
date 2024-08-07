@@ -1525,12 +1525,12 @@ function ManagerProvider({ children }) {
     player.multiplier === 0 ? setInPlayerOne({}) : setOutPlayer({});
   };
   const getInTheBank = () => {
-    let totalBudget = +picks[pickIndex - 1].totalBudget;
+    /*let totalBudget = +picks[pickIndex - 1].budget;
     let spent =
       picks[pickIndex - 1].newPicks.reduce((x, y) => x + +y.selling_price, 0) -
       tempPlayersOut.reduce((x, y) => x + +y.selling_price, 0);
     let inBank = (totalBudget - spent).toFixed(1);
-    return inBank;
+    return inBank;*/
   };
 
   const playersSelected = () => {

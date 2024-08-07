@@ -4,7 +4,11 @@ const GettingStarted = (props) => {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header style={{ background: "aquamarine" }} closeButton>
-        <Modal.Title style={{ fontWeight: 500 }}>{heading}</Modal.Title>
+        <Modal.Title>
+        <div className="info-details">
+            {heading}
+            </div>
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body className="p-3">
         {picksStats?.length > 0 ? (

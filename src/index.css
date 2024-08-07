@@ -1234,6 +1234,25 @@ footer {
     padding: 1rem;
   }
 
+  .message {
+    margin: 0.5rem 0;
+    padding: 0.4rem;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .span-msg {
+    display: block;
+    font-size: 12px;
+    padding: 0.4rem;
+    margin: auto;
+  }
+
+  .danger {
+    background-color: darkred;
+    color: #fff;
+  }
+
   @media (max-width: 620px) {
   .image_pic {
     width: 44px;

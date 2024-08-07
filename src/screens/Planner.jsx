@@ -3,7 +3,8 @@ import Pitch from '../components/Pitch'
 const Planner = () => {
   return (
     <div className="main">
-        <Pitch />
+        {/*<Pitch />*/}
+        <div>Pitch</div>
         <Players />
     </div>
   )
