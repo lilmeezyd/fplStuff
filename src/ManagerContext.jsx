@@ -94,6 +94,7 @@ function ManagerProvider({ children }) {
   const [inplayerTwo, setInPlayerTwo] = useState({});
   const [pickIndex, setPickIndex] = useState(1);
   const [playerName, setPlayerName] = useState("");
+  const [ first, setFirst ] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,7 +112,6 @@ function ManagerProvider({ children }) {
     };
     fetchData();
     const fetchManagerInfo = async () => {
-      //const url = `http://localhost:5000/${managerId}`
       const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/`;
       try {
         const response = await fetch(url);
@@ -122,12 +122,12 @@ function ManagerProvider({ children }) {
       }
     };
     const fetchManagerHistory = async () => {
-      //const url = `http://localhost:5000/history/${managerId}`
       const url = `https://fpl-stuff-proxy.vercel.app/history/${managerId}/`;
       try {
         const response = await fetch(url);
         const data = await response.json();
         setManagerHistory(data);
+        const { current } = data
         let wildcardLength = data.chips.filter(
           (x) => x.name === "wildcard"
         ).length;
@@ -139,6 +139,11 @@ function ManagerProvider({ children }) {
                 new Date("2022/12/26/14:00").toISOString()
             ? true
             : false;
+            /*
+            let wildcard1 = data.chips.some((x) => x.name === 'wildcard') && 
+            wildcardLength <= 2 && data.chips.filter((x) => x.name === "wildcard")[0].time < 
+            new Date("2024/12/29/16:30").toISOString()
+            let wildcard2*/
 
         let bboost = data.chips.some((x) => x.name === "bboost") ? true : false;
         let freehit = data.chips.some((x) => x.name === "freehit")
@@ -176,58 +181,57 @@ function ManagerProvider({ children }) {
           tcap: { used: tcap, event: tEvent },
         });
 
+        const realPicks = [];
+      const gameweekPicks = [];
+      const gameweekTransfersOut = [];
+      const gameweekTransfersIn = [];
+      const transferPlayers = [];
+      const seasonPicks = [];
+      let bank,
+        value,
+        seasonBudget = (100).toFixed(1);
+
+        if(current.length === 0) {
+          setFirst(true)
+          for (let i = eventId + 1; i < 39; i++) {
+            gameweekPicks.push({
+              event: i,
+              newPicks: seasonPicks,
+              budget: seasonBudget,
+              bank: (100).toFixed(1),
+              value: (100).toFixed(1),
+            });
+            gameweekTransfersOut.push({ event: i, arr: [] });
+            gameweekTransfersIn.push({ event: i, arr: [] });
+          }
+          setTransferLogic((prev) => ({
+            ...prev, rolledFt: true,
+            tc: 0,
+            fts: 'unlimited'
+          }))
+          setPicks(gameweekPicks);
+          setReal(realPicks);
+          setPlayersOut(gameweekTransfersOut);
+          setPlayersIn(gameweekTransfersIn);
+          localStorage.removeItem("picks");
+          localStorage.setItem("picks", JSON.stringify(gameweekPicks));
+          console.log('No game weeks found')
+        } else {
+          setFirst(false)
+          const eventId = current[current.length-1]?.event
+          console.log(eventId)
+        }
+
         //localStorage.removeItem('chips')
         // localStorage.setItem('chips', JSON.stringify(chips))
 
-        const { current, chips } = data;
-        let fts = 1;
-        returnFt(1, current.length, fts);
-        //rolledft = fts === 1 ? false : 2
-        function returnFt(a, b, c) {
-          if (a === b) {
-            fts = c;
-            setTransferLogic({ fts: fts, rolledFt: fts === 1 ? false : true });
-            return;
-          }
-          if (
-            current[a].event_transfers === 0 &&
-            current[a].event !==
-              chips.filter((x) => x.name === "wildcard")[0]?.event
-          ) {
-            c = 2;
-          }
-          if (
-            current[a].event_transfers === 0 &&
-            current[a].event ===
-              chips.filter((x) => x.name === "wildcard")[0]?.event
-          ) {
-            c = 1;
-          }
-          if (
-            current[a].event_transfers === 0 &&
-            current[a].event ===
-              chips.filter((x) => x.name === "freehit")[0]?.event
-          ) {
-            c = 1;
-          }
-          if (current[a].event_transfers > 1) {
-            c = 1;
-          }
-          if (current[a].event_transfers === 1 && c === 1) {
-            c = 1;
-          }
-          if (current[a].event_transfers === 1 && c === 2) {
-            c = 2;
-          }
-          a += 1;
-          returnFt(a, b, c);
-        }
+        
       } catch (error) {
         console.log(error);
       }
     };
     managerId >= 1 && fetchManagerInfo();
-    managerId >= 1 && eventId > 1 && fetchManagerHistory();
+    managerId >= 1 && fetchManagerHistory();
   }, [managerId, eventId]);
 
   useEffect(() => {
@@ -266,6 +270,7 @@ function ManagerProvider({ children }) {
           const response1 = await fetch(url1);
           const data1 = await response1.json();
           setTransferHistory(data1);
+          console.log(data1)
           try {
             let data;
             const response = await fetch(url);
@@ -776,6 +781,7 @@ function ManagerProvider({ children }) {
       picks[pickIndex - 1].newPicks.filter(
         (x) => x.multiplier !== 0 && x.element_type === 4
       ).length - playersOutPF;
+      
 
     if (
       picks[pickIndex - 1]?.newPicks.length < 15 ||
@@ -1525,12 +1531,15 @@ function ManagerProvider({ children }) {
     player.multiplier === 0 ? setInPlayerOne({}) : setOutPlayer({});
   };
   const getInTheBank = () => {
-    /*let totalBudget = +picks[pickIndex - 1].budget;
+    if(picks.length > 0) {
+      let totalBudget = +picks[pickIndex - 1].budget;
     let spent =
       picks[pickIndex - 1].newPicks.reduce((x, y) => x + +y.selling_price, 0) -
       tempPlayersOut.reduce((x, y) => x + +y.selling_price, 0);
     let inBank = (totalBudget - spent).toFixed(1);
-    return inBank;*/
+    return inBank;
+    }
+    
   };
 
   const playersSelected = () => {

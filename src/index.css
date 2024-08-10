@@ -1215,6 +1215,27 @@ footer {
     outline: none;
     border: 0;
     width: 100%;
+    position: relative;
+  }
+
+  .captain {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .swap {
+    border: 1px solid goldenrod;
+    border-radius: 0.5rem;
+    background: goldenrod;
+  }
+
+  .hide-btn {
+    display: none;
+  }
+
+  .show-btn {
+    display: block;
   }
 
   .next-fix {
@@ -1251,6 +1272,10 @@ footer {
   .danger {
     background-color: darkred;
     color: #fff;
+  }
+
+  .infobuttons button {
+    font-weight: 600;
   }
 
   @media (max-width: 620px) {

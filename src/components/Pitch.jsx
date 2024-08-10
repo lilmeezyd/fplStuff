@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useManager } from "../ManagerContext";
 import { usePlayer } from "../PlayerContext";
@@ -12,13 +12,20 @@ import { loadOpponents, loadPlayerOpponents } from "../helpers/fixtureHelper";
 import { getGoalKeeper, getDefenders, getMidfielders, getForwards, getBenched } from "../helpers/picksHelper";
 const Pitch = () => {
   const { players, getManagerInfo, managerHistory, managerInfo,
-    managerPicks, picks, resetGws, tempPlayersOut, playersIn, pickIndex,
-  playersSelected, getInTheBank } = useManager();
+    managerPicks, picks, resetGws, tempPlayersOut, playersIn, pickIndex, transferLogic,
+  playersSelected, getInTheBank, getPickIndex } = useManager();
   const { teams, fixtures, events, elementTypes} = usePlayer()
     const curSize = 1;
   const [curPage, setCurPage] = useState(1);
+  const { fts, tc} = transferLogic
 
   const { gameweeks, length, countdowns } = getGameweeks(events, curPage, curSize)
+
+  //getPickIndex(curPage)
+  useEffect(() => {
+    
+    getPickIndex(curPage)
+    }, [getPickIndex, curPage])
 
   const viewNextPage = () => {
     setCurPage((v) => v + 1);
@@ -39,6 +46,7 @@ const Pitch = () => {
   let pageOneVisible = curPage === 1 ? "hidden" : "visible";
   let lastPageVisible =
     curPage === length || length === 0 ? "hidden" : "visible";
+    let disabled = playersSelected() < 15 ? true : false
   return (
     <div>
       {/*<div className="drafts">
@@ -48,10 +56,11 @@ const Pitch = () => {
       </div>*/}
       <div className="deadlines">
         <div>
-        <button
-        style={{ visibility: pageOneVisible }} disabled={curPage === 1 ? true : false} onClick={viewPreviousPage} className="btn-controls-1" id="prevButton">
+        {playersSelected() === 15 ? <button
+        style={{ visibility: pageOneVisible }} onClick={viewPreviousPage} className="btn-controls-1" id="prevButton">
       <img src={prevPage} alt="prev_page"/>
-  </button>
+  </button> : <button className="btn-controls-1" id="prevButton" disabled>
+  <img src={prevPage} alt="prev_page"/></button>}
         </div>
       <div style={{ fontWeight: 700 }}>
         {gameweeks.map((gameweek, idx) => {
@@ -83,11 +92,10 @@ const Pitch = () => {
         </div>
       </div>
       <div>
-      <button
-      style={{ visibility: lastPageVisible }} 
-      disabled={curPage === length || length === 0 ? true : false} onClick={viewNextPage} className="btn-controls-1" id="nextButton">
+      {playersSelected() === 15 ? <button
+      style={{ visibility: lastPageVisible }}  onClick={viewNextPage} className="btn-controls-1" id="nextButton">
       <img src={nextPage} alt="next_page"/>
-  </button>
+  </button> : <button className="btn-controls-1" id="nextButton" disabled><img src={nextPage} alt="next_page"/></button>}
       </div>
       </div>
       
@@ -102,11 +110,11 @@ const Pitch = () => {
         </div>
         <div className="transfer-item">
           <div>TC</div>
-          <div>-4</div>
+          <div>{tc}</div>
         </div>
         <div className="transfer-item">
           <div>FTs</div>
-          <div>4</div>
+          <div>{fts}</div>
         </div>
       </div>
 

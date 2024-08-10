@@ -37,7 +37,7 @@ const Compare = () => {
     const playerData = async () => {
       try {
         const response = await axios.get(
-          `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${player1}/`
+          `https://fpl-stuff-proxy.vercel.app/element-summary/${player1}/`
         );
         const data = await response.data;
         setData1(data);
@@ -53,7 +53,7 @@ const Compare = () => {
     const playerData = async () => {
       try {
         const response = await axios.get(
-          `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${player2}/`
+          `https://fpl-stuff-proxy.vercel.app/element-summary/${player2}/`
         );
         const data = await response.data;
         setData2(data);
@@ -253,6 +253,7 @@ const Compare = () => {
     .filter((event) => event.finished)
     .map((event) => event.id)
     .sort((x, y) => (x.id > y.id ? 1 : -1));
+
 
   const data = [
     { param: "Minutes", player1: p1.minutes / 135, player2: p2.minutes / 135 },

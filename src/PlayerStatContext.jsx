@@ -30,7 +30,6 @@ function PlayerStatProvider({children}) {
         const response = await makeCalls(playersArray)
         setPlayerStats(response)
         console.log(response)
-        //console.log(response)
         //console.log(response.slice(0,4))
       } catch (error) {
         let errorMsg = error?.response?.data?.msg || error?.message

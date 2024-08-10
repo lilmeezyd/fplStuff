@@ -359,7 +359,7 @@ const Statistics = () => {
   useEffect(() => {
     const playersArray = players
       .map((player) => player.id)
-      .map((x) => `https://fpl-stuff-proxy.vercel.app/element-summary/${x}/`);
+      .map((x) => `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${x}/`);
 
     async function makeAPICall(endpoint) {
       const response = await axios.get(endpoint);
@@ -375,10 +375,9 @@ const Statistics = () => {
       try {
         const response = await makeCalls(playersArray);
         setNPlayers(response);
-        //console.log(response.slice(0,4))
       } catch (error) {
         let errorMsg = error?.response?.data?.msg || error?.message;
-        //setError(errorMsg)
+        setError(errorMsg)
       }
     };
 
@@ -541,6 +540,7 @@ const Statistics = () => {
     .filter((event) => event.finished)
     .map((event) => event.id)
     .sort((x, y) => (x.id > y.id ? 1 : -1));
+
   return (
     <Container className="py-2 my-2">
       {(error === "Network Error" || errorM === "Network Error") &&
@@ -563,9 +563,9 @@ const Statistics = () => {
         <>
           <>
             <>
-              <h5 className="p-2" style={{ fontWeight: 700 }}>
+              <h6 className="p-2" style={{ fontWeight: 700 }}>
                 Select Statistics over multiple Gameweeks or a single Gameweek
-              </h5>
+              </h6>
               <Row className="m-2 p-2 d-flex justify-content-md-evenly justify-content-lg-center align-items-center">
                 <Col className="col-md-1">
                   <label className="gw-x" htmlFor="single">
@@ -629,7 +629,7 @@ const Statistics = () => {
           </>
 
           <Table
-            className="border-dark table-dark"
+            className="border table-dark"
             striped
             bordered
             hover
