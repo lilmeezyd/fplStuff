@@ -37,7 +37,7 @@ const Compare = () => {
     const playerData = async () => {
       try {
         const response = await axios.get(
-          `https://fpl-stuff-proxy.vercel.app/element-summary/${player1}/`
+          `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${player1}/`
         );
         const data = await response.data;
         setData1(data);
@@ -53,7 +53,7 @@ const Compare = () => {
     const playerData = async () => {
       try {
         const response = await axios.get(
-          `https://fpl-stuff-proxy.vercel.app/element-summary/${player2}/`
+          `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${player2}/`
         );
         const data = await response.data;
         setData2(data);

@@ -10,65 +10,67 @@ import { usePlayer } from "../PlayerContext";
 import { useManager } from "../ManagerContext";
 const AchievementsScreen = () => {
   const [fplId, setFplId] = useState("");
-  const [managerId, setManagerId] = useState(localStorage.getItem('managerId') || null);
-  const { events } = usePlayer()
-  const { getManagerInfo } = useManager()
-  const maxEvent = events.filter(x => x.finished).map(x => x.id)
+  const [managerId, setManagerId] = useState(
+    localStorage.getItem("managerId") || null
+  );
+  const { events } = usePlayer();
+  const { getManagerInfo } = useManager();
+  const maxEvent = events.filter((x) => x.finished).map((x) => x.id);
   const reducer = (state, action) => {
-    if(action.type === 'started') {
-      if(state.value === 'start' ) {
-        return { value: ''}
+    if (action.type === "started") {
+      if (state.value === "start") {
+        return { value: "" };
       }
       return {
-        value: 'start'
-      }
+        value: "start",
+      };
     }
-    if(action.type === 'captain') {
-      if(state.value === 'cap') {
-        return { value: ''}
+    if (action.type === "captain") {
+      if (state.value === "cap") {
+        return { value: "" };
       }
       return {
-        value: 'cap'
-      }
-    }
-
-    if(action.type === 'scoring') {
-      if(state.value === 'score') {
-        return { value: ''}
-      }
-      return {
-        value: 'score'
-      }
+        value: "cap",
+      };
     }
 
-    if(action.type === 'ranking') {
-      if(state.value === 'rank') {
-        return { value: ''}
+    if (action.type === "scoring") {
+      if (state.value === "score") {
+        return { value: "" };
       }
       return {
-        value: 'rank'
-      }
+        value: "score",
+      };
     }
 
-    if(action.type === 'starring') {
-      if(state.value === 'star') {
-        return { value: ''}
+    if (action.type === "ranking") {
+      if (state.value === "rank") {
+        return { value: "" };
       }
       return {
-        value: 'star'
-      }
+        value: "rank",
+      };
     }
-  }
-  const [state, dispatch] = useReducer(reducer, { value: ''})
-  const { value } = state
 
-  const useFetch = (dep) => {
+    if (action.type === "starring") {
+      if (state.value === "star") {
+        return { value: "" };
+      }
+      return {
+        value: "star",
+      };
+    }
+  };
+  const [state, dispatch] = useReducer(reducer, { value: "" });
+  const { value } = state;
+
+  const useFetch = (dep, dep1) => {
     const [picks, setPicks] = useState([]);
     const [history, setHistory] = useState([]);
     const [manager, SetManager] = useState("");
-    const [ error, setError] = useState("")
+    const [error, setError] = useState("");
     useEffect(() => {
-      /*const a = [];
+      const a = [];
       for (let i = 1; i <= Math.max(...dep1); i++) {
         a.push(i);
       }
@@ -85,45 +87,43 @@ const AchievementsScreen = () => {
         const promises = endpoints.map(makeAPICall);
         const responses = await Promise.all(promises);
         return responses;
-      }*/
+      }
       const fetchData = async () => {
         try {
           let config = {
-            method: 'get',
+            method: "get",
             maxBodyLength: Infinity,
-            url: 'https://fpl-stuff-proxy.vercel.app/bootstrap-static/',
-            headers: { 
-              
-            }
+            url: "https://fpl-stuff-proxy.vercel.app/bootstrap-static/",
+            headers: {},
           };
-          //const response = await makeCalls(picksArray);
+          const response = await makeCalls(picksArray);
           const response1 = await axios.get(
             `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/history/`
           );
-          const response2 = await axios.get( 
+          const response2 = await axios.get(
             `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/`
           );
-          axios.request(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
+          axios
+            .request(config)
+            .then((response) => {
+              console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           const data = await response1.data;
           const data1 = await response2.data;
           setHistory(data);
-          //setPicks(response);
+          setPicks(response);
           SetManager(data1);
           console.log(data1);
         } catch (error) {
           const errMsg = error?.response?.data?.msg || error?.message;
-          setError(errMsg)
+          setError(errMsg);
           console.log(errMsg);
         }
       };
 
-      
       //dep >= 1 && a.length > 0 && fetchData();
       dep >= 1 && fetchData();
     }, [dep]);
@@ -133,38 +133,59 @@ const AchievementsScreen = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     setManagerId(fplId);
-    localStorage.setItem('managerId', fplId)
+    localStorage.setItem("managerId", fplId);
     setFplId(null);
   };
 
   const showCaptain = () => {
-    dispatch({type:'captain'})
-  }
+    dispatch({ type: "captain" });
+  };
   const showStarted = () => {
-    dispatch({type: 'started'})
-  }
+    dispatch({ type: "started" });
+  };
   const showRank = () => {
-    dispatch({type: 'ranking'})
-  }
+    dispatch({ type: "ranking" });
+  };
   const showScore = () => {
-    dispatch({type: 'scoring'})
-  }
-/*
+    dispatch({ type: "scoring" });
+  };
+  /*
   const showStar = () => {
     dispatch({type: 'starring'})
   }*/
 
   const { picks, history, manager, error } = useFetch(managerId, maxEvent);
-  console.log(useFetch(managerId, maxEvent))
-  console.log(maxEvent)
-  console.log(Math.max(...events.filter(x => x.finished).map(x => x.id)))
+  console.log(picks)
+  console.log(useFetch(managerId, maxEvent));
+  console.log(maxEvent);
+  console.log(Math.max(...events.filter((x) => x.finished).map((x) => x.id)));
   //if(maxEvent?.length === 0) return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Gameweeks are yet to start or finish</div>
 
-  if(!!managerId && picks.length === 0 && Object.keys(history).length === 0 && error === '') {
-    return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5"><Spinner /></div>
+  if (
+    !!managerId &&
+    picks.length === 0 &&
+    Object.keys(history).length === 0 &&
+    error === ""
+  ) {
+    return (
+      <div
+        style={{ fontWeight: 700, fontSize: 1.2 + "rem" }}
+        className="my-5 py-5"
+      >
+        <Spinner />
+      </div>
+    );
   }
 
-  if(error === 'Network Error') return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Check your internet connection!</div>
+  if (error === "Network Error")
+    return (
+      <div
+        style={{ fontWeight: 700, fontSize: 1.2 + "rem" }}
+        className="my-5 py-5"
+      >
+        Check your internet connection!
+      </div>
+    );
   /*if(error === 'Request failed with status code 404') return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">
     <p>Manager not found!</p>
     <Button onClick={() => {
@@ -197,76 +218,95 @@ const AchievementsScreen = () => {
           </div>
         )}
         {/*&& picks.length > 0 && Object.keys(history).length > 0 */}
-        {!!managerId  && <div className="row">
-          <div className="col-md-8 py-5">
-            <div className="manager-stats-achieve mb-2">
-            <div onClick={() => console.log('acievements')} className="ms-header py-2 m-3">Achievements</div>
-            <div onClick={() => console.log('statistics')} className="ms-header py-2 m-3">Statistics</div>
-            </div>
-            
-
-            <div className="achievements">
-              <div open={!!(value === 'start')} className="details_1">
-                <div onClick={showStarted}  className="summary">
-                Getting Started
+        {!!managerId && (
+          <div className="row">
+            <div className="col-md-8 py-5">
+              <div className="manager-stats-achieve mb-2">
+                <div
+                  onClick={() => console.log("acievements")}
+                  className="ms-header py-2 m-3"
+                >
+                  Achievements
                 </div>
-                {value === 'start' && <GettingStartedMain picks={picks} />}
+                <div
+                  onClick={() => console.log("statistics")}
+                  className="ms-header py-2 m-3"
+                >
+                  Statistics
+                </div>
               </div>
 
-              <div open={!!(value === 'cap')} className="details_1">
-                <div onClick={showCaptain} className="summary">
-                Captaincy
+              <div className="achievements">
+                <div open={!!(value === "start")} className="details_1">
+                  <div onClick={showStarted} className="summary">
+                    Getting Started
+                  </div>
+                  {value === "start" && <GettingStartedMain picks={picks} />}
                 </div>
-                {value === 'cap' && <CaptaincyMain picks={picks} />}
-              </div>
 
-              <div open={!!(value === 'rank')} className="details_1">
-                <div onClick={showRank} className="summary">
-                Gameweek Ranking
+                <div open={!!(value === "cap")} className="details_1">
+                  <div onClick={showCaptain} className="summary">
+                    Captaincy
+                  </div>
+                  {value === "cap" && <CaptaincyMain picks={picks} />}
                 </div>
-                {value === 'rank' && <RankingMain history={history} />}
-              </div>
 
-              <div open={!!(value === 'score')} className="details_1">
-                <div onClick={showScore} className="summary">
-                Gameweek Score
+                <div open={!!(value === "rank")} className="details_1">
+                  <div onClick={showRank} className="summary">
+                    Gameweek Ranking
+                  </div>
+                  {value === "rank" && <RankingMain history={history} />}
                 </div>
-                {value === 'score' && <ScoreMain history={history} />}
-              </div>
 
-              {/*<div open={!!(value === 'star')} className="details_1">
+                <div open={!!(value === "score")} className="details_1">
+                  <div onClick={showScore} className="summary">
+                    Gameweek Score
+                  </div>
+                  {value === "score" && <ScoreMain history={history} />}
+                </div>
+
+                {/*<div open={!!(value === 'star')} className="details_1">
                 <div onClick={showStar} className="summary">
                 Star Performances
                 </div>
                 {value === 'star' && <StarPerformancesMain picks={picks} />}
               </div>*/}
-            </div>
-          </div>
-
-          <div className="py-5 col-md-4">
-            <div className="manager-wrap">
-              <div className="manager-header">Manager:</div>
-              <div className="manager-data">
-                {manager?.player_first_name} {manager?.player_last_name}
               </div>
             </div>
-            <div  className="manager-wrap">
-              <div className="manager-header">Team Name:</div>
-              <div className="manager-data">{manager?.name}</div>
-            </div>
-            <div  className="manager-wrap">
-              <div className="manager-header">Overall Rank</div>
-              <div className="manager-data">{manager?.summary_overall_rank}</div>
-            </div>
-            <div  className="border">
-            <Button onClick={(e) => {
-              e.preventDefault()
-              localStorage.removeItem('managerId')
-              setManagerId(null)
-            }} className="py-2 btn-dark" style={{width: 100+'%'}}>Change FPL ID</Button>
+
+            <div className="py-5 col-md-4">
+              <div className="manager-wrap">
+                <div className="manager-header">Manager:</div>
+                <div className="manager-data">
+                  {manager?.player_first_name} {manager?.player_last_name}
+                </div>
+              </div>
+              <div className="manager-wrap">
+                <div className="manager-header">Team Name:</div>
+                <div className="manager-data">{manager?.name}</div>
+              </div>
+              <div className="manager-wrap">
+                <div className="manager-header">Overall Rank</div>
+                <div className="manager-data">
+                  {manager?.summary_overall_rank}
+                </div>
+              </div>
+              <div className="border">
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.removeItem("managerId");
+                    setManagerId(null);
+                  }}
+                  className="py-2 btn-dark"
+                  style={{ width: 100 + "%" }}
+                >
+                  Change FPL ID
+                </Button>
+              </div>
             </div>
           </div>
-        </div>}
+        )}
       </Container>
     </>
   );

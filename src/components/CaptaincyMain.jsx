@@ -101,8 +101,7 @@ const CaptaincyMain = (props) => {
       const playerId = pick?.picks?.find((x) => x.multiplier > 1)?.element;
       const multiplier = pick?.picks?.find((x) => x.multiplier > 1)?.multiplier;
       const web_name = players?.find((x) => x.id === playerId)?.web_name;
-      const stats = playerStats
-        .find((player) => player.history[0].element === playerId)
+      const stats = playerStats?.find((player) => player?.history[0]?.element === playerId)
         ?.history.find((x) => x.round === event);
       const teamId = players?.find((x) => x.id === playerId)?.team;
       const playerTeam = teams?.find((x) => x.id === teamId)?.short_name;
@@ -138,8 +137,6 @@ const CaptaincyMain = (props) => {
     () => getCaptains()?.filter((cap) => cap.total_points >= value_1 && cap.total_points < value_2),
     [getCaptains, value_1, value_2]
   );
-  console.log(getCaptains())
-  console.log(captainDetails)
 /*
   const sixOrMore = getCaptains().filter((cap) => cap.total_points >= 6);
   const tenOrMore = getCaptains().filter((cap) => cap.total_points >= 10);
