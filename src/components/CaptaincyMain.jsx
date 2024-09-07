@@ -135,10 +135,11 @@ const CaptaincyMain = (props) => {
   }, [picks, playerStats, players, teams]);
 
   const captainDetails = useMemo(
-    () => getCaptains().filter((cap) => cap.total_points >= value_1 && cap.total_points < value_2),
+    () => getCaptains()?.filter((cap) => cap.total_points >= value_1 && cap.total_points < value_2),
     [getCaptains, value_1, value_2]
   );
-  console.log(picks)
+  console.log(getCaptains())
+  console.log(captainDetails)
 /*
   const sixOrMore = getCaptains().filter((cap) => cap.total_points >= 6);
   const tenOrMore = getCaptains().filter((cap) => cap.total_points >= 10);

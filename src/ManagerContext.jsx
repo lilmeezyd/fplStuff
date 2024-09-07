@@ -1644,7 +1644,6 @@ function ManagerProvider({ children }) {
       fts = transferLogic.fts;
     } else {
       returnFt(0, current.length - 1, fts);
-      console.log(fts)
     }
     function returnFt(a, b, c) {
       if (a === b) {

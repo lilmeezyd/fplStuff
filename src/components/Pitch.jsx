@@ -10,6 +10,7 @@ import getTime from "../utils/getTime";
 import getPm from "../utils/getPm";
 import { loadOpponents, loadPlayerOpponents } from "../helpers/fixtureHelper";
 import { getGoalKeeper, getDefenders, getMidfielders, getForwards, getBenched } from "../helpers/picksHelper";
+import TransferRows from "./TransferRows";
 const Pitch = () => {
   const { players, getManagerInfo, managerHistory, managerInfo,
     managerPicks, picks, resetGws, tempPlayersOut, playersIn, pickIndex, transferLogic,freeTransfers,
@@ -18,7 +19,7 @@ const Pitch = () => {
   const { teams, fixtures, events, elementTypes} = usePlayer()
     const curSize = 1;
   const [curPage, setCurPage] = useState(1);
-  const { fts, tc} = transferLogic
+  const [show, setShow] = useState(false)
 
   const { gameweeks, length, countdowns } = getGameweeks(events, curPage, curSize)
 
@@ -34,6 +35,35 @@ const Pitch = () => {
   const viewPreviousPage = () => {
     setCurPage((v) => v - 1);
   };
+
+  const handleClose = () => {
+    setShow(false)
+  }
+
+  const viewTransfers = () => {
+    setShow(true)
+    console.log('view transfers')
+  }
+
+  const activateWC1 = () => {
+    console.log('wc1')
+  }
+
+  const activateWC2 = () => {
+    console.log('wc2')
+  }
+
+  const activateFH = () => {
+    console.log('fh')
+  }
+
+  const activateTC = () => {
+    console.log('tc')
+  }
+
+  const activateBB = () => {
+    console.log('bb')
+  }
 
   const reset = () => {
     resetGws()
@@ -120,7 +150,7 @@ const Pitch = () => {
       </div>
 
       <div className="trans-reset p-2">
-        <Button className="btn-dark">Transfers</Button>
+        <Button onClick={viewTransfers} className="btn-dark">Transfers</Button>
         <Button onClick={reset} className="btn-dark">Reset</Button>
       </div>
 
@@ -484,12 +514,13 @@ const Pitch = () => {
         </div>
 
       <div className="chip-buttons p-2">
-        <Button className="btn-dark">Wildcard 1</Button>
-        <Button className="btn-dark">Wildcard 2</Button>
-        <Button className="btn-dark">Bench Boost</Button>
-        <Button className="btn-dark">FreeHit</Button>
-        <Button className="btn-dark">Triple Captain</Button>
+        <Button onClick={activateWC1} className="btn-dark">Wildcard 1</Button>
+        <Button onClick={activateWC2}  className="btn-dark">Wildcard 2</Button>
+        <Button onClick={activateBB}  className="btn-dark">Bench Boost</Button>
+        <Button onClick={activateFH}  className="btn-dark">FreeHit</Button>
+        <Button onClick={activateTC}  className="btn-dark">Triple Captain</Button>
       </div>
+      <TransferRows show={show} handleClose={handleClose} />
     </div>
   );
 };

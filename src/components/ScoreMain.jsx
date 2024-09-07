@@ -99,6 +99,8 @@ const ScoreMain = (props) => {
     () => getHistory()?.filter((x) => x.points >= value_1 && x.points < value_2),
     [getHistory, value_1, value_2]
   );
+  console.log(getHistory())
+  console.log(historyDetails)
 /*
   const _40 = getHistory()?.filter((x) => x.points >= 40).length;
   const _50 = getHistory()?.filter((x) => x.points >= 50).length;
