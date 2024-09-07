@@ -91,7 +91,7 @@ const AchievementsScreen = () => {
           let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'https://fantasy.premierleague.com/api/bootstrap-static/',
+            url: 'https://fpl-stuff-proxy.vercel.app/bootstrap-static/',
             headers: { 
               
             }

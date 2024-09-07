@@ -138,6 +138,7 @@ const CaptaincyMain = (props) => {
     () => getCaptains().filter((cap) => cap.total_points >= value_1 && cap.total_points < value_2),
     [getCaptains, value_1, value_2]
   );
+  console.log(picks)
 /*
   const sixOrMore = getCaptains().filter((cap) => cap.total_points >= 6);
   const tenOrMore = getCaptains().filter((cap) => cap.total_points >= 10);

@@ -63,7 +63,7 @@ function ManagerProvider({ children }) {
   const [managerId, setManagerId] = useState(
     localStorage.getItem("managerId") === null
       ? 0
-      : localStorage.getItem("managerId")
+      : +localStorage.getItem("managerId")
   );
   const [managerInfo, setManagerInfo] = useState([]);
   const [managerHistory, setManagerHistory] = useState([]);
@@ -112,7 +112,8 @@ function ManagerProvider({ children }) {
     };
     fetchData();
     const fetchManagerInfo = async () => {
-      const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/`;
+      const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/`
+      //const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/`;
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -122,12 +123,13 @@ function ManagerProvider({ children }) {
       }
     };
     const fetchManagerHistory = async () => {
-      const url = `https://fpl-stuff-proxy.vercel.app/history/${managerId}/`;
+      const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/history/`
+      //const url = `https://fpl-stuff-proxy.vercel.app/history/${managerId}/`;
       try {
         const response = await fetch(url);
         const data = await response.json();
         setManagerHistory(data);
-        const { current } = data
+        const { current, chips } = data
         let wildcardLength = data.chips.filter(
           (x) => x.name === "wildcard"
         ).length;
@@ -215,11 +217,39 @@ function ManagerProvider({ children }) {
           setPlayersIn(gameweekTransfersIn);
           localStorage.removeItem("picks");
           localStorage.setItem("picks", JSON.stringify(gameweekPicks));
-          console.log('No game weeks found')
         } else {
           setFirst(false)
           const eventId = current[current.length-1]?.event
+          setEventId(eventId)
+          const chipDay = chips?.filter(x => x.name === 'wildcard' || x.name === 'freehit').map(x => x.event)
+          console.log(data)
           console.log(eventId)
+          console.log(current)
+          console.log(chips)
+          let free = 1
+          /*More work */
+          const tranzies = current.filter((x, idx) => idx > 0)
+          if(tranzies.length > 0) {
+            tranzies.forEach(x => {
+              x.event_transfers === 0 && !chipDay.includes(x.event) && (free+=1)
+              x.event_transfers === 0 && chipDay.includes(x.event) && (free+=0)
+              x.event_transfers > 0 && (free-=x.event_transfers)
+            })
+            if(free > 0) {
+              free = 1
+            }
+            setTransferLogic((prev) => ({
+              ...prev, fts: free+1
+            }))
+          } else {
+            setTransferLogic((prev) => ({
+              ...prev, rolledFt: true,
+              tc: 0,
+              fts: 1
+            }))
+          }
+          
+          console.log(free)
         }
 
         //localStorage.removeItem('chips')
@@ -264,13 +294,16 @@ function ManagerProvider({ children }) {
         localStorage.removeItem("picks");
         localStorage.setItem("picks", JSON.stringify(gameweekPicks));
       } else {
-        const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${eventId}/picks/`;
-        const url1 = `https://fpl-stuff-proxy.vercel.app/transfers/${managerId}/`;
+        const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId}/picks/`;
+        const url1 = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/transfers/`;
+        
+        /*const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${eventId}/picks/`;
+        const url1 = `https://fpl-stuff-proxy.vercel.app/transfers/${managerId}/`;*/
         try {
           const response1 = await fetch(url1);
           const data1 = await response1.json();
           setTransferHistory(data1);
-          console.log(data1)
+          //console.log(data1)
           try {
             let data;
             const response = await fetch(url);
@@ -279,16 +312,24 @@ function ManagerProvider({ children }) {
               //https://corsproxy.io/?https://fantasy.premierleague.com
               const response2 =
                 await //fetch(`http://localhost:5000/${managerId}/event/${eventId-1}/picks`)
-                fetch(
+                /*fetch(
                   `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${
                     eventId - 1
                   }/picks/`
-                );
+                );*/
+                fetch(`https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId-1}/picks/`)
               const data3 = await response2.json();
               data = data3;
             } else {
               data = data2;
             }
+            /* 
+            setTransferLogic((prev) => ({
+            ...prev, rolledFt: true,
+            tc: 0,
+            fts: 'unlimited'
+          }))*/
+         //console.log(data)
             setManagerPicks(data);
 
             //let buyingPrice
@@ -1532,12 +1573,13 @@ function ManagerProvider({ children }) {
   };
   const getInTheBank = () => {
     if(picks.length > 0) {
-      let totalBudget = +picks[pickIndex - 1].budget;
+      let totalBudget = +(picks[pickIndex - 1].totalBudget);
     let spent =
       picks[pickIndex - 1].newPicks.reduce((x, y) => x + +y.selling_price, 0) -
       tempPlayersOut.reduce((x, y) => x + +y.selling_price, 0);
-    let inBank = (totalBudget - spent).toFixed(1);
-    return inBank;
+    //let inBank = picks[pickIndex - 1].budget.toFixed(1);
+    let inBank = totalBudget - (+(spent))
+    return inBank.toFixed(1);
     }
     
   };
@@ -1591,6 +1633,10 @@ function ManagerProvider({ children }) {
     let fts = transferLogic.fts;
     const cPlayersOut = [...playersOut];
     const current = cPlayersOut.splice(0, pickIndex);
+    console.log(eventId)
+    console.log(pickIndex)
+    console.log(fts)
+    console.log(current[0])
     if (eventId === 0 && pickIndex === 2) {
       return (fts = 1);
     }
@@ -1598,6 +1644,7 @@ function ManagerProvider({ children }) {
       fts = transferLogic.fts;
     } else {
       returnFt(0, current.length - 1, fts);
+      console.log(fts)
     }
     function returnFt(a, b, c) {
       if (a === b) {
@@ -1605,23 +1652,30 @@ function ManagerProvider({ children }) {
         return;
       }
       if (
-        current[a].arr.length === 0 &&
+        current[a].arr.length === 0 && c < 5 &&
         chips.freehit.event !== current[a].event &&
         chips.wildcard.event !== current[a].event
       ) {
-        c = 2;
+        c+=1;
       }
       if (
         current[a].arr.length === 0 &&
         (chips.freehit.event === current[a].event ||
-          chips.wildcard.event === current[a].event)
+          chips.wildcard.event === current[a].event) || c === 5
       ) {
-        c = 1;
+        c+=0;
       }
-      if (current[a].arr.length > 1) {
-        c = 1;
+      if (current[a].arr.length > 0) {
+        if(current[a].arr.length >= c) {
+          c = 1;
+        } else {
+          c-=current[a].arr.length;
+          c+=1
+          console.log(c)
+        }
+        
       }
-      if (
+      /*if (
         current[a].arr.length === 1 &&
         (chips.freehit.event === current[a].event ||
           chips.wildcard.event === current[a].event)
@@ -1646,7 +1700,7 @@ function ManagerProvider({ children }) {
           chips.wildcard.event === current[a].event)
       ) {
         c = 1;
-      }
+      }*/
       a += 1;
       returnFt(a, b, c);
     }

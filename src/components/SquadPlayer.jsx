@@ -39,13 +39,12 @@ const SquadPlayer = (props) => {
               : "3."}
             &nbsp;
             {
-              elementTypes.find((x) => x.id === +playerPos.element_type)
-                .singular_name_short
+              elementTypes?.find((x) => x.id === +playerPos.element_type)?.singular_name_short
             }
           </span>
         </div>
       ) : (
-        ""
+        "" 
       )}
       <div className="element">
         <div className="button-wrapper" id={playerPos.element}>

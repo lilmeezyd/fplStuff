@@ -20,7 +20,8 @@ function PlayerProvider({ children }){
     useEffect(() => {
         const fetchFixtures = async () => {
             try {
-                const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
+                const response = await axios.get(`https://corsproxy.io/?https://fantasy.premierleague.com/api/fixtures/`)
+                //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
                 const data = await response.data
                 setFixtures(data)
             } catch (error) {

@@ -12,7 +12,8 @@ import { loadOpponents, loadPlayerOpponents } from "../helpers/fixtureHelper";
 import { getGoalKeeper, getDefenders, getMidfielders, getForwards, getBenched } from "../helpers/picksHelper";
 const Pitch = () => {
   const { players, getManagerInfo, managerHistory, managerInfo,
-    managerPicks, picks, resetGws, tempPlayersOut, playersIn, pickIndex, transferLogic,
+    managerPicks, picks, resetGws, tempPlayersOut, playersIn, pickIndex, transferLogic,freeTransfers,
+    transferCost,
   playersSelected, getInTheBank, getPickIndex } = useManager();
   const { teams, fixtures, events, elementTypes} = usePlayer()
     const curSize = 1;
@@ -63,7 +64,7 @@ const Pitch = () => {
   <img src={prevPage} alt="prev_page"/></button>}
         </div>
       <div style={{ fontWeight: 700 }}>
-        {gameweeks.map((gameweek, idx) => {
+        {gameweeks?.map((gameweek, idx) => {
                       return (
                         <div className="gw-heading" key={idx}>
                           {gameweek}
@@ -74,7 +75,7 @@ const Pitch = () => {
         {length === 0 ? (
                       <div>Season is over!</div>
                     ) : (
-                      countdowns.map((countdown, idx) => {
+                      countdowns?.map((countdown, idx) => {
                         return (
                           <div key={idx}>
                             {new Date(countdown).toDateString()}, &nbsp;
@@ -110,11 +111,11 @@ const Pitch = () => {
         </div>
         <div className="transfer-item">
           <div>TC</div>
-          <div>{tc}</div>
+          <div>{transferCost()}</div>
         </div>
         <div className="transfer-item">
           <div>FTs</div>
-          <div>{fts}</div>
+          <div>{freeTransfers()}</div>
         </div>
       </div>
 
@@ -127,25 +128,25 @@ const Pitch = () => {
         <div className="no-picks-team">
           <div className="default-player">
           {goalKeeper !== undefined && 
-            getGoalKeeper(players, picks, curPage, curSize).map((playerPos) => {
-              let player = players.find(
+            getGoalKeeper(players, picks, curPage, curSize)?.map((playerPos) => {
+              let player = players?.find(
                 (x) => x.id === playerPos.element
               );
-              let teamObj = teams.find((x) => x.id === player.team);
-              let inTemp = tempPlayersOut.some(
+              let teamObj = teams?.find((x) => x.id === player.team);
+              let inTemp = tempPlayersOut?.some(
                 (x) => x.element === playerPos.element
               );
               let inplayersIn = playersIn[
                 pickIndex - 1
-              ].arr.some((x) => x.element === playerPos.element);
+              ].arr?.some((x) => x.element === playerPos.element);
               let playerInClass = inplayersIn ? "player_in" : "";
-              let positionObj = elementTypes.find(
+              let positionObj = elementTypes?.find(
                 (x) => x.id === player.element_type
               );
               let image =
-                positionObj.id === 1 && !inTemp
+                positionObj?.id === 1 && !inTemp
                   ? `${teamObj.code}_1-66`
-                  : positionObj.id >= 1 && !inTemp
+                  : positionObj?.id >= 1 && !inTemp
                   ? `${teamObj.code}-66`
                   : `0-66`;
               let news = player.chance_of_playing_next_round;
@@ -167,12 +168,11 @@ const Pitch = () => {
                   : news === 75
                   ? "rgba(0,0,55,0.9)"
                   : "white";
-                  console.log(teamObj.id)
               const opponents = loadOpponents(
                 fixtures,
                 events,
                 teams,
-                teamObj.id
+                teamObj?.id
               );
               const playerOpps = loadPlayerOpponents(
                 opponents,
@@ -199,25 +199,25 @@ const Pitch = () => {
           </div>
           <div className="default-player">
             {defenders !== undefined && 
-            defenders.map((playerPos) => {
-              let player = players.find(
+            defenders?.map((playerPos) => {
+              let player = players?.find(
                 (x) => x.id === playerPos.element
               );
-              let teamObj = teams.find((x) => x.id === player.team);
-              let inTemp = tempPlayersOut.some(
+              let teamObj = teams?.find((x) => x.id === player.team);
+              let inTemp = tempPlayersOut?.some(
                 (x) => x.element === playerPos.element
               );
               let inplayersIn = playersIn[
                 pickIndex - 1
-              ].arr.some((x) => x.element === playerPos.element);
+              ].arr?.some((x) => x.element === playerPos.element);
               let playerInClass = inplayersIn ? "player_in" : "";
-              let positionObj = elementTypes.find(
+              let positionObj = elementTypes?.find(
                 (x) => x.id === player.element_type
               );
               let image =
-                positionObj.id === 1 && !inTemp
+                positionObj?.id === 1 && !inTemp
                   ? `${teamObj.code}_1-66`
-                  : positionObj.id >= 1 && !inTemp
+                  : positionObj?.id >= 1 && !inTemp
                   ? `${teamObj.code}-66`
                   : `0-66`;
               let news = player.chance_of_playing_next_round;
@@ -243,7 +243,7 @@ const Pitch = () => {
               fixtures,
               events,
               teams,
-              teamObj.id
+              teamObj?.id
               );
               const playerOpps = loadPlayerOpponents(
                 opponents,
@@ -270,25 +270,25 @@ const Pitch = () => {
           </div>
           <div className="default-player">
           {midfielders !== undefined && 
-            midfielders.map((playerPos) => {
-              let player = players.find(
+            midfielders?.map((playerPos) => {
+              let player = players?.find(
                 (x) => x.id === playerPos.element
               );
-              let teamObj = teams.find((x) => x.id === player.team);
-              let inTemp = tempPlayersOut.some(
+              let teamObj = teams?.find((x) => x.id === player.team);
+              let inTemp = tempPlayersOut?.some(
                 (x) => x.element === playerPos.element
               );
               let inplayersIn = playersIn[
                 pickIndex - 1
-              ].arr.some((x) => x.element === playerPos.element);
+              ].arr?.some((x) => x.element === playerPos.element);
               let playerInClass = inplayersIn ? "player_in" : "";
-              let positionObj = elementTypes.find(
+              let positionObj = elementTypes?.find(
                 (x) => x.id === player.element_type
               );
               let image =
-                positionObj.id === 1 && !inTemp
+                positionObj?.id === 1 && !inTemp
                   ? `${teamObj.code}_1-66`
-                  : positionObj.id >= 1 && !inTemp
+                  : positionObj?.id >= 1 && !inTemp
                   ? `${teamObj.code}-66`
                   : `0-66`;
               let news = player.chance_of_playing_next_round;
@@ -314,7 +314,7 @@ const Pitch = () => {
               fixtures,
               events,
               teams,
-              teamObj.id
+              teamObj?.id
               );
               const playerOpps = loadPlayerOpponents(
                 opponents,
@@ -341,25 +341,25 @@ const Pitch = () => {
           </div>
           <div className="default-player">
           {forwards !== undefined && 
-            forwards.map((playerPos) => {
-              let player = players.find(
+            forwards?.map((playerPos) => {
+              let player = players?.find(
                 (x) => x.id === playerPos.element
               );
-              let teamObj = teams.find((x) => x.id === player.team);
-              let inTemp = tempPlayersOut.some(
+              let teamObj = teams?.find((x) => x.id === player.team);
+              let inTemp = tempPlayersOut?.some(
                 (x) => x.element === playerPos.element
               );
               let inplayersIn = playersIn[
                 pickIndex - 1
-              ].arr.some((x) => x.element === playerPos.element);
+              ].arr?.some((x) => x.element === playerPos.element);
               let playerInClass = inplayersIn ? "player_in" : "";
-              let positionObj = elementTypes.find(
+              let positionObj = elementTypes?.find(
                 (x) => x.id === player.element_type
               );
               let image =
-                positionObj.id === 1 && !inTemp
+                positionObj?.id === 1 && !inTemp
                   ? `${teamObj.code}_1-66`
-                  : positionObj.id >= 1 && !inTemp
+                  : positionObj?.id >= 1 && !inTemp
                   ? `${teamObj.code}-66`
                   : `0-66`;
               let news = player.chance_of_playing_next_round;
@@ -385,7 +385,7 @@ const Pitch = () => {
                 fixtures,
                 events,
                 teams,
-                teamObj.id
+                teamObj?.id
               );
               const playerOpps = loadPlayerOpponents(
                 opponents,
@@ -412,25 +412,25 @@ const Pitch = () => {
           </div>
           <div className="default-bench">
           {benched !== undefined && 
-            benched.map((playerPos) => {
-              let player = players.find(
+            benched?.map((playerPos) => {
+              let player = players?.find(
                 (x) => x.id === playerPos.element
               );
-              let teamObj = teams.find((x) => x.id === player.team);
-              let inTemp = tempPlayersOut.some(
+              let teamObj = teams?.find((x) => x.id === player.team);
+              let inTemp = tempPlayersOut?.some(
                 (x) => x.element === playerPos.element
               );
               let inplayersIn = playersIn[
                 pickIndex - 1
-              ].arr.some((x) => x.element === playerPos.element);
+              ].arr?.some((x) => x.element === playerPos.element);
               let playerInClass = inplayersIn ? "player_in" : "";
-              let positionObj = elementTypes.find(
+              let positionObj = elementTypes?.find(
                 (x) => x.id === player.element_type
               );
               let image =
-                positionObj.id === 1 && !inTemp
+                positionObj?.id === 1 && !inTemp
                   ? `${teamObj.code}_1-66`
-                  : positionObj.id >= 1 && !inTemp
+                  : positionObj?.id >= 1 && !inTemp
                   ? `${teamObj.code}-66`
                   : `0-66`;
               let news = player.chance_of_playing_next_round;
@@ -456,7 +456,7 @@ const Pitch = () => {
               fixtures,
               events,
               teams,
-              teamObj.id
+              teamObj?.id
               );
               const playerOpps = loadPlayerOpponents(
                 opponents,

@@ -5,15 +5,15 @@ const PlayerInfo = (props) => {
   const { players, events, elementTypes, teams, fixtures } = usePlayer();
 
   const playerDetails = () => {
-    const player = players.find((x) => x.id === playerPos);
-    let name = `${player.first_name} ${player.second_name}`;
-    let team = teams.find((x) => x.id === player.team).name;
-    let teamId = teams.find((x) => x.id === player.team).id;
-    let position = elementTypes.find(
+    const player = players?.find((x) => x.id === playerPos);
+    let name = `${player?.first_name} ${player?.second_name}`;
+    let team = teams?.find((x) => x.id === player?.team)?.name;
+    let teamId = teams?.find((x) => x.id === player?.team)?.id;
+    let position = elementTypes?.find(
       (x) => x.id === player.element_type
-    ).singular_name;
+    )?.singular_name;
 
-    let playerFixs = fixtures.filter(x => x.team_a === teamId || x.team_h === teamId )
+    let playerFixs = fixtures?.filter(x => x.team_a === teamId || x.team_h === teamId )
 
     return { name, team, teamId, position, playerFixs };
   };
