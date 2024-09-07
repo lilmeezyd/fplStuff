@@ -95,7 +95,7 @@ function ManagerProvider({ children }) {
   const [pickIndex, setPickIndex] = useState(1);
   const [playerName, setPlayerName] = useState("");
   const [ first, setFirst ] = useState(true)
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -766,10 +766,10 @@ function ManagerProvider({ children }) {
 
     //let price_change = (players.find(x => x.id === id).price_change/10).toFixed(1)
     let element_in_cost = (
-      players.find((x) => x.id === id).now_cost / 10
+      players?.find((x) => x.id === id).now_cost / 10
     ).toFixed(1);
     let selling_price = (
-      players.find((x) => x.id === id).now_cost / 10
+      players?.find((x) => x.id === id).now_cost / 10
     ).toFixed(1);
 
     player.element_type = elementType;
@@ -1626,7 +1626,7 @@ function ManagerProvider({ children }) {
   };
 
   const addedPlayer = (team, player) => {
-    let playerName = players.find((x) => x.id === player).web_name;
+    let playerName = players?.find((x) => x.id === player)?.web_name;
     setPlayerName(playerName);
   };
   const freeTransfers = () => {

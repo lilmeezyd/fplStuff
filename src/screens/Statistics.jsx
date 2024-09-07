@@ -540,10 +540,14 @@ const Statistics = () => {
     .filter((event) => event.finished)
     .map((event) => event.id)
     .sort((x, y) => (x.id > y.id ? 1 : -1));
+    console.log(error)
+    console.log(errorM)
+    console.log(newPlayers)
+    //|| errorM === "Network Error"
 
   return (
     <Container className="py-2 my-2">
-      {(error === "Network Error" || errorM === "Network Error") &&
+      {(error === "Network Error" ) &&
         newPlayers.length === 0 && (
           <div
             style={{ fontWeight: 700, fontSize: 1.2 + "rem" }}
@@ -552,14 +556,14 @@ const Statistics = () => {
             Check your internet connection!
           </div>
         )}
-      {newPlayers.length === 0 && error === "" && errorM === "" &&
+      {newPlayers.length === 0 && error === "" &&
       events.filter(x => x.finished === true).length > 0 &&
        <Spinner />}
-      {newPlayers.length === 0 && error === "" && errorM === "" &&
-      events.filter(x => x.finished === true).length === 0 &&
+      {newPlayers.length === 0 && error === "" &&
+      events?.filter(x => x.finished === true).length === 0 &&
        <div
        style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Statistics will appear here once season starts</div>}
-      {newPlayers.length > 0 && error === "" && errorM === "" && (
+      {newPlayers.length > 0 && error === "" && (
         <>
           <>
             <>
