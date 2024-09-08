@@ -1633,10 +1633,6 @@ function ManagerProvider({ children }) {
     let fts = transferLogic.fts;
     const cPlayersOut = [...playersOut];
     const current = cPlayersOut.splice(0, pickIndex);
-    console.log(eventId)
-    console.log(pickIndex)
-    console.log(fts)
-    console.log(current[0])
     if (eventId === 0 && pickIndex === 2) {
       return (fts = 1);
     }
@@ -1658,7 +1654,7 @@ function ManagerProvider({ children }) {
         c+=1;
       }
       if (
-        current[a].arr.length === 0 &&
+        current[a].arr.length >= 0 &&
         (chips.freehit.event === current[a].event ||
           chips.wildcard.event === current[a].event) || c === 5
       ) {
@@ -1670,36 +1666,9 @@ function ManagerProvider({ children }) {
         } else {
           c-=current[a].arr.length;
           c+=1
-          console.log(c)
         }
         
       }
-      /*if (
-        current[a].arr.length === 1 &&
-        (chips.freehit.event === current[a].event ||
-          chips.wildcard.event === current[a].event)
-      ) {
-        c = 1;
-      }
-      if (current[a].arr.length === 1 && c === 1) {
-        c = 1;
-      }
-      if (
-        current[a].arr.length === 1 &&
-        c === 2 &&
-        chips.freehit.event !== current[a].event &&
-        chips.wildcard.event !== current[a].event
-      ) {
-        c = 2;
-      }
-      if (
-        current[a].arr.length === 1 &&
-        c === 2 &&
-        (chips.freehit.event === current[a].event ||
-          chips.wildcard.event === current[a].event)
-      ) {
-        c = 1;
-      }*/
       a += 1;
       returnFt(a, b, c);
     }
@@ -1717,6 +1686,7 @@ function ManagerProvider({ children }) {
         ? 0
         : playersOut[pickIndex - 1]?.arr.length;
     let cost = playerLength <= fts ? 0 : (fts - playerLength) * 4;
+
     return cost;
   };
 

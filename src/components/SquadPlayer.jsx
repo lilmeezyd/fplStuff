@@ -48,13 +48,14 @@ const SquadPlayer = (props) => {
       )}
       <div className="element">
         <div className="button-wrapper" id={playerPos.element}>
+                <div className="next-fix">&#163;{playerPos.selling_price}M</div>
           <button onClick={handleShowModal} className="player-btn">
             <img
               src={`../shirt_${image}.webp`}
               className="image_pic"
               alt={player.web_name}
             />
-            <div className="border border-dark">
+            <div className="">
               <div
                 className="data_name"
                 style={{ backgroundColor: backgroundColor, color: color }}
@@ -62,7 +63,6 @@ const SquadPlayer = (props) => {
                 {player.web_name}
               </div>
               <div className="data_fixtures">
-                <div className="next-fix">{playerPos.selling_price}</div>
                 <div className="up-fix">
                   {playerOpps.map((opp, idx) => {
                     return (

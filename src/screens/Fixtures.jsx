@@ -156,8 +156,8 @@ const Fixtures = () => {
           >
             {eventIds.map((fix, idx) => {
               return (
-                <option key={idx} value={fix}>
-                  {fix}
+                <option key={idx} value={idx+1}>
+                  {idx+1}
                 </option>
               );
             })}

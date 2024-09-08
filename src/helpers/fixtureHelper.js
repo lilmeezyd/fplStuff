@@ -24,7 +24,7 @@ export const loadOpponents = (fixtures, events, teams, teamId) => {
   function initial(a,b) {
       return a.findIndex(x => x.event===b)
   }
-    const newT = teams.map(
+   /* const newT = teams.map(
       (team) =>
         team.id && {
           ...team,
@@ -129,7 +129,7 @@ export const loadOpponents = (fixtures, events, teams, teamId) => {
       return team.teamAandH
       })})
       
-     .map(team => team.teamAandH && {...team, teamAandH: team.teamAandH})
+     .map(team => team.teamAandH && {...team, teamAandH: team.teamAandH})*/
     
       teamH.forEach(x => {
           const teamHomeObjt = {}
@@ -210,7 +210,8 @@ export const loadOpponents = (fixtures, events, teams, teamId) => {
   
       playerInfoOpp.push(...teamAandH)
       playerInfoOpp.sort(sortEvent)
-  
+      
+      //console.log(newTa)
       
       teamAandH.forEach(x=>{
           let init = initial(teamAandH, x.event)

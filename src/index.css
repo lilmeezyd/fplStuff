@@ -85,6 +85,7 @@ ul {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
 }
+
 .pos-link {
   border: 1px solid;
   height: 100px;
@@ -739,7 +740,7 @@ footer {
   overflow: auto;
 }
 
-.fixtures-col > .team-fixs {
+.fixtures-col>.team-fixs {
   padding: 0.5rem;
 }
 
@@ -809,13 +810,17 @@ footer {
   padding: 0.1rem 0.5rem;
 }
 
-.view, .sort, .search, .cost {
+.view,
+.sort,
+.search,
+.cost {
   margin: 1rem 0;
   font-size: 1rem;
   text-align: left;
 }
 
-.plan-form > select, .plan-form > input {
+.plan-form>select,
+.plan-form>input {
   width: 100%;
   padding: 0.5rem;
   margin: 0.2rem 0;
@@ -839,7 +844,9 @@ footer {
   border-radius: 5px;
 }
 
-.sort select, .view select, .cost select {
+.sort select,
+.view select,
+.cost select {
   width: 100%;
 }
 
@@ -847,7 +854,7 @@ footer {
   text-align: left;
 }
 
-.plan-form  label {
+.plan-form label {
   text-align: left;
 }
 
@@ -898,7 +905,8 @@ footer {
   border: 1px solid transparent;
 }
 
-.player-header-1, .player-tbh {
+.player-header-1,
+.player-tbh {
   display: grid;
   grid-template-columns: 30px 50% 10% 20%;
   align-items: center;
@@ -918,9 +926,10 @@ footer {
   align-self: center;
 }
 
-.player-info-button, .player-info-button-table {
+.player-info-button,
+.player-info-button-table {
   background: #fff;
-    background-color: rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
   border: 0;
   outline: none;
   cursor: pointer;
@@ -931,7 +940,8 @@ footer {
   border-left: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-.price, .points {
+.price,
+.points {
   display: inline-block;
   padding-left: 0.3rem;
   padding-top: 0.2rem;
@@ -939,7 +949,8 @@ footer {
   font-weight: 600;
 }
 
-.player-header .info, .player-tbh .info {
+.player-header .info,
+.player-tbh .info {
   /*width: 16px;*/
   text-align: center;
 }
@@ -1116,186 +1127,194 @@ footer {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
-  
-  .draft-cell {
-    cursor: pointer;
-    border: 1px solid #aaa;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-  }
 
-  .transfer-data {
-    display: flex;
-    background: aquamarine;
-  }
+.draft-cell {
+  cursor: pointer;
+  border: 1px solid #aaa;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
 
-  .transfer-item {
-    font-weight: 700;
-    flex: 1 0 0%;
-  }
+.transfer-data {
+  display: flex;
+  background: aquamarine;
+}
 
-  .trans-reset {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
+.transfer-item {
+  font-weight: 700;
+  flex: 1 0 0%;
+}
 
-  .chip-buttons {
-    display: flex;
-  }
+.trans-reset {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1rem;
+}
 
-  .chip-buttons Button {
-    flex: 1 0 0%;
-    margin: 0 0.5rem;
-  }
+.chip-buttons {
+  display: flex;
+}
 
-  .no-picks-team {
-    border: 1px solid;
+.chip-buttons Button {
+  flex: 1 0 0%;
+  margin: 0 0.5rem;
+}
+
+.no-picks-team {
   display: flex;
   flex-direction: column;
   background: #008000a3;
-  }
+  box-shadow: 0 0 2px;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0;
+  margin: 1rem 0;
+}
 
-  .default-player {
-    min-height: 7rem;
+.default-player {
+  min-height: 7rem;
   margin: 0.5rem;
   display: flex;
   justify-content: center;
   gap: 1rem;
-  }
+}
 
-  .default-bench {
-    min-height: 7rem;
-    margin: 0.5rem;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-  }
+.default-bench {
+  min-height: 7rem;
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
 
-  .default-player .squad-player,
-  .default-bench .squad-player {
-    width: 20%;
-  }
-  .data_name {
-    width: 100%;
-    padding: 0.2rem;
-    background-color: rgba(0, 0, 55, 0.9);
-    color: white;
-    font-size: 0.825rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    font-weight: 600;
-  }
+.default-player .squad-player,
+.default-bench .squad-player {
+  width: 20%;
+}
 
-  .element {
-    display: flex;
-    justify-content: center;
-  }
+.data_name {
+  width: 100%;
+  padding: 0.2rem;
+  background-color: rgba(0, 0, 55, 0.9);
+  color: white;
+  font-size: 0.825rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 600;
+}
 
-  .data_fixtures {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-weight: 600;
-    font-size: 0.825rem;
-  }
+.element {
+  display: flex;
+  justify-content: center;
+}
+
+.data_fixtures {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.825rem;
+}
 
 
 
-  .button-wrapper {
-    /*border: 1px solid;*/
+.button-wrapper {
+  /*border: 1px solid;*/
   width: 80%;
   border-top-left-radius: 0.8rem;
   border-top-right-radius: 0.8rem;
-  }
+  position: relative;
+  box-shadow: 0 0 2px 0px;
+}
 
-  .player-btn {
-    background: transparent;
-    outline: none;
-    border: 0;
-    width: 100%;
-    position: relative;
-  }
+.player-btn {
+  background: transparent;
+  outline: none;
+  border: 0;
+  width: 100%;
+  position: relative;
+}
 
-  .captain {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
+.captain {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
-  .swap {
-    border: 1px solid goldenrod;
-    border-radius: 0.5rem;
-    background: goldenrod;
-  }
+.swap {
+  border: 1px solid goldenrod;
+  border-radius: 0.5rem;
+  background: goldenrod;
+}
 
-  .hide-btn {
-    display: none;
-  }
+.hide-btn {
+  display: none;
+}
 
-  .show-btn {
-    display: block;
-  }
+.show-btn {
+  display: block;
+}
 
-  .next-fix {
-    padding: 0.2rem;
-    border-top-right-radius: 0.5rem;
-    border: 1px solid transparent;
-    border-left: 0;
+.next-fix {
+  padding: 0.1rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
   border-top: 0;
+  width: min-content;
   border-bottom: 0;
   background: white;
-  }
+  font-size: 9px;
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
 
-  .deadlines {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-  }
+.deadlines {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
 
-  .message {
-    margin: 0.5rem 0;
-    padding: 0.4rem;
-    text-align: center;
-    font-weight: 600;
-  }
+.message {
+  margin: 0.5rem 0;
+  padding: 0.4rem;
+  text-align: center;
+  font-weight: 600;
+}
 
-  .span-msg {
-    display: block;
-    font-size: 12px;
-    padding: 0.4rem;
-    margin: auto;
-  }
+.span-msg {
+  display: block;
+  font-size: 12px;
+  padding: 0.4rem;
+  margin: auto;
+}
 
-  .danger {
-    background-color: darkred;
-    color: #fff;
-  }
+.danger {
+  background-color: darkred;
+  color: #fff;
+}
 
-  .infobuttons button {
-    font-weight: 600;
-  }
+.infobuttons button {
+  font-weight: 600;
+}
 
-  @media (max-width: 620px) {
+.image_pic {
+  width: 44px;
+  height: 65px;
+}
+
+@media (max-width: 720px) {
   .image_pic {
-    width: 44px;
-    height: 65px;
+    width: 33px;
+    height: 46.5px;
+  }
+
+  .captain svg {
+    width: 10px;
   }
 }
-  @media (max-width: 620px) {
-    .image_pic {
-      width: 33px;
-      height: 46.5px;
-    }
-  }
-  @media (max-width: 515px) {
-    .image_pic {
-      width: 33px;
-      height: 46.5px;
-    }
-  }
 
 
 @media (max-width: 970px) {
@@ -1380,6 +1399,7 @@ footer {
   background: rgba(0, 139, 139, 0.5);
   border-radius: 10px;
 }
+
 .transfer-rows h4 {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 0.2rem 0.6rem 0 0.6rem;
@@ -1400,6 +1420,7 @@ footer {
   flex-direction: column;
   padding: 0.3rem;
 }
+
 .trans {
   padding: 0.3rem;
   font-weight: 700;
@@ -1408,6 +1429,7 @@ footer {
   align-items: center;
   font-size: 13px;
 }
+
 .trans-team {
   text-transform: capitalize;
   padding: 0.3rem;
@@ -1416,9 +1438,20 @@ footer {
   justify-content: space-between;
   font-size: 12px;
 }
+
 .trans-team img {
   width: 18px;
 }
+
 .trans-wrapper:not(.trans-wrapper:last-child) {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Chips */
+.bt-active {
+  background: gold;
+  color: black;
+  font-weight: 800;
+  border: none;
+  box-shadow: 0 0 2px;
 }
