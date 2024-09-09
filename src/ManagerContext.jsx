@@ -1660,7 +1660,9 @@ function ManagerProvider({ children }) {
       ) {
         c+=0;
       }
-      if (current[a].arr.length > 0) {
+      if (current[a].arr.length > 0 &&
+        chips.freehit.event !== current[a].event &&
+        chips.wildcard.event !== current[a].event) {
         if(current[a].arr.length >= c) {
           c = 1;
         } else {

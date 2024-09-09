@@ -121,11 +121,13 @@ const DataPopUp = (props) => {
           if(playerType === 4) {
               if(noForwards === 1) {
                   const toDisable = picks[pickIndex-1].newPicks
-                                      .filter(x => (x.position < 12 && x.element !== playerId) || (x.position > 12 && x.element_type !== 4))
+                                      .filter(x => x.element_type === 1 || (x.position < 12 && x.element !== playerId) || (x.position > 12 && x.element_type !== 4))
                                       .map(x => x.element)
                   const swap = picks[pickIndex-1].newPicks
                                   .filter(x => x.element_type === 4 && x.position > 12)
                                   .map(x => x.element)
+                                  console.log(toDisable)
+                                  console.log(swap)
                   addSwap(swap)
                   setSwapArray(toDisable)
                   disablePlayers(toDisable)               
@@ -358,7 +360,8 @@ const setSwitchPlayer = (player) => {
           </div>
           <div className="py-2">
             {tempPlayersOut.length === 0 &&
-            (Object.keys(outplayer).length === 0 && Object.keys(inplayerOne).length === 0) && 
+            (Object.keys(outplayer).length === 0 && Object.keys(inplayerOne).length === 0)  && 
+            playerPos?.multiplier > 0 && !playerPos?.is_captain &&
               <Button onClick={() => captain(playerPos?.element)} className={`form-control btn-success
                 ${playersOut[pickIndex-1].arr.some(x => x.element === playerPos.element) ?
                     'hide-btn':'show-btn'} 
@@ -368,11 +371,11 @@ const setSwitchPlayer = (player) => {
           <div className="py-2">
             {tempPlayersOut.length === 0 &&
             (Object.keys(outplayer).length === 0 && Object.keys(inplayerOne).length === 0) && 
+            playerPos?.multiplier > 0 && !playerPos?.is_vice_captain &&
               <Button onClick={() => viceCaptain(playerPos?.element)} 
               className={`form-control
                 ${(playersOut[pickIndex-1].arr.some(x => x.element === playerPos?.element)) ?
                     'hide-btn':'show-btn'}
-                    ${playerPos?.multiplier > 0 ? 'show-btn':'hide-btn'} 
                     ${(playerPos?.element === outplayer.element || playerPos?.element === inplayerOne.element) ? 'hide-btn':'show-btn'} `} >Make Vice Captain</Button>}
           </div>
 

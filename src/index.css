@@ -128,7 +128,7 @@ ul {
   padding: 0 0.2rem;
   text-overflow: ellipsis;
   max-width: 100px;
-  box-shadow: rgba(0, 0, 0, 0.116) 0 0 0 5px;
+ /* box-shadow: rgba(0, 0, 0, 0.116) 0 0 0 5px;*/
 }
 
 .name a {
@@ -1243,9 +1243,8 @@ footer {
 }
 
 .swap {
-  border: 1px solid goldenrod;
+  border: 2px solid goldenrod;
   border-radius: 0.5rem;
-  background: goldenrod;
 }
 
 .hide-btn {
@@ -1454,4 +1453,14 @@ footer {
   font-weight: 800;
   border: none;
   box-shadow: 0 0 2px;
+}
+
+.stat-table-header {
+  font-weight: 800;
+}
+.stat-table-row {
+  display: grid;
+  grid-template-columns: 25px 120px 410px 100px 105px 150px 210px;
+  border: 1px solid;
+  padding: 0.5rem;
 }

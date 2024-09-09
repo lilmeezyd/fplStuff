@@ -1363,6 +1363,702 @@ const Statistics = () => {
             </tbody>
           </Table>
 
+          <div className="stat-table">
+          <div className="stat-table-header">
+              <div className="stat-table-row">
+                <div></div>
+                <div className="name"></div>
+                <div>General</div>
+                <div>Attack</div>
+                <div>Defence</div>
+                <div>Expected Data</div>
+                <div>Data Per 90 minutes</div>
+              </div>
+            </div>
+
+            <div className="stat-table-header">
+            <div className="stat-table-row">
+                <div></div>
+                <div className="name">Player</div>
+                <div className="general">
+                <div className="div-w">Team</div>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Position</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">Pos</div>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Price</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({ type: "now_cost", nextName: "now_cost" });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div style={{ color: name === "now_cost" && "gold" }}>
+                        £
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "now_cost" && desc === 1 ? "gold" : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "now_cost" && desc === -1 ? "gold" : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Points</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "total_points",
+                          nextName: "total_points",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div style={{ color: name === "total_points" && "gold" }}>
+                        Pts
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "total_points" && desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "total_points" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+                <div className="div-w">
+                  <div
+                    onClick={() => {
+                      dispatch({ type: "starts", nextName: "starts" });
+                    }}
+                    className="sortWrapper"
+                  >
+                    <div style={{ color: name === "starts" && "gold" }}>
+                      Starts
+                    </div>{" "}
+                    <div className="sortBy">
+                      <FaCaretUp
+                        fill={`${
+                          name === "starts" && desc === 1 ? "gold" : "gray"
+                        }`}
+                      />
+                      <FaCaretDown
+                        fill={`${
+                          name === "starts" && desc === -1 ? "gold" : "gray"
+                        }`}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Minutes Played</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({ type: "minutes", nextName: "minutes" });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div style={{ color: name === "minutes" && "gold" }}>
+                        MP
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "minutes" && desc === 1 ? "gold" : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "minutes" && desc === -1 ? "gold" : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Yellow Cards</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "yellow_cards",
+                          nextName: "yellow_cards",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div style={{ color: name === "yellow_cards" && "gold" }}>
+                        YC
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "yellow_cards" && desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "yellow_cards" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Red Cards</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({ type: "red_cards", nextName: "red_cards" });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div style={{ color: name === "red_cards" && "gold" }}>
+                        RC
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "red_cards" && desc === 1 ? "gold" : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "red_cards" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+                </div>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Goals Scored</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "goals_scored",
+                          nextName: "goals_scored",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div style={{ color: name === "goals_scored" && "gold" }}>
+                        GS
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "goals_scored" && desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "goals_scored" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Assists</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({ type: "assists", nextName: "assists" });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div style={{ color: name === "assists" && "gold" }}>
+                        A
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "assists" && desc === 1 ? "gold" : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "assists" && desc === -1 ? "gold" : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Clean Sheets</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "clean_sheets",
+                          nextName: "clean_sheets",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div style={{ color: name === "clean_sheets" && "gold" }}>
+                        CS
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "clean_sheets" && desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "clean_sheets" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Saves</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({ type: "saves", nextName: "saves" });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div style={{ color: name === "saves" && "gold" }}>
+                        Saves
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "saves" && desc === 1 ? "gold" : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "saves" && desc === -1 ? "gold" : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Expected Goals</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "expected_goals",
+                          nextName: "expected_goals",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div
+                        style={{ color: name === "expected_goals" && "gold" }}
+                      >
+                        xG
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "expected_goals" && desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "expected_goals" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Expected Assists</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "expected_assists",
+                          nextName: "expected_assists",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div
+                        style={{ color: name === "expected_assists" && "gold" }}
+                      >
+                        xA
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "expected_assists" && desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "expected_assists" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Expected Goal Involvement</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "expected_goal_involvements",
+                          nextName: "expected_goal_involvements",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div
+                        style={{
+                          color:
+                            name === "expected_goal_involvements" && "gold",
+                        }}
+                      >
+                        xGi
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "expected_goal_involvements" && desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "expected_goal_involvements" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Expected Goals Per 90</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "expected_goals_per_90",
+                          nextName: "expected_goals_per_90",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div
+                        style={{
+                          color: name === "expected_goals_per_90" && "gold",
+                        }}
+                      >
+                        xG
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "expected_goals_per_90" && desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "expected_goals_per_90" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Expected Assists Per 90</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "expected_assists_per_90",
+                          nextName: "expected_assists_per_90",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div
+                        style={{
+                          color: name === "expected_assists_per_90" && "gold",
+                        }}
+                      >
+                        xA
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "expected_assists_per_90" && desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "expected_assists_per_90" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Expected Goal Involvements Per 90</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "expected_goal_involvements_per_90",
+                          nextName: "expected_goal_involvements_per_90",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div
+                        style={{
+                          color:
+                            name === "expected_goal_involvements_per_90" &&
+                            "gold",
+                        }}
+                      >
+                        xGi
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "expected_goal_involvements_per_90" &&
+                            desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "expected_goal_involvements_per_90" &&
+                            desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      <strong>Saves Per 90</strong>
+                    </Tooltip>
+                  }
+                >
+                  <div className="div-w">
+                    <div
+                      onClick={() => {
+                        dispatch({
+                          type: "saves_per_90",
+                          nextName: "saves_per_90",
+                        });
+                      }}
+                      className="sortWrapper"
+                    >
+                      <div style={{ color: name === "saves_per_90" && "gold" }}>
+                        Saves
+                      </div>{" "}
+                      <div className="sortBy">
+                        <FaCaretUp
+                          fill={`${
+                            name === "saves_per_90" && desc === 1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                        <FaCaretDown
+                          fill={`${
+                            name === "saves_per_90" && desc === -1
+                              ? "gold"
+                              : "gray"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </OverlayTrigger>
+              </div>
+            </div>
+          </div>
+
           <div className="button-controls">
             <button
               disabled={curPage === 1 ? true : false}
