@@ -1363,7 +1363,7 @@ const Statistics = () => {
             </tbody>
           </Table>
 
-          <div className="stat-table">
+          {/*<div className="stat-table">
           <div className="stat-table-header">
               <div className="stat-table-row">
                 <div></div>
@@ -2057,7 +2057,7 @@ const Statistics = () => {
                 </OverlayTrigger>
               </div>
             </div>
-          </div>
+          </div>*/}
 
           <div className="button-controls">
             <button

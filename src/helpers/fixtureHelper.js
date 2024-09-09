@@ -18,6 +18,19 @@ export const loadOpponents = (fixtures, events, teams, teamId) => {
       if(x['kickoff'] < y['kickoff']) return -1
   }
   function final(a,b) {
+    if(!Array.prototype.findLastIndex) {
+      Array.prototype.findLastIndex = function(callback) {
+        for(let i = a.length-1; i >= 0; i--) {
+          if(callback.call(b, a[i], i, a)) {
+            return i
+          }
+          if(!callback.call(b, a[i], i, a) && i === 0) {
+            return -1
+          }
+        }
+      }
+    }
+      
       return a.findLastIndex(x => x.event===b)
     }
   
@@ -214,8 +227,8 @@ export const loadOpponents = (fixtures, events, teams, teamId) => {
       //console.log(newTa)
       
       teamAandH.forEach(x=>{
-          let init = initial(teamAandH, x.event)
-          let fin  = final(teamAandH, x.event)
+          let init = initial(teamAandH, x?.event)
+          let fin  = final(teamAandH, x?.event)
           if(init === fin) {
               //console.log(x.event)
               return
