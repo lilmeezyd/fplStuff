@@ -1227,10 +1227,16 @@ footer {
 .button-wrapper {
   /*border: 1px solid;*/
   width: 80%;
-  border-top-left-radius: 0.8rem;
-  border-top-right-radius: 0.8rem;
+  /*border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;*/
+  border-radius: 0.5rem;
   position: relative;
-  box-shadow: 0 0 2px 0px;
+  box-shadow: 0 0 5px 2px;
+}
+
+.up-fix .opponent:last-of-type {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 
 .player-btn {
