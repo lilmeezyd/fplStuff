@@ -222,24 +222,37 @@ function ManagerProvider({ children }) {
           const eventId = current[current.length-1]?.event
           setEventId(eventId)
           const chipDay = chips?.filter(x => x.name === 'wildcard' || x.name === 'freehit').map(x => x.event)
-          console.log(data)
+          /*console.log(data)
           console.log(eventId)
           console.log(current)
-          console.log(chips)
+          console.log(chips)*/
           let free = 1
           /*More work */
           const tranzies = current.filter((x, idx) => idx > 0)
           if(tranzies.length > 0) {
             tranzies.forEach(x => {
-              x.event_transfers === 0 && !chipDay.includes(x.event) && (free+=1)
-              x.event_transfers === 0 && chipDay.includes(x.event) && (free+=0)
-              x.event_transfers > 0 && (free-=x.event_transfers)
+              if(x.event_transfers === 0) {
+                if(!chipDay.includes(x.event)) {
+                  if(free === 5) {
+                    free+=0
+                  } else {
+                    free+=1
+                  }
+                } else {
+                  free+=0
+                }
+              }
+              if(x.event_transfers >= 1) {
+                if(free >= x.event_transfers) {
+                  free-=x.event_transfers
+                  free+=1
+                } else {
+                  free=1
+                }
+              }
             })
-            if(free > 0) {
-              free = 1
-            }
             setTransferLogic((prev) => ({
-              ...prev, fts: free+1
+              ...prev, fts: free
             }))
           } else {
             setTransferLogic((prev) => ({
@@ -249,7 +262,6 @@ function ManagerProvider({ children }) {
             }))
           }
           
-          console.log(free)
         }
 
         //localStorage.removeItem('chips')
