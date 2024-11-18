@@ -13,19 +13,17 @@ import {
   Col,
   Form,
   Table,
-  Container,
+  Container, 
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
 import { usePlayer } from "../PlayerContext";
-import axios from "axios";
 const Statistics = () => {
   const { teams, elementTypes, players, events, error: errorM } = usePlayer();
   const [curPage, setCurPage] = useState(1);
   const [page, setPage] = useState(1);
   const [start, setStart] = useState(1);
   const [end, setEnd] = useState(1);
-  const [nPlayers, setNPlayers] = useState([]);
   const [error, setError] = useState("");
   const pageSize = 15;
   let totalPages = Math.ceil(players.length / pageSize);
@@ -357,36 +355,16 @@ const Statistics = () => {
   const { name, desc } = state;
 
   useEffect(() => {
-    const playersArray = players
-      .map((player) => player.id)
-      .map((x) => `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${x}/`);
+   const maxEvent = Math.max(...events
+    .filter((event) => event.finished)
+    .map((event) => event.id))
+    setEnd(maxEvent)
+  }, [events]);
 
-    async function makeAPICall(endpoint) {
-      const response = await axios.get(endpoint);
-      const data = await response.data;
-      return data;
-    }
-    async function makeCalls(endpoints) {
-      const promises = endpoints.map(makeAPICall);
-      const responses = await Promise.all(promises);
-      return responses;
-    }
-    const mapPlayers = async () => {
-      try {
-        const response = await makeCalls(playersArray);
-        setNPlayers(response);
-      } catch (error) {
-        let errorMsg = error?.response?.data?.msg || error?.message;
-        setError(errorMsg)
-      }
-    };
-
-    players && mapPlayers();
-  }, [players]);
 
   const newPlayers = useMemo(() => {
     const a1 = [];
-    nPlayers.forEach((player) => {
+    players.forEach((player) => {
       const a = {};
       let id;
       const { history } = player;
@@ -484,7 +462,6 @@ const Statistics = () => {
     players,
     teams,
     elementTypes,
-    nPlayers,
     start,
     end,
     name,
@@ -538,11 +515,8 @@ const Statistics = () => {
 
   const nEvents = events
     .filter((event) => event.finished)
-    .map((event) => event.id)
-    .sort((x, y) => (x.id > y.id ? 1 : -1));
-    console.log(error)
-    console.log(errorM)
-    console.log(newPlayers)
+    .sort((x, y) => (x.id > y.id ? 1 : -1))
+    .map((event) => event.id);
     //|| errorM === "Network Error"
 
   return (
@@ -559,10 +533,10 @@ const Statistics = () => {
       {newPlayers.length === 0 && error === "" &&
       events.filter(x => x.finished === true).length > 0 &&
        <Spinner />}
-      {newPlayers.length === 0 && error === "" &&
+      {/*newPlayers.length === 0 && error === "" &&
       events?.filter(x => x.finished === true).length === 0 &&
        <div
-       style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Statistics will appear here once season starts</div>}
+       style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">Statistics will appear here once season starts</div>*/}
       {newPlayers.length > 0 && error === "" && (
         <>
           <>

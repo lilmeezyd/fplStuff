@@ -97,23 +97,22 @@ function ManagerProvider({ children }) {
   const [ first, setFirst ] = useState(true)
  
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPlayers = async () => {
       try {
-        const response = await axios.get(
-          "https://fpl-stuff-proxy.vercel.app/bootstrap-static/"
-        );
-        const data = await response.data;
-        const { elements } = data;
-        setPlayers(elements);
+          const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getPlayers`)
+          //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
+          const data = await response.data
+          console.log(data)
+          setPlayers(data)
       } catch (error) {
-        let errorMsg = error?.response?.data?.msg || error?.message;
-        console.log(errorMsg);
+          let errorMsg = error?.response?.data?.msg || error?.message
+          console.log(errorMsg)
       }
-    };
-    fetchData();
+  }
+  fetchPlayers()
     const fetchManagerInfo = async () => {
-      const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/`
-      //const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/`;
+      //const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/`
+      const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/`;
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -123,8 +122,8 @@ function ManagerProvider({ children }) {
       }
     };
     const fetchManagerHistory = async () => {
-      const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/history/`
-      //const url = `https://fpl-stuff-proxy.vercel.app/history/${managerId}/`;
+      //const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/history/`
+      const url = `https://fpl-stuff-proxy.vercel.app/history/${managerId}/`;
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -1585,12 +1584,17 @@ function ManagerProvider({ children }) {
   };
   const getInTheBank = () => {
     if(picks.length > 0) {
-      let totalBudget = +(picks[pickIndex - 1].totalBudget);
+      let bank = +(picks[pickIndex - 1].bank);
     let spent =
-      picks[pickIndex - 1].newPicks.reduce((x, y) => x + +y.selling_price, 0) -
-      tempPlayersOut.reduce((x, y) => x + +y.selling_price, 0);
+      picks[pickIndex - 1]?.newPicks?.reduce((x, y) => x + +y.selling_price, 0) -
+      tempPlayersOut?.reduce((x, y) => x + +y.selling_price, 0);
+      let totalBudget = bank+(+spent);
     //let inBank = picks[pickIndex - 1].budget.toFixed(1);
     let inBank = totalBudget - (+(spent))
+    console.log(picks[pickIndex-1])
+    console.log(totalBudget)
+    console.log(spent)
+    console.log(inBank)
     return inBank.toFixed(1);
     }
     

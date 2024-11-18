@@ -35,7 +35,7 @@ export const getPlayers = (players, sort, view, word, cutPrice) => {
     const returnedPlayers = filteredPlayers
                             .sort(sortPlayer)
                             .filter(player => +(player.now_cost/10).toFixed(1)<=cutPrice)
-                            .filter(player => player.web_name.toLowerCase().startsWith(word?.toLowerCase()))
+                            .filter(player => player?.web_name?.toLowerCase().startsWith(word?.toLowerCase()))
 
     
 

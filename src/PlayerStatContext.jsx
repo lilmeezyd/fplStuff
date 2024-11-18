@@ -10,7 +10,7 @@ function PlayerStatProvider({children}) {
     const [playerStats, setPlayerStats] = useState([])
 
     const { players} = usePlayer()
-
+/*
     useEffect(() => {
         const playersArray = players.map(player => player.id)
     .map(x => `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${x}/`)
@@ -41,7 +41,7 @@ function PlayerStatProvider({children}) {
 
 
     players && mapPlayers()
-    }, [players])
+    }, [players])*/
 
     const contextValue = {
         playerStats: playerStats

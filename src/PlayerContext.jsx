@@ -20,7 +20,7 @@ function PlayerProvider({ children }){
     useEffect(() => {
         const fetchFixtures = async () => {
             try {
-                const response = await axios.get(`https://corsproxy.io/?https://fantasy.premierleague.com/api/fixtures/`)
+                const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getFixtures`)
                 //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
                 const data = await response.data
                 setFixtures(data)
@@ -29,22 +29,56 @@ function PlayerProvider({ children }){
                 console.log(errorMsg)
             }
         }
-        const fetchData = async () => {
+        const fetchTeams = async () => {
             try {
-                const response = await axios.get('https://fpl-stuff-proxy.vercel.app/bootstrap-static/')
+                const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getTeams`)
+                //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
                 const data = await response.data
-                const { teams, element_types, elements, events } = data
-                setEvents(events)
-                setPlayers(elements)
-                setTeams(teams)
-                setElementTypes(element_types)
+                setTeams(data)
             } catch (error) {
                 let errorMsg = error?.response?.data?.msg || error?.message
-                setError(errorMsg)
                 console.log(errorMsg)
             }
         }
-      fetchData()
+        const fetchPlayers = async () => {
+            try {
+                const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getPlayers`)
+                //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
+                const data = await response.data
+                console.log(data)
+                setPlayers(data)
+            } catch (error) {
+                let errorMsg = error?.response?.data?.msg || error?.message
+                console.log(errorMsg)
+            }
+        }
+        const fetchEvents = async () => {
+            try {
+                const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getEvents`)
+                //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
+                const data = await response.data
+                setEvents(data)
+            } catch (error) {
+                let errorMsg = error?.response?.data?.msg || error?.message
+                console.log(errorMsg)
+            }
+        }
+        const fetchElems = async () => {
+            try {
+                const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getElems`)
+                //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
+                const data = await response.data
+                setElementTypes(data)
+            } catch (error) {
+                let errorMsg = error?.response?.data?.msg || error?.message
+                console.log(errorMsg)
+            }
+        }
+        
+      fetchTeams()
+      fetchElems()
+      fetchEvents()
+      fetchPlayers()
       fetchFixtures()
     }, [])
   

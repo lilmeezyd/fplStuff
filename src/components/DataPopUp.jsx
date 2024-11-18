@@ -277,10 +277,10 @@ const DataPopUp = (props) => {
   const playerDetails = () => {
     const player = players?.find((x) => x.id === playerPos?.element);
     let name = `${player?.first_name} ${player?.second_name}`;
-    let team = teams?.find((x) => x.id === player.team)?.name;
-    let teamId = teams?.find((x) => x.id === player.team)?.id;
+    let team = teams?.find((x) => x.id === player?.team)?.name;
+    let teamId = teams?.find((x) => x.id === player?.team)?.id;
     let position = elementTypes?.find(
-      (x) => x.id === player.element_type
+      (x) => x.id === player?.element_type
     )?.singular_name;
 
     return { name, team, teamId, position };

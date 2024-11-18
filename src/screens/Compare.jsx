@@ -20,8 +20,8 @@ const Compare = () => {
   const [ playerSet, setPlayerSet] = useState({playerSet1: false, playerSet2: false})
   const [playerData1, setPlayerData1] = useState({ start1: 1, end1: 1 });
   const [playerData2, setPlayerData2] = useState({ start2: 1, end2: 1 });
-  const [data1, setData1] = useState([]);
-  const [data2, setData2] = useState([]);
+  const [data1, setData1] = useState({});
+  const [data2, setData2] = useState({});
   const [graph, setGraph] = useState(false);
   const [stat, setStat] = useState(true);
   const [error, setError] = useState("");
@@ -34,55 +34,34 @@ const Compare = () => {
   const { start2, end2 } = playerData2;
 
   useEffect(() => {
-    const playerData = async () => {
-      try {
-        const response = await axios.get(
-          `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${player1}/`
-        );
-        const data = await response.data;
-        setData1(data);
-      } catch (error) {
-        const errMsg = error?.response?.data?.msg || error?.message;
-        setError(errMsg);
-      }
-    };
-    playerData();
-  }, [player1]);
+    const data = players?.find(player => player?.id === player1)
+    setData1(data)
+
+  }, [players, player1]);
 
   useEffect(() => {
-    const playerData = async () => {
-      try {
-        const response = await axios.get(
-          `https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${player2}/`
-        );
-        const data = await response.data;
-        setData2(data);
-      } catch (error) {
-        const errMsg = error?.response?.data?.msg || error?.message;
-        setError1(errMsg);
-      }
-    };
-    playerData();
-  }, [player2]);
+    const data = players.find(player => player.id === player2)
+    setData2(data)
+  }, [players, player2]);
 
   const playersForUl = useMemo(() => {
-    const playersForUl1 = players.filter(player => player.web_name.toLowerCase().startsWith(playerName1?.toLowerCase()))
-    const playersForUl2 = players.filter(player => player.web_name.toLowerCase().startsWith(playerName2?.toLowerCase()))
+    const playersForUl1 = players?.filter(player => player.web_name?.toLowerCase().startsWith(playerName1?.toLowerCase()))
+    const playersForUl2 = players?.filter(player => player.web_name?.toLowerCase().startsWith(playerName2?.toLowerCase()))
     return { playersForUl1, playersForUl2}
   }, [players, playerName1, playerName2])
 
   const { playersForUl1, playersForUl2 } = playersForUl
 
   const playersToCompare = useMemo(() => {
-    const playerId1 = players.find((player) => player.id === +player1);
-    const playerId2 = players.find((player) => player.id === +player2);
-    const player1Team = teams.find((team) => team.id === playerId1.team)?.name;
-    const player2Team = teams.find((team) => team.id === playerId2.team)?.name;
-    const position1 = elementTypes.find(
-      (x) => x.id === playerId1.element_type
+    const playerId1 = players?.find((player) => player.id === +player1);
+    const playerId2 = players?.find((player) => player.id === +player2);
+    const player1Team = teams?.find((team) => team.id === playerId1?.team)?.name;
+    const player2Team = teams?.find((team) => team.id === playerId2?.team)?.name;
+    const position1 = elementTypes?.find(
+      (x) => x.id === playerId1?.element_type
     )?.singular_name;
-    const position2 = elementTypes.find(
-      (x) => x.id === playerId2.element_type
+    const position2 = elementTypes?.find(
+      (x) => x.id === playerId2?.element_type
     )?.singular_name;
     const playerToCompare1 = {
       name: playerId1?.web_name,
@@ -236,6 +215,7 @@ const Compare = () => {
     return { p1, p2 };
   }, [data1, data2, start1, start2, end1, end2]);
 
+
   const onStat = () => {
     if (stat === false) {
       setStat(true);
@@ -251,8 +231,8 @@ const Compare = () => {
   const { p1, p2 } = compare;
   const nEvents = events
     .filter((event) => event.finished)
-    .map((event) => event.id)
-    .sort((x, y) => (x.id > y.id ? 1 : -1));
+    .sort((x, y) => (x.id > y.id ? 1 : -1))
+    .map((event) => event.id);
 
 
   const data = [

@@ -270,9 +270,9 @@ const Pitch = () => {
                 );
                 let image =
                   positionObj?.id === 1 && !inTemp
-                    ? `${teamObj.code}_1-66`
+                    ? `${teamObj?.code}_1-66`
                     : positionObj?.id >= 1 && !inTemp
-                    ? `${teamObj.code}-66`
+                    ? `${teamObj?.code}-66`
                     : `0-66`;
                 let news = player.chance_of_playing_next_round;
                 let backgroundColor =
@@ -337,9 +337,9 @@ const Pitch = () => {
               );
               let image =
                 positionObj?.id === 1 && !inTemp
-                  ? `${teamObj.code}_1-66`
+                  ? `${teamObj?.code}_1-66`
                   : positionObj?.id >= 1 && !inTemp
-                  ? `${teamObj.code}-66`
+                  ? `${teamObj?.code}-66`
                   : `0-66`;
               let news = player.chance_of_playing_next_round;
               let backgroundColor =
@@ -403,9 +403,9 @@ const Pitch = () => {
               );
               let image =
                 positionObj?.id === 1 && !inTemp
-                  ? `${teamObj.code}_1-66`
+                  ? `${teamObj?.code}_1-66`
                   : positionObj?.id >= 1 && !inTemp
-                  ? `${teamObj.code}-66`
+                  ? `${teamObj?.code}-66`
                   : `0-66`;
               let news = player.chance_of_playing_next_round;
               let backgroundColor =
@@ -469,9 +469,9 @@ const Pitch = () => {
               );
               let image =
                 positionObj?.id === 1 && !inTemp
-                  ? `${teamObj.code}_1-66`
+                  ? `${teamObj?.code}_1-66`
                   : positionObj?.id >= 1 && !inTemp
-                  ? `${teamObj.code}-66`
+                  ? `${teamObj?.code}-66`
                   : `0-66`;
               let news = player.chance_of_playing_next_round;
               let backgroundColor =
@@ -535,9 +535,9 @@ const Pitch = () => {
               );
               let image =
                 positionObj?.id === 1 && !inTemp
-                  ? `${teamObj.code}_1-66`
+                  ? `${teamObj?.code}_1-66`
                   : positionObj?.id >= 1 && !inTemp
-                  ? `${teamObj.code}-66`
+                  ? `${teamObj?.code}-66`
                   : `0-66`;
               let news = player.chance_of_playing_next_round;
               let backgroundColor =
