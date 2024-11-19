@@ -2,6 +2,8 @@ import { useState } from "react";
 import { usePlayer } from "../PlayerContext";
 import PlayerInfo from "./PlayerInfo";
 import DataPopUp from "./DataPopUp";
+import { AiOutlineSwap } from "react-icons/ai";
+import { FaExchangeAlt } from "react-icons/fa";
 const SquadPlayer = (props) => {
   const {
     image,
@@ -25,6 +27,7 @@ const SquadPlayer = (props) => {
   const handleShowModal = () => setShowModal(true);
 
   const handleCloseModal = () => setShowModal(false);
+  console.log(playerInClass)
   return (
     <>
       {playerPos.multiplier === 0 ? (
@@ -47,7 +50,7 @@ const SquadPlayer = (props) => {
         "" 
       )}
       <div className="element">
-        <div className="button-wrapper" id={playerPos.element}>
+        <div className={`${playerInClass ? 'border-swap' : ''} button-wrapper` } id={playerPos.element}>
                 <div className="next-fix">&#163;{playerPos.selling_price}M</div>
           <button onClick={handleShowModal} className="player-btn">
             <img
@@ -109,6 +112,10 @@ const SquadPlayer = (props) => {
                 </div>
               </div>
             </div>
+
+            
+              {playerInClass ? <div className="swap-12"><FaExchangeAlt color="white" /></div> : ('')}
+            
 
             <div className="captain">
               {playerPos.is_captain ? (
