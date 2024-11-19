@@ -102,7 +102,6 @@ function ManagerProvider({ children }) {
           const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getPlayers`)
           //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
           const data = await response.data
-          console.log(data)
           setPlayers(data)
       } catch (error) {
           let errorMsg = error?.response?.data?.msg || error?.message
@@ -221,10 +220,6 @@ function ManagerProvider({ children }) {
           const eventId = current[current.length-1]?.event
           setEventId(eventId)
           const chipDay = chips?.filter(x => x.name === 'wildcard' || x.name === 'freehit').map(x => x.event)
-          /*console.log(data)
-          console.log(eventId)
-          console.log(current)
-          console.log(chips)*/
           let free = 1
           /*More work */
           const tranzies = current.filter((x, idx) => idx > 0)
@@ -1584,17 +1579,11 @@ function ManagerProvider({ children }) {
   };
   const getInTheBank = () => {
     if(picks.length > 0) {
-      let bank = +(picks[pickIndex - 1].bank);
+      const totalBudget = +(picks[pickIndex-1]?.totalBudget)
     let spent =
       picks[pickIndex - 1]?.newPicks?.reduce((x, y) => x + +y.selling_price, 0) -
       tempPlayersOut?.reduce((x, y) => x + +y.selling_price, 0);
-      let totalBudget = bank+(+spent);
-    //let inBank = picks[pickIndex - 1].budget.toFixed(1);
     let inBank = totalBudget - (+(spent))
-    console.log(picks[pickIndex-1])
-    console.log(totalBudget)
-    console.log(spent)
-    console.log(inBank)
     return inBank.toFixed(1);
     }
     

@@ -10,7 +10,7 @@ const PlayerInfo = (props) => {
     let team = teams?.find((x) => x.id === player?.team)?.name;
     let teamId = teams?.find((x) => x.id === player?.team)?.id;
     let position = elementTypes?.find(
-      (x) => x.id === player.element_type
+      (x) => x?.id === player?.element_type
     )?.singular_name;
 
     let playerFixs = fixtures?.filter(x => (x.team_a === teamId || x.team_h === teamId) && !x.finished )
