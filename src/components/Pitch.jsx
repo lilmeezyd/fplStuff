@@ -586,7 +586,7 @@ const Pitch = () => {
         </div>
       </div>
 
-      <div className="chip-buttons p-2">
+      {/*<div className="chip-buttons p-2">
         <Button 
         disabled={chips.wildcard.used && +wc1 < +eventId+curPage && true}
         className={`${+wc1 === +eventId+curPage ? 'bt-active' : ''} btn-dark`} onClick={activateWC1}>
@@ -610,7 +610,7 @@ const Pitch = () => {
         <Button onClick={activateTC} className="btn-dark">
           Triple Captain
         </Button>
-      </div>
+      </div>*/}
       <TransferRows show={show} handleClose={handleClose} />
     </div>
   );

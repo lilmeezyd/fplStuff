@@ -1270,15 +1270,14 @@ footer {
 
 .next-fix {
   padding: 0.1rem;
-  border-radius: 0.5rem;
   font-weight: 700;
   border-top: 0;
   width: min-content;
   border-bottom: 0;
   background: white;
-  font-size: 9px;
+  font-size: 8px;
   position: absolute;
-  right: 0;
+  right: 2px;
   z-index: 1;
 }
 

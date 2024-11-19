@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useMemo, useReducer, useCallback } from "react";
 import { usePlayer } from "../PlayerContext";
-import { usePlayerStats } from "../PlayerStatContext";
 import GettingStarted from "./GettingStarted";
 import { Button } from "react-bootstrap";
 import { BiLock } from "react-icons/bi";
@@ -9,7 +8,6 @@ const GettingStartedMain = (props) => {
   const {picks } = props
   const [show, setShow] = useState(false);
   const { teams, elementTypes, players, events } = usePlayer();
-  const { playerStats } = usePlayerStats();
 
   const handleClose = () => setShow(false);
 
@@ -66,7 +64,7 @@ const GettingStartedMain = (props) => {
         const web_name = players?.find((x) => x.id === playerId)?.web_name;
         const teamId = players?.find((x) => x.id === playerId)?.team;
         const playerTeam = teams?.find((x) => x.id === teamId)?.short_name;
-        const stats = playerStats
+        const stats = players
           .find((player) => player?.history[0]?.element === playerId)
           ?.history.find((x) => x.round === pick?.entry_history?.event);
         const elementTypeId = players?.find(
@@ -104,7 +102,7 @@ const GettingStartedMain = (props) => {
       return y;
     });
     return a;
-  }, [picks, players, playerStats, teams, events]);
+  }, [picks, players, players, teams, events]);
 
   console.log(getPicksStatsFunc());
 

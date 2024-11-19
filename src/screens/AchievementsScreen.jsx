@@ -76,7 +76,7 @@ const AchievementsScreen = () => {
       }
       const picksArray = a.map(
         (x) =>
-          `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/event/${x}/picks/`
+          `https://fpl-stuff-proxy.vercel.app/${dep}/event/${x}/picks/`
       );
       async function makeAPICall(endpoint) {
         const response = await axios.get(endpoint);
@@ -90,33 +90,18 @@ const AchievementsScreen = () => {
       }
       const fetchData = async () => {
         try {
-          let config = {
-            method: "get",
-            maxBodyLength: Infinity,
-            url: "https://fpl-stuff-proxy.vercel.app/bootstrap-static/",
-            headers: {},
-          };
           const response = await makeCalls(picksArray);
           const response1 = await axios.get(
-            `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/history/`
+            `https://fpl-stuff-proxy.vercel.app/history/${dep}`
           );
           const response2 = await axios.get(
-            `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${dep}/`
+            `https://fpl-stuff-proxy.vercel.app/${dep}/`
           );
-          axios
-            .request(config)
-            .then((response) => {
-              console.log(JSON.stringify(response.data));
-            })
-            .catch((error) => {
-              console.log(error);
-            });
           const data = await response1.data;
           const data1 = await response2.data;
           setHistory(data);
           setPicks(response);
           SetManager(data1);
-          console.log(data1);
         } catch (error) {
           const errMsg = error?.response?.data?.msg || error?.message;
           setError(errMsg);
@@ -186,12 +171,6 @@ const AchievementsScreen = () => {
         Check your internet connection!
       </div>
     );
-  /*if(error === 'Request failed with status code 404') return <div style={{fontWeight: 700, fontSize: 1.2+'rem'}} className="my-5 py-5">
-    <p>Manager not found!</p>
-    <Button onClick={() => {
-      localStorage.removeItem('managerId')
-      setSubmitId(null)}} className="btn-dark">Reset</Button>
-    </div>*/
   return (
     <>
       <Container>

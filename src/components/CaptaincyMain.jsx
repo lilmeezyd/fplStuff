@@ -1,6 +1,5 @@
 import { useState, useMemo, useReducer, useCallback } from "react";
 import { usePlayer } from "../PlayerContext";
-import { usePlayerStats } from "../PlayerStatContext";
 import Captaincy from "../components/Captaincy";
 import { Button } from "react-bootstrap";
 
@@ -8,7 +7,6 @@ const CaptaincyMain = (props) => {
   const {picks} = props
   const [show, setShow] = useState(false);
   const { teams, elementTypes, players, events } = usePlayer();
-  const { playerStats } = usePlayerStats();
 
   const handleClose = () => setShow(false);
 
@@ -94,14 +92,14 @@ const CaptaincyMain = (props) => {
     dispatch({ type: "captain_by_35" });
   };
 
-  const getCaptains = useCallback(() => {
+  const getCaptains = () => {
     const a3 = picks?.map((pick) => {
       const y = Object.create({});
       const event = pick?.entry_history?.event;
       const playerId = pick?.picks?.find((x) => x.multiplier > 1)?.element;
       const multiplier = pick?.picks?.find((x) => x.multiplier > 1)?.multiplier;
       const web_name = players?.find((x) => x.id === playerId)?.web_name;
-      const stats = playerStats?.find((player) => player?.history[0]?.element === playerId)
+      const stats = players?.find((player) => player?.history[0]?.element === playerId)
         ?.history.find((x) => x.round === event);
       const teamId = players?.find((x) => x.id === playerId)?.team;
       const playerTeam = teams?.find((x) => x.id === teamId)?.short_name;
@@ -131,12 +129,13 @@ const CaptaincyMain = (props) => {
       return y;
     });
     return a3;
-  }, [picks, playerStats, players, teams]);
+  };
 
   const captainDetails = useMemo(
     () => getCaptains()?.filter((cap) => cap.total_points >= value_1 && cap.total_points < value_2),
     [getCaptains, value_1, value_2]
   );
+
 /*
   const sixOrMore = getCaptains().filter((cap) => cap.total_points >= 6);
   const tenOrMore = getCaptains().filter((cap) => cap.total_points >= 10);
