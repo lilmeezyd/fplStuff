@@ -1474,6 +1474,56 @@ footer {
 .stat-table-row {
   display: grid;
   grid-template-columns: 25px 120px 410px 100px 105px 150px 210px;
-  border: 1px solid;
   padding: 0.5rem;
+  width: fit-content;
+}
+
+.stat-table-row:nth-of-type(even) {
+  background: aquamarine;
+}
+
+.data-set {
+  overflow-x: auto;
+}
+
+.general {
+  display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    place-items: center;
+    border-left: 1px solid;
+    border-right: 1px solid;
+}
+
+.attack, .defense {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-right: 1px solid;
+  place-items: center;
+}
+
+.expected {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-right: 1px solid;
+  place-items: center;
+}
+
+.data_90 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  place-items: center;
+}
+
+.name-12 a {
+  color: black;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.stat-table-header {
+  font-weight: 800;
+  background: aquamarine;
+  width: fit-content;
+  border-left: 1px solid;
+  border-right: 1px solid;
 }
