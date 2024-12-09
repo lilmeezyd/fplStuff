@@ -126,12 +126,10 @@ const Compare = () => {
   };
 
   const compare = useMemo(() => {
-    const { history: history1 } = data1;
-    const { history: history2 } = data2;
-    const p1History = history1?.filter(
+    const p1History = data1?.history?.filter(
       (x) => +x.round >= start1 && +x.round <= +end1
     );
-    const p2History = history2?.filter(
+    const p2History = data2?.history?.filter(
       (x) => +x.round >= start2 && +x.round <= +end2
     );
     const p1 = {

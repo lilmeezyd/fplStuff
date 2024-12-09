@@ -14,6 +14,7 @@ const PlayerInfo = (props) => {
     )?.singular_name;
 
     let playerFixs = fixtures?.filter(x => (x.team_a === teamId || x.team_h === teamId) && !x.finished )
+    .sort((x,y) => x.event > y.event ? 1 :-1)
     return { name, team, teamId, position, playerFixs };
   };
   return (
