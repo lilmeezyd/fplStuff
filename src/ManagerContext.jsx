@@ -300,11 +300,11 @@ function ManagerProvider({ children }) {
         localStorage.removeItem("picks");
         localStorage.setItem("picks", JSON.stringify(gameweekPicks));
       } else {
-        const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId}/picks/`;
-        const url1 = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/transfers/`;
+        //const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId}/picks/`;
+        //const url1 = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/transfers/`;
         
-        /*const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${eventId}/picks/`;
-        const url1 = `https://fpl-stuff-proxy.vercel.app/transfers/${managerId}/`;*/
+        const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${eventId}/picks/`;
+        const url1 = `https://fpl-stuff-proxy.vercel.app/transfers/${managerId}/`;
         try {
           const response1 = await fetch(url1);
           const data1 = await response1.json();
@@ -318,12 +318,12 @@ function ManagerProvider({ children }) {
               //https://corsproxy.io/?https://fantasy.premierleague.com
               const response2 =
                 await //fetch(`http://localhost:5000/${managerId}/event/${eventId-1}/picks`)
-                /*fetch(
+                fetch(
                   `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${
                     eventId - 1
                   }/picks/`
-                );*/
-                fetch(`https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId-1}/picks/`)
+                );
+                //fetch(`https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId-1}/picks/`)
               const data3 = await response2.json();
               data = data3;
             } else {
