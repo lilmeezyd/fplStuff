@@ -612,11 +612,11 @@ const Statistics = () => {
               <div className="stat-table-row">
                 <div></div>
                 <div className="name-12"></div>
-                <div>General</div>
-                <div>Attack</div>
-                <div>Defence</div>
-                <div>Expected Data</div>
-                <div>Data Per 90 minutes</div>
+                <div className="general-1">General</div>
+                <div className="attack-1">Attack</div>
+                <div className="defense-1">Defence</div>
+                <div className="expected-1">Expected Data</div>
+                <div className="data_90-1">Data Per 90 minutes</div>
               </div>
             </div>
 
@@ -651,16 +651,16 @@ const Statistics = () => {
                         }}
                         className="sortWrapper"
                       >
-                        <div style={{ color: name === "now_cost" && "gold" }}>
+                        <div style={{ fontWeight: name === "now_cost" && 800 }}>
                           £
                         </div>{" "}
                         <div className="sortBy">
                           <FaCaretUp
-                            fill={`${name === "now_cost" && desc === 1 ? "gold" : "gray"
+                            fill={`${name === "now_cost" && desc === 1 ? "black" : "gray"
                               }`}
                           />
                           <FaCaretDown
-                            fill={`${name === "now_cost" && desc === -1 ? "gold" : "gray"
+                            fill={`${name === "now_cost" && desc === -1 ? "black" : "gray"
                               }`}
                           />
                         </div>
@@ -685,19 +685,19 @@ const Statistics = () => {
                         }}
                         className="sortWrapper"
                       >
-                        <div style={{ color: name === "total_points" && "gold" }}>
+                        <div style={{ fontWeight: name === "total_points" && 800 }}>
                           Pts
                         </div>{" "}
                         <div className="sortBy">
                           <FaCaretUp
                             fill={`${name === "total_points" && desc === 1
-                                ? "gold"
+                                ? "black"
                                 : "gray"
                               }`}
                           />
                           <FaCaretDown
                             fill={`${name === "total_points" && desc === -1
-                                ? "gold"
+                                ? "black"
                                 : "gray"
                               }`}
                           />
@@ -712,16 +712,16 @@ const Statistics = () => {
                       }}
                       className="sortWrapper"
                     >
-                      <div style={{ color: name === "starts" && "gold" }}>
+                      <div style={{ fontWeight: name === "starts" && 800 }}>
                         Starts
                       </div>{" "}
                       <div className="sortBy">
                         <FaCaretUp
-                          fill={`${name === "starts" && desc === 1 ? "gold" : "gray"
+                          fill={`${name === "starts" && desc === 1 ? "black" : "gray"
                             }`}
                         />
                         <FaCaretDown
-                          fill={`${name === "starts" && desc === -1 ? "gold" : "gray"
+                          fill={`${name === "starts" && desc === -1 ? "black" : "gray"
                             }`}
                         />
                       </div>
@@ -742,16 +742,16 @@ const Statistics = () => {
                         }}
                         className="sortWrapper"
                       >
-                        <div style={{ color: name === "minutes" && "gold" }}>
+                        <div style={{ fontWeight: name === "minutes" && 800 }}>
                           MP
                         </div>{" "}
                         <div className="sortBy">
                           <FaCaretUp
-                            fill={`${name === "minutes" && desc === 1 ? "gold" : "gray"
+                            fill={`${name === "minutes" && desc === 1 ? "black" : "gray"
                               }`}
                           />
                           <FaCaretDown
-                            fill={`${name === "minutes" && desc === -1 ? "gold" : "gray"
+                            fill={`${name === "minutes" && desc === -1 ? "black" : "gray"
                               }`}
                           />
                         </div>
@@ -777,19 +777,19 @@ const Statistics = () => {
                         }}
                         className="sortWrapper"
                       >
-                        <div style={{ color: name === "yellow_cards" && "gold" }}>
+                        <div style={{ fontWeight: name === "yellow_cards" && 800 }}>
                           YC
                         </div>{" "}
                         <div className="sortBy">
                           <FaCaretUp
                             fill={`${name === "yellow_cards" && desc === 1
-                                ? "gold"
+                                ? "black"
                                 : "gray"
                               }`}
                           />
                           <FaCaretDown
                             fill={`${name === "yellow_cards" && desc === -1
-                                ? "gold"
+                                ? "black"
                                 : "gray"
                               }`}
                           />
@@ -813,17 +813,17 @@ const Statistics = () => {
                         }}
                         className="sortWrapper"
                       >
-                        <div style={{ color: name === "red_cards" && "gold" }}>
+                        <div style={{ fontWeight: name === "red_cards" && 800 }}>
                           RC
                         </div>{" "}
                         <div className="sortBy">
                           <FaCaretUp
-                            fill={`${name === "red_cards" && desc === 1 ? "gold" : "gray"
+                            fill={`${name === "red_cards" && desc === 1 ? "black" : "gray"
                               }`}
                           />
                           <FaCaretDown
                             fill={`${name === "red_cards" && desc === -1
-                                ? "gold"
+                                ? "black"
                                 : "gray"
                               }`}
                           />
@@ -851,21 +851,21 @@ const Statistics = () => {
                       }}
                       className="sortWrapper"
                     >
-                      <div style={{ color: name === "goals_scored" && "gold" }}>
+                      <div style={{ fontWeight: name === "goals_scored" && 800 }}>
                         GS
                       </div>{" "}
                       <div className="sortBy">
                         <FaCaretUp
                           fill={`${
                             name === "goals_scored" && desc === 1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
                         <FaCaretDown
                           fill={`${
                             name === "goals_scored" && desc === -1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
@@ -888,18 +888,18 @@ const Statistics = () => {
                       }}
                       className="sortWrapper"
                     >
-                      <div style={{ color: name === "assists" && "gold" }}>
+                      <div style={{ fontWeight: name === "assists" && 800 }}>
                         A
                       </div>{" "}
                       <div className="sortBy">
                         <FaCaretUp
                           fill={`${
-                            name === "assists" && desc === 1 ? "gold" : "gray"
+                            name === "assists" && desc === 1 ? "black" : "gray"
                           }`}
                         />
                         <FaCaretDown
                           fill={`${
-                            name === "assists" && desc === -1 ? "gold" : "gray"
+                            name === "assists" && desc === -1 ? "black" : "gray"
                           }`}
                         />
                       </div>
@@ -927,21 +927,21 @@ const Statistics = () => {
                       }}
                       className="sortWrapper"
                     >
-                      <div style={{ color: name === "clean_sheets" && "gold" }}>
+                      <div style={{ fontWeight: name === "clean_sheets" && 800 }}>
                         CS
                       </div>{" "}
                       <div className="sortBy">
                         <FaCaretUp
                           fill={`${
                             name === "clean_sheets" && desc === 1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
                         <FaCaretDown
                           fill={`${
                             name === "clean_sheets" && desc === -1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
@@ -965,18 +965,18 @@ const Statistics = () => {
                       }}
                       className="sortWrapper"
                     >
-                      <div style={{ color: name === "saves" && "gold" }}>
+                      <div style={{ fontWeight: name === "saves" && 800 }}>
                         Saves
                       </div>{" "}
                       <div className="sortBy">
                         <FaCaretUp
                           fill={`${
-                            name === "saves" && desc === 1 ? "gold" : "gray"
+                            name === "saves" && desc === 1 ? "black" : "gray"
                           }`}
                         />
                         <FaCaretDown
                           fill={`${
-                            name === "saves" && desc === -1 ? "gold" : "gray"
+                            name === "saves" && desc === -1 ? "black" : "gray"
                           }`}
                         />
                       </div>
@@ -1004,7 +1004,7 @@ const Statistics = () => {
                       className="sortWrapper"
                     >
                       <div
-                        style={{ color: name === "expected_goals" && "gold" }}
+                        style={{ fontWeight: name === "expected_goals" && 800 }}
                       >
                         xG
                       </div>{" "}
@@ -1012,14 +1012,14 @@ const Statistics = () => {
                         <FaCaretUp
                           fill={`${
                             name === "expected_goals" && desc === 1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
                         <FaCaretDown
                           fill={`${
                             name === "expected_goals" && desc === -1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
@@ -1046,7 +1046,7 @@ const Statistics = () => {
                       className="sortWrapper"
                     >
                       <div
-                        style={{ color: name === "expected_assists" && "gold" }}
+                        style={{ fontWeight: name === "expected_assists" && 800 }}
                       >
                         xA
                       </div>{" "}
@@ -1054,14 +1054,14 @@ const Statistics = () => {
                         <FaCaretUp
                           fill={`${
                             name === "expected_assists" && desc === 1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
                         <FaCaretDown
                           fill={`${
                             name === "expected_assists" && desc === -1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
@@ -1090,7 +1090,7 @@ const Statistics = () => {
                       <div
                         style={{
                           color:
-                            name === "expected_goal_involvements" && "gold",
+                            name === "expected_goal_involvements" && "black",
                         }}
                       >
                         xGi
@@ -1099,14 +1099,14 @@ const Statistics = () => {
                         <FaCaretUp
                           fill={`${
                             name === "expected_goal_involvements" && desc === 1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
                         <FaCaretDown
                           fill={`${
                             name === "expected_goal_involvements" && desc === -1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
@@ -1137,7 +1137,7 @@ const Statistics = () => {
                     >
                       <div
                         style={{
-                          color: name === "expected_goals_per_90" && "gold",
+                          fontWeight: name === "expected_goals_per_90" && 800,
                         }}
                       >
                         xG
@@ -1146,14 +1146,14 @@ const Statistics = () => {
                         <FaCaretUp
                           fill={`${
                             name === "expected_goals_per_90" && desc === 1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
                         <FaCaretDown
                           fill={`${
                             name === "expected_goals_per_90" && desc === -1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
@@ -1181,7 +1181,7 @@ const Statistics = () => {
                     >
                       <div
                         style={{
-                          color: name === "expected_assists_per_90" && "gold",
+                          fontWeight: name === "expected_assists_per_90" && 800,
                         }}
                       >
                         xA
@@ -1190,14 +1190,14 @@ const Statistics = () => {
                         <FaCaretUp
                           fill={`${
                             name === "expected_assists_per_90" && desc === 1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
                         <FaCaretDown
                           fill={`${
                             name === "expected_assists_per_90" && desc === -1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
@@ -1228,7 +1228,7 @@ const Statistics = () => {
                         style={{
                           color:
                             name === "expected_goal_involvements_per_90" &&
-                            "gold",
+                            "black",
                         }}
                       >
                         xGi
@@ -1238,7 +1238,7 @@ const Statistics = () => {
                           fill={`${
                             name === "expected_goal_involvements_per_90" &&
                             desc === 1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
@@ -1246,7 +1246,7 @@ const Statistics = () => {
                           fill={`${
                             name === "expected_goal_involvements_per_90" &&
                             desc === -1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
@@ -1272,21 +1272,21 @@ const Statistics = () => {
                       }}
                       className="sortWrapper"
                     >
-                      <div style={{ color: name === "saves_per_90" && "gold" }}>
+                      <div style={{ fontWeight: name === "saves_per_90" && 800 }}>
                         Saves
                       </div>{" "}
                       <div className="sortBy">
                         <FaCaretUp
                           fill={`${
                             name === "saves_per_90" && desc === 1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
                         <FaCaretDown
                           fill={`${
                             name === "saves_per_90" && desc === -1
-                              ? "gold"
+                              ? "black"
                               : "gray"
                           }`}
                         />
