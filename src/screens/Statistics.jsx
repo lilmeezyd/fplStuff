@@ -355,8 +355,9 @@ const Statistics = () => {
   const { name, desc } = state;
 
   useEffect(() => {
+    const a = new Date()
     const maxEvent = Math.max(...events
-      .filter((event) => event.finished)
+      .filter((event) => a > new Date(event.deadline_time))
       .map((event) => event.id))
     setEnd(maxEvent)
   }, [events]);
@@ -513,8 +514,9 @@ const Statistics = () => {
     setPage(totalPages);
   };
 
+  const a = new Date()
   const nEvents = events
-    .filter((event) => event.finished)
+    .filter((event) => new Date(event.deadline_time))
     .sort((x, y) => (x.id > y.id ? 1 : -1))
     .map((event) => event.id);
   //|| errorM === "Network Error"
