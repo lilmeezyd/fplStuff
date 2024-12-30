@@ -6,7 +6,6 @@ import { Modal, Spinner } from "react-bootstrap"
 import axios from "axios"
 const PlayerScreen = () => {
 
-  const [data, setData] = useState([])
   const [error, setError] = useState('')
   const [show, setShow] = useState(false);
   const [gwStat, setGwStat] = useState('')
@@ -14,24 +13,12 @@ const PlayerScreen = () => {
   const { teams, elementTypes, players } = usePlayer()
   const { playerId } = useParams()
   const navigate = useNavigate()
-  const player = players.find(player => player.id === +playerId)
-  const team = player && teams.find(team => team.id === player.team).name
-  const elementType = player && elementTypes.find(x => x.id === player.element_type).singular_name
-  useEffect(() => {
-    const playerData = async () => {
-      try {
-        const response = await axios
-          .get(`https://corsproxy.io/?https://fantasy.premierleague.com/api/element-summary/${playerId}/`)
-        const data = await response.data
-        setData(data)
-      } catch (error) {
-        const errMsg = error?.response?.data?.msg || error?.message
-        setError(errMsg)
-      }
-
-    }
-    playerData()
-  }, [playerId])
+  const player = players?.find(player => player.id === +playerId)
+  const team = player && teams?.find(team => team.id === player.team)?.name
+  const elementType = player && elementTypes?.find(x => x.id === player.element_type)?.singular_name
+  const data = players?.filter(player => player.id === +playerId)
+  console.log(data)
+  
   
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -61,7 +48,7 @@ const PlayerScreen = () => {
       {!!(error === '') && <div>
         <div className="chart border">
           <div className='chart-heading'>Player Performance</div>
-          {history ? <div className="chart-container">
+          {history.length>0 ? <div className="chart-container">
             <div className="graph">
               {history?.map((x, idx) => <div              
                className="graph-label graph-wrap" key={idx}>
