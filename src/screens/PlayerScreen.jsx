@@ -17,13 +17,10 @@ const PlayerScreen = () => {
   const team = player && teams?.find(team => team.id === player.team)?.name
   const elementType = player && elementTypes?.find(x => x.id === player.element_type)?.singular_name
   const data = players?.filter(player => player.id === +playerId)
-  console.log(data)
   
   
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const { history } = data
   const rounds = history?.map(x => `GW${x.round}`)
   const opponents = history?.map(x => teams?.find(y => y.id === x.opponent_team)?.short_name)
  
@@ -48,7 +45,7 @@ const PlayerScreen = () => {
       {!!(error === '') && <div>
         <div className="chart border">
           <div className='chart-heading'>Player Performance</div>
-          {history.length>0 ? <div className="chart-container">
+          {data?.history?.length>0 ? <div className="chart-container">
             <div className="graph">
               {history?.map((x, idx) => <div              
                className="graph-label graph-wrap" key={idx}>
