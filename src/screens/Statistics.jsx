@@ -516,7 +516,7 @@ const Statistics = () => {
 
   const a = new Date()
   const nEvents = events
-    .filter((event) => new Date(event.deadline_time))
+    .filter((event) => a > new Date(event.deadline_time))
     .sort((x, y) => (x.id > y.id ? 1 : -1))
     .map((event) => event.id);
   //|| errorM === "Network Error"
