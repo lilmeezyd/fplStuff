@@ -376,13 +376,13 @@ const Statistics = () => {
             a.element = x.element;
           }
         });
-        const playerInfo = players.find((x) => x.id === id);
+        const playerInfo = players?.find((x) => x.id === id);
         a.web_name = playerInfo.web_name;
         a.now_cost = (playerInfo.now_cost / 10).toFixed(1);
-        a.team = teams.find((x) => +x.id === +playerInfo.team).short_name;
-        a.position = elementTypes.find(
+        a.team = teams?.find((x) => +x.id === +playerInfo.team)?.short_name;
+        a.position = elementTypes?.find(
           (x) => +x.id === +playerInfo.element_type
-        ).singular_name_short;
+        )?.singular_name_short;
 
         a.history = history;
         a1.push(a);
