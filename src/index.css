@@ -291,6 +291,8 @@ footer {
 .chart-container {
   overflow: auto;
   padding: 1rem 0;
+  display: flex;
+  align-items: flex-end;
 }
 
 .custom-tooltip {
@@ -301,15 +303,25 @@ footer {
 /* graph */
 .graph {
   display: flex;
-  width: 1800px;
 }
 
 .graph-label {
   font-size: 0.8rem;
   font-weight: 700;
-  width: 50px;
+  width: 40px;
   line-height: 1;
   text-align: center;
+  padding: 0.1rem 0;
+}
+
+.graph-label-1 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  width: 80px;
+  line-height: 1;
+  text-align: center;
+  padding: 0.1rem 0;
+  border-right: 1px solid;
 }
 
 .graph-wrap {
@@ -1356,6 +1368,16 @@ footer {
   height: 65px;
 }
 
+.image_pic-1 {
+  width: 30px;
+  height: 30px;
+}
+
+.image_pic-2 {
+  width: 20px;
+  height: 20px;
+}
+
 @media (max-width: 720px) {
   .image_pic {
     width: 33px;
@@ -1533,7 +1555,10 @@ footer {
 }
 
 .general-1,
-.attack-1, .defense-1, .expected-1, .data_90-1 {
+.attack-1,
+.defense-1,
+.expected-1,
+.data_90-1 {
   border-right: 1px solid #aaa;
 }
 

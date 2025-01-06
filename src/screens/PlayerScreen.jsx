@@ -16,18 +16,42 @@ const PlayerScreen = () => {
   const player = players?.find(player => player.id === +playerId)
   const team = player && teams?.find(team => team.id === player.team)?.name
   const elementType = player && elementTypes?.find(x => x.id === player.element_type)?.singular_name
-  const data = players?.filter(player => player.id === +playerId)
+  const data = players?.find(player => player.id === +playerId)
   
   
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const rounds = history?.map(x => `GW${x.round}`)
-  const opponents = history?.map(x => teams?.find(y => y.id === x.opponent_team)?.short_name)
+  const rounds = data?.history?.map(x => `GW${x.round}`)
+  const opponents = data?.history?.map(x => teams?.find(y => y.id === x.opponent_team)?.short_name)
+  const fixureRounds = data?.fixtures?.map(x => `GW${x?.event_name?.slice(9)}`)
+  const fixtureOpponents = data?.fixtures?.map(x => {
+    const opp = x.is_home === true ? x.team_a : x.team_h
+    const isHome = x.is_home === true ? '(H)' : '(A)'
+    const returnedOpponent = `${teams?.find(y => y.id === opp)?.short_name}${isHome}`
+    return returnedOpponent
+  })
+  const fixtureImages = data?.fixtures?.map(x => {
+    const opp = x.is_home === true ? x.team_a : x.team_h
+    const returnedOpponent = `${teams?.find(y => y.id === opp)?.short_name}`
+    return returnedOpponent
+  })
+  const fixtureDates = data?.fixtures?.map(x => {
+    const a = new Date(x.kickoff_time)
+    return a.toLocaleDateString()
+    
+})
+
+const fixtureTimes = data?.fixtures?.map(x => {
+  const a = new Date(x.kickoff_time)
+  const hrs = a.getHours() > 9 ? a.getHours() : `0${a.getHours()}`
+  const minutes = a.getMinutes() > 9 ? a.getMinutes() : `0${a.getMinutes()}`
+  return `${hrs}:${minutes}HRS`
+  
+})
  
   const handleClick = (a) => {
    handleShow()
    setGwStat(a)
-   console.log(a)
     }
   
   
@@ -46,8 +70,9 @@ const PlayerScreen = () => {
         <div className="chart border">
           <div className='chart-heading'>Player Performance</div>
           {data?.history?.length>0 ? <div className="chart-container">
+          <div>
             <div className="graph">
-              {history?.map((x, idx) => <div              
+              {data?.history?.map((x, idx) => <div              
                className="graph-label graph-wrap" key={idx}>
                 <div onClick={() =>handleClick(x)} 
                 style={{height: x.total_points === 0 && x.minutes > 0 ? 5+'px' : 10*x.total_points+'px'}}
@@ -60,11 +85,55 @@ const PlayerScreen = () => {
                 </div>)}
             </div>
             <div className="graph">
-              {rounds?.map((x, idx) => <div className="graph-label" key={idx}>{x}</div>)}
+              {opponents?.map((x, idx) => <div              
+               className="graph-label" key={idx}>
+                <img
+              src={`../../${x}.png`}
+              className="image_pic-2"
+              alt={x}
+            />
+                </div>)}
             </div>
             <div className="graph">
               {opponents?.map((x, idx) => <div className="graph-label" key={idx}>{x}</div>)}
             </div>
+            <div className="graph">
+              {rounds?.map((x, idx) => <div className="graph-label" key={idx}>{x}</div>)}
+            </div>
+          </div>
+          <div>
+          <div className="graph">
+              {fixtureImages?.map((x, idx) => <div              
+               className="graph-label-1" key={idx}>
+                <img
+              src={`../../${x}.png`}
+              className="image_pic-2"
+              alt={x}
+            />
+                </div>)}
+            </div>
+            <div className="graph">
+              {fixtureOpponents?.map((x, idx) => <div              
+               className="graph-label-1" key={idx}>
+                {x}
+                </div>)}
+            </div>
+            <div className="graph">
+              {fixtureTimes?.map((x, idx) => <div              
+               className="graph-label-1" key={idx}>
+                {x}
+                </div>)}
+            </div>
+            <div className="graph">
+              {fixtureDates?.map((x, idx) => <div              
+               className="graph-label-1 graph-wrap" key={idx}>
+                {x}
+                </div>)}
+            </div>
+            <div className="graph" style={{paddingTop: 34.4+'px'}}>
+              {fixureRounds?.map((x, idx) => <div className="graph-label-1" key={idx}>{x}</div>)}
+            </div>
+          </div>
           </div> : <Spinner />}
         </div>
       </div>}
