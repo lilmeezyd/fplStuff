@@ -17,6 +17,8 @@ import PlayerScreen from './screens/PlayerScreen.jsx'
 import Unknown from './screens/Unknown.jsx'
 import AchievementsScreen from './screens/AchievementsScreen.jsx'
 import Fixtures from './screens/Fixtures.jsx'
+import Login from './screens/Login.jsx'
+import Admin from './screens/Admin.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +30,8 @@ const router = createBrowserRouter(
       <Route path='/statistics/players/:playerId' element={<PlayerScreen />} />
       <Route path='/achievements' element={<AchievementsScreen />} />
       <Route path='/fixtures' element={<Fixtures />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/admin' element={<Admin />} />
       <Route path="*" element={<Unknown/>}/>
     </Route>
   )
