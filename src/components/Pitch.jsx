@@ -17,6 +17,7 @@ import {
   getBenched,
 } from "../helpers/picksHelper";
 import TransferRows from "./TransferRows";
+import { AiFillCaretRight, AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 const Pitch = () => {
   const {
     players,
@@ -26,6 +27,7 @@ const Pitch = () => {
     managerPicks,
     picks,
     resetGws,
+    colorOfArrow,
     tempPlayersOut,
     playersIn,
     pickIndex,
@@ -53,6 +55,12 @@ const Pitch = () => {
     curPage,
     curSize
   );
+
+  const colorOfArr = colorOfArrow()
+
+  console.log(managerHistory)
+  console.log(managerInfo)
+  console.log(colorOfArr)
 
   const reducer = (state, action) => {
     if (action.type === 'INITIAL_CHIPS') {
@@ -109,7 +117,7 @@ const Pitch = () => {
   useEffect(() => {
     getPickIndex(curPage);
   }, [getPickIndex, curPage]);
-
+ 
   const onSubmit = (e) => {
     e.preventDefault();
     setManagerId(fplId);
@@ -198,6 +206,16 @@ const Pitch = () => {
         </div>
       )}
       {!!managerId && (<div>
+        <div>
+        <h1>{managerInfo?.name}</h1>
+          <h4>{managerInfo?.player_first_name} {managerInfo?.player_last_name}</h4>
+          <div className="my-rank"><div>{colorOfArr === 'green' && <AiFillCaretUp />}
+            {colorOfArr === 'red' && <AiFillCaretDown />}
+            {colorOfArr === 'grey' && <AiFillCaretRight />}
+          </div>
+          <h4 style={{padding: 0, margin: 0, marginLeft: 10+'px'}}>{managerInfo?.summary_overall_rank}</h4>
+          </div>
+        </div>
         <div className="deadlines">
           <div>
             {playersSelected() === 15 ? (

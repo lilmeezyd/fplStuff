@@ -1422,6 +1422,13 @@ footer {
   padding: 1rem;
 }
 
+.my-rank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+
 .message {
   margin: 0.5rem 0;
   padding: 0.4rem;

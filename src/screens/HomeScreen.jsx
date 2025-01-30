@@ -17,8 +17,8 @@ const HomeScreen = () => {
           <div className="home-pos">Comparison</div>
         </div></LinkContainer>
         
-        <LinkContainer to='/achievements'><div className="pos-link position-relative">
-          <div className="home-pos">Achievements</div>
+        <LinkContainer to='/planner'><div className="pos-link position-relative">
+          <div className="home-pos">Planner</div>
         </div></LinkContainer>
         
       </div>

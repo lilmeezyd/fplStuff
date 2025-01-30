@@ -1,11 +1,19 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-const baseQuery = fetchBaseQuery({baseUrl: ''})
+const baseQuery = fetchBaseQuery({baseUrl: '',
+    prepareHeaders: (headers) => {
+        const token = JSON.parse(localStorage.getItem('userInfo'))?.token
+        if(token) {
+            headers.set('authorization', `Bearer ${token}`)
+        }
+
+        return headers
+    }
+})
 
 export const apiSlice = createApi({
     baseQuery,
-    tagTypes: ['User', 'Team', 'Position', 'Player', 'Matchday', 'Fixture', 'League',
-        'TeamLeague', 'OverallLeague', 'Pick', 'ManagerInfo', 'Live'
+    tagTypes: ['User', 'Fixture', 'Event', 'Player'
     ],
     endpoints: (builder) => ({})
 })

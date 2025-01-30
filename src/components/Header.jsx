@@ -32,6 +32,8 @@ const Header = () => {
                                 <Nav.Link>Statistics</Nav.Link></LinkContainer>
                             <LinkContainer to='/compare'><Nav.Link>Comparison Tool</Nav.Link></LinkContainer>
                             <LinkContainer to='/planner'><Nav.Link>My Planner</Nav.Link></LinkContainer>
+                            <LinkContainer to='/fixtures'><Nav.Link>Fixtures</Nav.Link></LinkContainer>
+                            {userInfo && <LinkContainer to='/admin'><Nav.Link>Admin</Nav.Link></LinkContainer>}
                            { userInfo && <Nav.Link style={{fontWeight: 700 }}>Hi, {userInfo?.firstName}</Nav.Link>}
                             {userInfo && <Button onClick={logoutHandler} className='btn btn-lgout'>Logout</Button>}
                             {/*<LinkContainer to='/achievements'><Nav.Link>Achievements</Nav.Link></LinkContainer> */}   

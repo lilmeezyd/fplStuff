@@ -27,7 +27,6 @@ const SquadPlayer = (props) => {
   const handleShowModal = () => setShowModal(true);
 
   const handleCloseModal = () => setShowModal(false);
-  console.log(playerInClass)
   return (
     <>
       {playerPos.multiplier === 0 ? (
