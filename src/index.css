@@ -834,6 +834,20 @@ footer {
   position: relative;
 }
 
+.fix-sd {
+  height: 20px;
+}
+
+.fix-sd ~ .fix-sd {
+  font-size: 8px;
+  height: 10px;
+}
+
+.fix-sd:has(+ .fix-sd)  {
+  font-size: 8px;
+  height: 10px;
+}
+
 .side-bar-teams {
   position: sticky;
   left: 0;

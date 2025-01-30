@@ -225,7 +225,6 @@ const Fixtures = () => {
                       {x.fixtures.map((y, idx) => (
                         <div
                           style={{
-                             height: 20+'px',
                             borderRadius: 5 + "px",
                             color:
                               y.difficulty === 4 || y.difficulty === 5
@@ -243,7 +242,7 @@ const Fixtures = () => {
                                 : "rgb(0,0,0)",
                             fontWeight: 700,
                           }}
-                          className="border curve"
+                          className="border curve fix-sd"
                           key={idx}
                         >
                           {team.id === y.team_a ? y.team_h : y.team_a} &nbsp;
