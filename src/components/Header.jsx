@@ -1,7 +1,21 @@
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
+import { Navbar, Nav, Container, NavDropdown, Button } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import { useDispatch, useSelector } from "react-redux";
+import { useLogoutMutation } from "../slices/userApiSlice";
+import { logout } from "../slices/authSlice";
+import { setCredentials } from '../slices/authSlice'
 
 const Header = () => {
+    const dispatch = useDispatch()
+    const { userInfo } = useSelector((state) => state.auth);
+    
+    const logoutHandler = async () => {
+        try {
+            dispatch(setCredentials(null))
+        } catch (err) {
+          console.log(err);
+        }
+      };
 
 
     return (
@@ -18,7 +32,9 @@ const Header = () => {
                                 <Nav.Link>Statistics</Nav.Link></LinkContainer>
                             <LinkContainer to='/compare'><Nav.Link>Comparison Tool</Nav.Link></LinkContainer>
                             <LinkContainer to='/planner'><Nav.Link>My Planner</Nav.Link></LinkContainer>
-                            <LinkContainer to='/achievements'><Nav.Link>Achievements</Nav.Link></LinkContainer>    
+                           { userInfo && <Nav.Link style={{fontWeight: 700 }}>Hi, {userInfo?.firstName}</Nav.Link>}
+                            {userInfo && <Button onClick={logoutHandler} className='btn btn-lgout'>Logout</Button>}
+                            {/*<LinkContainer to='/achievements'><Nav.Link>Achievements</Nav.Link></LinkContainer> */}   
 
                             {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

@@ -61,6 +61,40 @@ ul {
   z-index: 2;
 }
 
+.admin-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 30px;
+}
+
+.admin-panel-child {
+  border: 1px solid #aaa;
+  border-radius: 1rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  padding: 10px;
+}
+
+.admin-update {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.admin-update div:first-of-type {
+  font-weight: 600;
+}
+
+.admin-panel-line {
+  width: 75%;
+  height: 1px;
+  border: 1px solid #aaa;
+  margin: auto;
+}
+
 .home {
   background: url('../src/assets/1.webp');
   background-repeat: no-repeat;
@@ -214,6 +248,11 @@ footer {
   align-items: center;
   justify-content: center;
   margin: 8px 0;
+}
+
+.btn-lgout {
+  width: fit-content;
+  margin: auto;
 }
 
 .btn-controls {
