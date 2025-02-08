@@ -43,21 +43,20 @@ const Fixtures = () => {
             fix.event !== null &&
             eventIds.includes(fix.event)
         );
-        //const blanks = fixtures.filter(fix => (fix.team_a === team.id || fix.team_h === team.id) && fix.event === null )
-        //const fixsWithBlanksIds = fixtures.filter(fix => fix.team_a === team.id || fix.team_h === team.id).map(x => x.event)
-        //const setB = new Set(fixsWithBlanksIds)
-        //const diffSet = setA.difference(setB)
-        //const diff = Array.from(diffSet).sort((a,b) => a > b ? 1 : -1)
-        /*
-        const teamBlanks = blanks.
-        sort((a,b) => a.kickoff_time > b.kickoff_time ? 1 : -1).map((fix, index) => {
+        const fixIds = [...teamFixsAway.map(x => x.event), ...teamFixsHome.map(x => x.event)]
+        const blankIds = []
+        for(let i=0; i<eventIds.length; i++) {
+          if(!fixIds.includes(eventIds[i])) {
+            blankIds.push(eventIds[i])
+          }
+        }
+        const teamBlanks = blankIds.map(blank => {
           return {
-            ...fix,
-            event: diff[index],
+            event : blank,
             team_a_difficulty: 0,
             team_h_difficulty: 0
           }
-        })*/
+        })
 
         const teamA = teamFixsAway.map((fix) => {
           return {
@@ -78,8 +77,7 @@ const Fixtures = () => {
         });
 
         const teamFixt = [];
-        //const teamFixs = [...teamH, ...teamA, ...teamBlanks]
-        const teamFixs = [...teamH, ...teamA];
+        const teamFixs = [...teamH, ...teamA, ...teamBlanks]
         const teamFixIds = [];
         teamFixs.forEach((team) => {
           if (!teamFixIds.includes(team.event)) {
@@ -122,6 +120,8 @@ const Fixtures = () => {
         if(a.strength_overall > b.strength_overall) return -1
       })
   }, [fixtures, events, teams, gws, start, sort]);
+
+  //console.log(fixtureBody)
   return (
     <>
       <h4 className="py-3" style={{fontWeight: 700, fontSize: 1+'rem'}}>Fixture Ticker</h4>

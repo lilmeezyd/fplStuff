@@ -39,7 +39,10 @@ const Pitch = () => {
     playersSelected,
     getInTheBank,
     getPickIndex,
-    updateWildcard
+    updateWildcard,
+    updateBboost,
+    updateFreehit,
+    updateTcap
   } = useManager();
   const [fplId, setFplId] = useState("");
   const [managerId, setManagerId] = useState(
@@ -57,10 +60,7 @@ const Pitch = () => {
   );
 
   const colorOfArr = colorOfArrow()
-
-  console.log(managerHistory)
-  console.log(managerInfo)
-  console.log(colorOfArr)
+  console.log(managerHistory?.chips)
 
   const reducer = (state, action) => {
     if (action.type === 'INITIAL_CHIPS') {
