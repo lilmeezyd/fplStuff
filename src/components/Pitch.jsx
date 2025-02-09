@@ -36,88 +36,208 @@ const Pitch = () => {
     transferCost,
     eventId,
     chips,
+    initialChips,
     playersSelected,
     getInTheBank,
     getPickIndex,
     updateWildcard,
     updateBboost,
     updateFreehit,
-    updateTcap
+    updateTcap,
+    updateInitsWc,
+    updateInitsTc,
+    updateInitsFh,
+    updateInitsBb
   } = useManager();
   const [fplId, setFplId] = useState("");
+  const [init, setInit] = useState({ init_wc: null, init_tc: null, init_bb: null, init_fh: null })
   const [managerId, setManagerId] = useState(
     localStorage.getItem("managerId") || null
   );
   const { teams, fixtures, events, elementTypes } = usePlayer();
   const curSize = 1;
   const [curPage, setCurPage] = useState(1);
+  const [event, setEvent] = useState(1)
   const [show, setShow] = useState(false);
-
   const { gameweeks, length, countdowns } = getGameweeks(
     events,
     curPage,
     curSize
   );
 
+  const { init_wc, init_tc, init_bb, init_fh } = init
+
   const colorOfArr = colorOfArrow()
-  console.log(managerHistory?.chips)
 
   const reducer = (state, action) => {
     if (action.type === 'INITIAL_CHIPS') {
       return action.payload
     }
-    if (action.type === 'INC_EVENT') {
-      return {
-        ...state,
-        event: state.event + 1
-      }
-    }
-    if (action.type === 'DEC_EVENT') {
-      return {
-        ...state,
-        event: state.event - 1
-      }
-    }
     if (action.type === 'ACTIVATE_WC1') {
-      updateWildcard(true, action.payload)
-      return {
-        ...state,
-        wc1: action.payload
+      if (state.wc === null) {
+        updateInitsWc(event)
+        const len = Object.values(state).filter(x => x === event).length
+        if (len === 1) {
+          let key_entry = Object.entries(state).filter(x => x[1] === event )[0][0]
+          state[key_entry] = null
+          updateInitsBb(state.bb)
+          updateInitsFh(state.fh)
+          updateInitsTc(state.tc)
+          updateWildcard(true, event, state.bb, state.tc, state.fh)
+        }
+        return {
+          ...state,
+          wc: event
+        }
+      } else {
+        updateInitsWc(null)
+        updateWildcard(false, null, init_bb, init_tc, init_fh)
+        return {
+          ...state,
+          wc: null
+        }
       }
     }
-    if (action.type === 'DEACT_WC1') {
-      updateWildcard(false, null)
-      return {
-        ...state,
-        wc1: null
+    if (action.type === 'ACTIVATE_WC2') {
+      if (state.wc === null) {
+        updateInitsWc(event)
+        const len = Object.values(state).filter(x => x === event).length
+        if (len === 1) {
+          let key_entry = Object.entries(state).filter(x => x[1] === event)[0][0]
+          state[key_entry] = null
+        }
+          updateInitsBb(state.bb)
+          updateInitsFh(state.fh)
+          updateInitsTc(state.tc)
+          updateWildcard(true, event, state.bb, state.tc, state.fh)
+        return {
+          ...state,
+          wc: event
+        }
+      } else {
+        updateInitsWc(null)
+        updateWildcard(false, null, init_bb, init_tc, init_fh)
+        return {
+          ...state,
+          wc: null
+        }
+      }
+    }
+    if (action.type === 'ACTIVATE_FH') {
+      if (state.fh === null) {
+        updateInitsFh(event)
+        const len = Object.values(state).filter(x => x === event).length
+        if (len === 1) {
+          let key_entry = Object.entries(state).filter(x => x[1] === event )[0][0]
+          state[key_entry] = null
+        }
+          updateInitsBb(state.bb)
+          updateInitsWc(state.wc)
+          updateInitsTc(state.tc)
+          updateFreehit(true, event, state.tc, state.wc, state.bb)
+        return {
+          ...state,
+          fh: event
+        }
+      } else {
+        updateInitsFh(null)
+        updateFreehit(false, null, init_tc, init_wc, init_bb)
+        return {
+          ...state,
+          fh: null
+        }
+      }
+    }
+    if (action.type === 'ACTIVATE_TC') {
+      if (state.tc === null) {
+        updateInitsTc(event)
+        const len = Object.values(state).filter(x => x === event).length
+        if (len === 1) {
+          let key_entry = Object.entries(state).filter(x => x[1] === event )[0][0]
+          state[key_entry] = null
+          updateInitsFh(state.fh)
+          updateInitsWc(state.wc)
+          updateInitsBb(state.bb)
+          updateTcap(true, event, state.fh, state.bb, state.wc)
+        }
+        return {
+          ...state,
+          tc: event
+        }
+      } else {
+        updateInitsTc(null)
+        updateTcap(false, null, init_fh, init_bb, init_wc)
+        return {
+          ...state,
+          tc: null
+        }
+      }
+    }
+    if (action.type === 'ACTIVATE_BB') {
+      if (state.bb === null) {
+        updateInitsBb(event)
+        const len = Object.values(state).filter(x => x === event).length
+        if (len === 1) {
+          let key_entry = Object.entries(state).filter(x => x[1] === event )[0][0]
+          state[key_entry] = null
+        }
+          updateInitsFh(state.fh)
+          updateInitsWc(state.wc)
+          updateInitsTc(state.tc)
+          updateBboost(true, event, state.fh, state.tc, state.wc)
+        //updateBboost(true, event, init_fh, init_tc, init_wc)
+        return {
+          ...state,
+          bb: event
+        }
+      } else {
+        updateInitsBb(null)
+        updateBboost(false, null, init_fh, init_tc, init_wc)
+        return {
+          ...state,
+          bb: null
+        }
       }
     }
   }
 
   const [state, dispatch] = useReducer(reducer, {
-    event: 1, wc1: null, wc2: null, tc: null, bb: null, fh: null
+    wc: null, tc: null, bb: null, fh: null
   })
-  const { wc1, wc2, tc, bb, fh, event } = state
+  console.log(state)
+  const { wc, tc, bb, fh } = state
 
 
   useEffect(() => {
-    const { wildcard, bboost, tcap, freehit } = chips
+    const fh = initialChips?.init_fh
+    const tc = initialChips?.init_tc
+    const bb = initialChips?.init_bb
+    const wc = initialChips?.init_wc
+    setInit({
+      init_wc: initialChips?.init_wc,
+      init_tc: initialChips?.init_tc,
+      init_bb: initialChips?.init_bb,
+      init_fh: initialChips?.init_fh
+    })
     dispatch({
       type: 'INITIAL_CHIPS',
       payload: {
         ...state,
-        wc1: wildcard.event,
-        tc: tcap.event,
-        bb: bboost.event,
-        fh: freehit.event,
-        event: eventId + 1
+        wc,
+        tc,
+        bb,
+        fh
       }
     })
-  }, [chips, eventId])
+  }, [initialChips])
+  useEffect(() => {
+    setEvent(eventId + 1)
+  }, [eventId])
+  
   useEffect(() => {
     getPickIndex(curPage);
   }, [getPickIndex, curPage]);
- 
+
   const onSubmit = (e) => {
     e.preventDefault();
     setManagerId(fplId);
@@ -127,11 +247,11 @@ const Pitch = () => {
   };
 
   const viewNextPage = () => {
-    dispatch({ type: 'INC_EVENT', payload: 1 })
+    setEvent((v) => v + 1)
     setCurPage((v) => v + 1);
   };
   const viewPreviousPage = () => {
-    dispatch({ type: 'DEC_EVENT' })
+    setEvent((v) => v - 1)
     setCurPage((v) => v - 1);
   };
 
@@ -144,28 +264,35 @@ const Pitch = () => {
   };
 
   const activateWC1 = () => {
-   /* if (chips?.wildcard.event === event) {
-      dispatch({ type: 'DEACT_WC1' })
-    } else {
-      dispatch({ type: 'ACTIVATE_WC1', payload: event })
-    }*/
-   console.log("wc1")
+    dispatch({
+      type: 'ACTIVATE_WC1'
+    })
   };
 
   const activateWC2 = () => {
-    console.log("wc2");
+    dispatch({
+      type: 'ACTIVATE_WC2'
+    })
+
   };
 
   const activateFH = () => {
-    console.log("fh");
+    dispatch({
+      type: 'ACTIVATE_FH'
+    })
   };
 
   const activateTC = () => {
-    console.log("tc");
+    dispatch({
+      type: 'ACTIVATE_TC'
+    })
   };
 
   const activateBB = () => {
-    console.log("bb");
+    dispatch({
+      type: 'ACTIVATE_BB',
+      payload: event
+    })
   };
 
   const reset = () => {
@@ -207,13 +334,13 @@ const Pitch = () => {
       )}
       {!!managerId && (<div>
         <div>
-        <h1>{managerInfo?.name}</h1>
+          <h1>{managerInfo?.name}</h1>
           <h4>{managerInfo?.player_first_name} {managerInfo?.player_last_name}</h4>
           <div className="my-rank"><div>{colorOfArr === 'green' && <AiFillCaretUp />}
             {colorOfArr === 'red' && <AiFillCaretDown />}
             {colorOfArr === 'grey' && <AiFillCaretRight />}
           </div>
-          <h4 style={{padding: 0, margin: 0, marginLeft: 10+'px'}}>{managerInfo?.summary_overall_rank}</h4>
+            <h4 style={{ padding: 0, margin: 0, marginLeft: 10 + 'px' }}>{managerInfo?.summary_overall_rank}</h4>
           </div>
         </div>
         <div className="deadlines">
@@ -292,7 +419,7 @@ const Pitch = () => {
           </div>
           <div className="transfer-item">
             <div>FTs</div>
-            <div>{chips?.wildcard?.event === +eventId + curPage ? 'unlimited' :
+            <div>{wc === event || fh === event ? 'unlimited' :
               freeTransfers()}</div>
           </div>
         </div>
@@ -574,7 +701,7 @@ const Pitch = () => {
                 );
               })}
           </div>
-          <div className="default-bench">
+          <div className={`${bb === event ? 'bboost' : ''} default-bench`}>
             {benched !== undefined &&
               benched?.map((playerPos) => {
                 let player = players?.find((x) => x.id === playerPos.element);
@@ -643,25 +770,58 @@ const Pitch = () => {
         </div>
 
         <div className="chip-buttons p-2">
-        <Button 
-        className="btn btn-dark" onClick={activateWC1}>
-          <div>Wildcard 1</div>
-        </Button>
-        <Button onClick={activateWC2} className="btn btn-dark">
-          Wildcard 2
-        </Button>
-        <Button onClick={activateBB} className="btn btn-dark">
-          Bench Boost
-        </Button>
-        <Button onClick={activateFH} className="btn btn-dark">
-          FreeHit
-        </Button>
-        <Button onClick={activateTC} className="btn btn-dark">
-          Triple Captain
-        </Button>
-      </div>
-        <TransferRows show={show} handleClose={handleClose} />
-        <div className="py-2">
+          {new Date().toISOString() < new Date("2024/12/26/14:00").toISOString() && <div>
+            {(wc === null || wc === event) ? <Button onClick={activateWC1}>
+              <div className="style-btn"><div>Wildcard</div>
+                {wc === event && <div>Active</div>}</div>
+            </Button> : <Button
+              className="btn btn-dark" disabled>
+              <div className="style-btn">
+                <div>Wildcard</div>
+                {wc !== null && <div>Played</div>}
+                {wc !== null && <div>GW {wc}</div>}
+              </div>
+            </Button>}
+          </div>}
+
+          {new Date().toISOString() > new Date("2024/12/26/14:00").toISOString() && <>{(wc === null || wc === event) ? <Button onClick={activateWC2}>
+            <div className="style-btn"><div>Wildcard</div>
+              {wc === event && <div>Active</div>}</div>
+          </Button> : <Button disabled className="btn btn-dark">
+            <div className="style-btn">
+              <div>Wildcard</div>
+              {wc !== null && <div>Played</div>}
+              {wc !== null && <div>GW {wc}</div>}
+            </div>
+          </Button>}</>}
+          {(bb === null || bb === event) ? <Button onClick={activateBB}>
+            <div className="style-btn"><div>Bench Boost</div>{bb === event && <div>Active</div>}</div>
+          </Button> : <Button disabled className="btn btn-dark">
+            <div className="style-btn">
+              <div>Bench Boost</div>
+              {bb !== null && <div>Played</div>}
+              {bb !== null && <div>GW {bb}</div>}
+            </div>
+          </Button>}
+          {(fh === null || fh === event) ? <Button onClick={activateFH}>
+            <div className="style-btn"><div>FreeHit</div>{fh === event && <div>Active</div>}</div>
+          </Button> : <Button disabled className="btn btn-dark">
+            <div className="style-btn">
+              <div>FreeHit</div>
+              {fh !== null && <div>Played</div>}
+              {fh !== null && <div>GW {fh}</div>}
+            </div>
+          </Button>}
+          {(tc === null || tc === event) ? <Button onClick={activateTC}>
+            <div className="style-btn"><div>Triple Captain</div>
+              {tc === event && <div>Active</div>}</div>
+          </Button> : <Button disabled className="btn btn-dark">
+            <div className="style-btn">
+              <div>Triple Captain</div>
+              {tc !== null && <div>Played</div>}
+              {tc !== null && <div>GW {tc}</div>}
+            </div>
+          </Button>}
           <Button
             onClick={(e) => {
               e.preventDefault();
@@ -673,6 +833,7 @@ const Pitch = () => {
             Change FPL ID
           </Button>
         </div>
+        <TransferRows show={show} handleClose={handleClose} />
       </div>)}
     </>
   );

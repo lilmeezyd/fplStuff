@@ -17,6 +17,7 @@ export const ManagerContext = createContext({
   picks: [],
   real: [],
   chips: {},
+  initialChips: {},
   transferLogic: {},
   playersOut: [],
   playersIn: [],
@@ -29,34 +30,38 @@ export const ManagerContext = createContext({
   pickIndex: 1,
   playerName: "",
   remainingBudget: null,
-  getManagerInfo: () => {},
-  updateWildcard: () => {},
-  addToTransfersOut: () => {},
-  addToTransfersIn: () => {},
-  getPickIndex: () => {},
-  changeCaptain: () => {},
-  changeViceCaptain: () => {},
-  getOutPlayer: () => {},
-  getInPlayerOne: () => {},
-  getInPlayerTwo: () => {},
-  cancelPlayer: () => {},
-  getInTheBank: () => {},
-  switchPlayers: () => {},
-  changeBenchOrder: () => {},
-  playersSelected: () => {},
-  goalkeepersSelected: () => {},
-  defendersSelected: () => {},
-  midfieldersSelected: () => {},
-  forwardsSelected: () => {},
-  addedPlayer: () => {},
-  transferCost: () => {},
-  freeTransfers: () => {},
-  updateFreehit: () => {},
-  updateBboost: () => {},
-  updateTcap: () => {},
-  actDeact: () => {},
-  colorOfArrow: () => {},
-  resetGws: () => {},
+  updateInitsWc: () => { },
+  updateInitsTc: () => { },
+  updateInitsFh: () => { },
+  updateInitsBb: () => { },
+  getManagerInfo: () => { },
+  updateWildcard: () => { },
+  addToTransfersOut: () => { },
+  addToTransfersIn: () => { },
+  getPickIndex: () => { },
+  changeCaptain: () => { },
+  changeViceCaptain: () => { },
+  getOutPlayer: () => { },
+  getInPlayerOne: () => { },
+  getInPlayerTwo: () => { },
+  cancelPlayer: () => { },
+  getInTheBank: () => { },
+  switchPlayers: () => { },
+  changeBenchOrder: () => { },
+  playersSelected: () => { },
+  goalkeepersSelected: () => { },
+  defendersSelected: () => { },
+  midfieldersSelected: () => { },
+  forwardsSelected: () => { },
+  addedPlayer: () => { },
+  transferCost: () => { },
+  freeTransfers: () => { },
+  updateFreehit: () => { },
+  updateBboost: () => { },
+  updateTcap: () => { },
+  actDeact: () => { },
+  colorOfArrow: () => { },
+  resetGws: () => { },
 });
 
 function ManagerProvider({ children }) {
@@ -77,6 +82,7 @@ function ManagerProvider({ children }) {
     freehit: { used: false, event: null },
     tcap: { used: false, event: null },
   });
+  const [initialChips, setInitialChips] = useState({ init_wc: null, init_tc: null, init_bb: null, init_fh: null })
 
   const [transferLogic, setTransferLogic] = useState({
     rolledFt: false,
@@ -94,21 +100,21 @@ function ManagerProvider({ children }) {
   const [inplayerTwo, setInPlayerTwo] = useState({});
   const [pickIndex, setPickIndex] = useState(1);
   const [playerName, setPlayerName] = useState("");
-  const [ first, setFirst ] = useState(true)
- 
+  const [first, setFirst] = useState(true)
+
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
-          const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getPlayers`)
-          //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
-          const data = await response.data
-          setPlayers(data)
+        const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getPlayers`)
+        //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
+        const data = await response.data
+        setPlayers(data)
       } catch (error) {
-          let errorMsg = error?.response?.data?.msg || error?.message
-          console.log(errorMsg)
+        let errorMsg = error?.response?.data?.msg || error?.message
+        console.log(errorMsg)
       }
-  }
-  fetchPlayers()
+    }
+    fetchPlayers()
     const fetchManagerInfo = async () => {
       //const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/`
       const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/`;
@@ -136,14 +142,14 @@ function ManagerProvider({ children }) {
             ? true
             : wildcardLength === 1 &&
               data.chips.filter((x) => x.name === "wildcard")[0].time >
-                new Date("2022/12/26/14:00").toISOString()
-            ? true
-            : false;
-            /*
-            let wildcard1 = data.chips.some((x) => x.name === 'wildcard') && 
-            wildcardLength <= 2 && data.chips.filter((x) => x.name === "wildcard")[0].time < 
-            new Date("2024/12/29/16:30").toISOString()
-            let wildcard2*/
+              new Date("2024/12/29/16:00").toISOString()
+              ? true
+              : false;
+        /*
+        let wildcard1 = data.chips.some((x) => x.name === 'wildcard') && 
+        wildcardLength <= 2 && data.chips.filter((x) => x.name === "wildcard")[0].time < 
+        new Date("2024/12/29/16:30").toISOString()
+        let wildcard2*/
 
         let bboost = data.chips.some((x) => x.name === "bboost") ? true : false;
         let freehit = data.chips.some((x) => x.name === "freehit")
@@ -156,9 +162,10 @@ function ManagerProvider({ children }) {
             ? data.chips.filter((x) => x.name === "wildcard")[1].event
             : wildcardLength === 1 &&
               data.chips.filter((x) => x.name === "wildcard")[0].time >
-                new Date("2022/12/26/14:00").toISOString()
-            ? data.chips.filter((x) => x.name === "wildcard")[0].event
-            : null;
+              new Date("2024/12/29/16:00").toISOString()
+              ? data.chips.filter((x) => x.name === "wildcard")[0].event
+              : null;
+        console.log(wEvent)
 
         //let wEvent = wildcard === true ? data.chips.filter(x => x.name === 'wildcard')[0].event : null
         let bEvent =
@@ -181,17 +188,21 @@ function ManagerProvider({ children }) {
           tcap: { used: tcap, event: tEvent },
         });
 
-        const realPicks = [];
-      const gameweekPicks = [];
-      const gameweekTransfersOut = [];
-      const gameweekTransfersIn = [];
-      const transferPlayers = [];
-      const seasonPicks = [];
-      let bank,
-        value,
-        seasonBudget = (100).toFixed(1);
+        setInitialChips({
+          init_bb: bEvent, init_fh: fEvent, init_tc: tEvent, init_wc: wEvent
+        })
 
-        if(current.length === 0) {
+        const realPicks = [];
+        const gameweekPicks = [];
+        const gameweekTransfersOut = [];
+        const gameweekTransfersIn = [];
+        const transferPlayers = [];
+        const seasonPicks = [];
+        let bank,
+          value,
+          seasonBudget = (100).toFixed(1);
+
+        if (current.length === 0) {
           setFirst(true)
           for (let i = eventId + 1; i < 39; i++) {
             gameweekPicks.push({
@@ -217,31 +228,31 @@ function ManagerProvider({ children }) {
           localStorage.setItem("picks", JSON.stringify(gameweekPicks));
         } else {
           setFirst(false)
-          const eventId = current[current.length-1]?.event
+          const eventId = current[current.length - 1]?.event
           setEventId(eventId)
           const chipDay = chips?.filter(x => x.name === 'wildcard' || x.name === 'freehit').map(x => x.event)
           let free = 1
           /*More work */
           const tranzies = current.filter((x, idx) => idx > 0)
-          if(tranzies.length > 0) {
+          if (tranzies.length > 0) {
             tranzies.forEach(x => {
-              if(x.event_transfers === 0) {
-                if(!chipDay.includes(x.event)) {
-                  if(free === 5) {
-                    free+=0
+              if (x.event_transfers === 0) {
+                if (!chipDay.includes(x.event)) {
+                  if (free === 5) {
+                    free += 0
                   } else {
-                    free+=1
+                    free += 1
                   }
                 } else {
-                  free+=0
+                  free += 0
                 }
               }
-              if(x.event_transfers >= 1) {
-                if(free >= x.event_transfers) {
-                  free-=x.event_transfers
-                  free+=1
+              if (x.event_transfers >= 1) {
+                if (free >= x.event_transfers) {
+                  free -= x.event_transfers
+                  free += 1
                 } else {
-                  free=1
+                  free = 1
                 }
               }
             })
@@ -255,13 +266,13 @@ function ManagerProvider({ children }) {
               fts: 1
             }))
           }
-          
+
         }
 
         //localStorage.removeItem('chips')
         // localStorage.setItem('chips', JSON.stringify(chips))
 
-        
+
       } catch (error) {
         console.log(error);
       }
@@ -302,7 +313,7 @@ function ManagerProvider({ children }) {
       } else {
         //const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId}/picks/`;
         //const url1 = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/transfers/`;
-        
+
         const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${eventId}/picks/`;
         const url1 = `https://fpl-stuff-proxy.vercel.app/transfers/${managerId}/`;
         try {
@@ -318,12 +329,11 @@ function ManagerProvider({ children }) {
               //https://corsproxy.io/?https://fantasy.premierleague.com
               const response2 =
                 await //fetch(`http://localhost:5000/${managerId}/event/${eventId-1}/picks`)
-                fetch(
-                  `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${
-                    eventId - 1
-                  }/picks/`
-                );
-                //fetch(`https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId-1}/picks/`)
+                  fetch(
+                    `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${eventId - 1
+                    }/picks/`
+                  );
+              //fetch(`https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId-1}/picks/`)
               const data3 = await response2.json();
               data = data3;
             } else {
@@ -335,7 +345,7 @@ function ManagerProvider({ children }) {
             tc: 0,
             fts: 'unlimited'
           }))*/
-         //console.log(data)
+            //console.log(data)
             setManagerPicks(data);
 
             //let buyingPrice
@@ -345,8 +355,8 @@ function ManagerProvider({ children }) {
             /*const gameweekPicks = []
                 const gameweekTransfersOut = []
                 const gameweekTransfersIn = []
-				const transferPlayers = []
-				let bank, value*/
+        const transferPlayers = []
+        let bank, value*/
 
             // Resetting Team to state before auto-subs
             if (data.automatic_subs.length > 0) {
@@ -501,7 +511,7 @@ function ManagerProvider({ children }) {
             });
 
             /* Adding selling prices and buying prices to picks to be used on reset for
-		         the first gw in the ui */
+             the first gw in the ui */
             realPicksHyp.forEach((x) => {
               let selling_price,
                 formattedCost,
@@ -623,17 +633,21 @@ function ManagerProvider({ children }) {
     setPlayerName("");
   };
 
-  const updateWildcard = (isUsed, eventPlayed) => {
+  const updateWildcard = (isUsed, eventPlayed, bb, tc, fh) => {
     setChips({
-      ...chips,
+      freehit: { event: fh, used: fh >= eventId ? true : false },
+      tcap: { event: tc, used: tc >= eventId ? true : false },
+      bboost: { used: bb >= eventId ? true : false, event: bb },
       wildcard: { used: isUsed, event: eventPlayed },
     });
   };
 
-  const updateFreehit = (isUsed, eventPlayed) => {
+  const updateFreehit = (isUsed, eventPlayed, tc, wc, bb) => {
     setChips({
-      ...chips,
       freehit: { used: isUsed, event: eventPlayed },
+      tcap: { event: tc, used: tc >= eventId ? true : false },
+      wildcard: { event: wc, used: wc >= eventId ? true : false },
+      bboost: { used: bb >= eventId ? true : false, event: bb },
     });
   };
 
@@ -650,17 +664,17 @@ function ManagerProvider({ children }) {
     setInPlayerOne({});
     // set picks for later weeks
     if (pickIndex === 1) {
-        if(eventId === 0) {
-            setPicks(prev => prev.map((pick, key) => key >= pickIndex-1? {...pick, newPicks: []} : pick))
-        } 
-        else{
-            setPicks((prev) =>
-                prev.map((pick, key) =>
-                  key >= pickIndex - 1 ? { ...pick, newPicks: real } : pick
-                )
-              );
-        }
-      
+      if (eventId === 0) {
+        setPicks(prev => prev.map((pick, key) => key >= pickIndex - 1 ? { ...pick, newPicks: [] } : pick))
+      }
+      else {
+        setPicks((prev) =>
+          prev.map((pick, key) =>
+            key >= pickIndex - 1 ? { ...pick, newPicks: real } : pick
+          )
+        );
+      }
+
     } else {
       if (
         chips.freehit.event === picks[pickIndex - 2].event &&
@@ -736,19 +750,36 @@ function ManagerProvider({ children }) {
     }
   }, [chips.freehit.event, eventId, pickIndex, real]);
 
-  const updateBboost = (isUsed, eventPlayed) => {
+  const updateBboost = (isUsed, eventPlayed, fh, tc, wc) => {
     setChips({
-      ...chips,
+      tcap: { event: tc, used: tc >= eventId ? true : false },
+      freehit: { event: fh, used: fh >= eventId ? true : false },
+      wildcard: { event: wc, used: wc >= eventId ? true : false },
       bboost: { used: isUsed, event: eventPlayed },
     });
   };
 
-  const updateTcap = (isUsed, eventPlayed) => {
+  const updateTcap = (isUsed, eventPlayed, fh, bb, wc) => {
     setChips({
-      ...chips,
+      freehit: { event: fh, used: fh >= eventId ? true : false },
+      wildcard: { event: wc, used: wc >= eventId ? true : false },
+      bboost: { used: bb >= eventId ? true : false, event: bb },
       tcap: { used: isUsed, event: eventPlayed },
     });
   };
+
+  const updateInitsWc = (event) => {
+    setInitialChips(prev => ({ ...prev, init_wc: event }))
+  }
+  const updateInitsFh = (event) => {
+    setInitialChips(prev => ({ ...prev, init_fh: event }))
+  }
+  const updateInitsBb = (event) => {
+    setInitialChips(prev => ({ ...prev, init_bb: event }))
+  }
+  const updateInitsTc = (event) => {
+    setInitialChips(prev => ({ ...prev, init_tc: event }))
+  }
 
   const addToTransfersIn = (id, elementType, teamId) => {
     const player = {};
@@ -828,7 +859,7 @@ function ManagerProvider({ children }) {
       picks[pickIndex - 1].newPicks.filter(
         (x) => x.multiplier !== 0 && x.element_type === 4
       ).length - playersOutPF;
-      
+
 
     if (
       picks[pickIndex - 1]?.newPicks.length < 15 ||
@@ -866,14 +897,14 @@ function ManagerProvider({ children }) {
           !orderOne && !orderTwo && !orderThree
             ? 13
             : orderOne && !orderTwo && !orderThree
-            ? 14
-            : orderOne && orderTwo && !orderThree
-            ? 15
-            : !orderOne && orderTwo && orderThree
-            ? 13
-            : orderOne && !orderTwo && orderThree
-            ? 14
-            : 15;
+              ? 14
+              : orderOne && orderTwo && !orderThree
+                ? 15
+                : !orderOne && orderTwo && orderThree
+                  ? 13
+                  : orderOne && !orderTwo && orderThree
+                    ? 14
+                    : 15;
       }
 
       if (
@@ -892,14 +923,14 @@ function ManagerProvider({ children }) {
           !orderOne && !orderTwo && !orderThree
             ? 13
             : orderOne && !orderTwo && !orderThree
-            ? 14
-            : orderOne && orderTwo && !orderThree
-            ? 15
-            : !orderOne && orderTwo && orderThree
-            ? 13
-            : orderOne && !orderTwo && orderThree
-            ? 14
-            : 15;
+              ? 14
+              : orderOne && orderTwo && !orderThree
+                ? 15
+                : !orderOne && orderTwo && orderThree
+                  ? 13
+                  : orderOne && !orderTwo && orderThree
+                    ? 14
+                    : 15;
       }
 
       if (
@@ -913,14 +944,14 @@ function ManagerProvider({ children }) {
           !orderOne && !orderTwo && !orderThree
             ? 13
             : orderOne && !orderTwo && !orderThree
-            ? 14
-            : orderOne && orderTwo && !orderThree
-            ? 15
-            : !orderOne && orderTwo && orderThree
-            ? 13
-            : orderOne && !orderTwo && orderThree
-            ? 14
-            : 15;
+              ? 14
+              : orderOne && orderTwo && !orderThree
+                ? 15
+                : !orderOne && orderTwo && orderThree
+                  ? 13
+                  : orderOne && !orderTwo && orderThree
+                    ? 14
+                    : 15;
       }
       if (
         (elementType === 1 && goalkeepers < 2) ||
@@ -962,12 +993,12 @@ function ManagerProvider({ children }) {
               ...x.map((gw, idx) =>
                 idx === pickIndex - 1
                   ? {
-                      ...gw,
-                      arr: [
-                        ...gw.arr.filter((y, key) => key !== inIndex),
-                        withIsOut,
-                      ],
-                    }
+                    ...gw,
+                    arr: [
+                      ...gw.arr.filter((y, key) => key !== inIndex),
+                      withIsOut,
+                    ],
+                  }
                   : gw
               ),
             ]);
@@ -982,11 +1013,11 @@ function ManagerProvider({ children }) {
               ...picks.map((pick, key) =>
                 key === pickIndex - 1
                   ? {
-                      ...pick,
-                      newPicks: pick.newPicks.map((newPick, idx) =>
-                        idx === repeatedIndex ? repeatedPlayer[0] : newPick
-                      ),
-                    }
+                    ...pick,
+                    newPicks: pick.newPicks.map((newPick, idx) =>
+                      idx === repeatedIndex ? repeatedPlayer[0] : newPick
+                    ),
+                  }
                   : pick
               ),
             ]);
@@ -1022,13 +1053,13 @@ function ManagerProvider({ children }) {
               ...picks.map((pick, key) =>
                 key === pickIndex - 1
                   ? {
-                      ...pick,
-                      newPicks: pick.newPicks.map((newPick, idx) =>
-                        newPick.element === repeatedPlayer[0].element
-                          ? repeatedPlayer[0]
-                          : newPick
-                      ),
-                    }
+                    ...pick,
+                    newPicks: pick.newPicks.map((newPick, idx) =>
+                      newPick.element === repeatedPlayer[0].element
+                        ? repeatedPlayer[0]
+                        : newPick
+                    ),
+                  }
                   : pick
               ),
             ]);
@@ -1106,8 +1137,8 @@ function ManagerProvider({ children }) {
                 idx === pickIndex - 1
                   ? { ...gw, arr: [...gw.arr, player] }
                   : idx > pickIndex - 1
-                  ? { ...gw, arr: [] }
-                  : gw
+                    ? { ...gw, arr: [] }
+                    : gw
               ),
             ]);
             // set playersOut array
@@ -1122,11 +1153,11 @@ function ManagerProvider({ children }) {
               ...picks.map((pick, key) =>
                 key === pickIndex - 1
                   ? {
-                      ...pick,
-                      newPicks: pick?.newPicks?.map((newPick, idx) =>
-                        idx === playerOutIndex ? player : newPick
-                      ),
-                    }
+                    ...pick,
+                    newPicks: pick?.newPicks?.map((newPick, idx) =>
+                      idx === playerOutIndex ? player : newPick
+                    ),
+                  }
                   : pick
               ),
             ]);
@@ -1213,11 +1244,11 @@ function ManagerProvider({ children }) {
             ...picks.map((pick, key) =>
               key === 0
                 ? {
-                    ...pick,
-                    newPicks: pick.newPicks.filter(
-                      (newPick, idx) => newPick.element !== player.element
-                    ),
-                  }
+                  ...pick,
+                  newPicks: pick.newPicks.filter(
+                    (newPick, idx) => newPick.element !== player.element
+                  ),
+                }
                 : pick
             ),
           ]);
@@ -1283,11 +1314,11 @@ function ManagerProvider({ children }) {
         ...picks.map((pick, key) =>
           key === pickIndex - 1
             ? {
-                ...pick,
-                newPicks: pick.newPicks.map((newPick, idx) =>
-                  idx === isFoundInPicksIndex ? replacedElementObj : newPick
-                ),
-              }
+              ...pick,
+              newPicks: pick.newPicks.map((newPick, idx) =>
+                idx === isFoundInPicksIndex ? replacedElementObj : newPick
+              ),
+            }
             : pick
         ),
       ]);
@@ -1346,25 +1377,25 @@ function ManagerProvider({ children }) {
       picks.map((pick, key) =>
         key === pickIndex - 1
           ? {
-              ...pick,
-              newPicks: pick.newPicks.map((newPick) =>
-                newPick.element === old.element
+            ...pick,
+            newPicks: pick.newPicks.map((newPick) =>
+              newPick.element === old.element
+                ? {
+                  ...newPick,
+                  is_captain: oldCap,
+                  is_vice_captain: oldVc,
+                  multiplier: oldMultiplier,
+                }
+                : newPick.element === player.element
                   ? {
-                      ...newPick,
-                      is_captain: oldCap,
-                      is_vice_captain: oldVc,
-                      multiplier: oldMultiplier,
-                    }
-                  : newPick.element === player.element
-                  ? {
-                      ...newPick,
-                      is_captain: playerCap,
-                      is_vice_captain: playerVc,
-                      multiplier: playerMultiplier,
-                    }
+                    ...newPick,
+                    is_captain: playerCap,
+                    is_vice_captain: playerVc,
+                    multiplier: playerMultiplier,
+                  }
                   : newPick
-              ),
-            }
+            ),
+          }
           : pick
       )
     );
@@ -1408,25 +1439,25 @@ function ManagerProvider({ children }) {
       ...picks.map((pick, key) =>
         key === pickIndex - 1
           ? {
-              ...pick,
-              newPicks: pick.newPicks.map((newPick) =>
-                newPick.element === old.element
+            ...pick,
+            newPicks: pick.newPicks.map((newPick) =>
+              newPick.element === old.element
+                ? {
+                  ...newPick,
+                  is_captain: oldCap,
+                  is_vice_captain: oldVc,
+                  multiplier: oldMultiplier,
+                }
+                : newPick.element === player.element
                   ? {
-                      ...newPick,
-                      is_captain: oldCap,
-                      is_vice_captain: oldVc,
-                      multiplier: oldMultiplier,
-                    }
-                  : newPick.element === player.element
-                  ? {
-                      ...newPick,
-                      is_captain: playerCap,
-                      is_vice_captain: playerVc,
-                      multiplier: 1,
-                    }
+                    ...newPick,
+                    is_captain: playerCap,
+                    is_vice_captain: playerVc,
+                    multiplier: 1,
+                  }
                   : newPick
-              ),
-            }
+            ),
+          }
           : pick
       ),
     ]);
@@ -1472,27 +1503,27 @@ function ManagerProvider({ children }) {
       ...picks.map((pick, key) =>
         key === pickIndex - 1
           ? {
-              ...pick,
-              newPicks: pick.newPicks.map((newPick) =>
-                newPick.element === outplayer.element
+            ...pick,
+            newPicks: pick.newPicks.map((newPick) =>
+              newPick.element === outplayer.element
+                ? {
+                  ...newPick,
+                  is_captain: false,
+                  is_vice_captain: false,
+                  multiplier: 0,
+                  position: inplayerOne.position,
+                }
+                : newPick.element === inplayerOne.element
                   ? {
-                      ...newPick,
-                      is_captain: false,
-                      is_vice_captain: false,
-                      multiplier: 0,
-                      position: inplayerOne.position,
-                    }
-                  : newPick.element === inplayerOne.element
-                  ? {
-                      ...newPick,
-                      is_captain: outplayer.is_captain,
-                      is_vice_captain: outplayer.is_vice_captain,
-                      multiplier: outplayer.multiplier,
-                      position: outplayer.position,
-                    }
+                    ...newPick,
+                    is_captain: outplayer.is_captain,
+                    is_vice_captain: outplayer.is_vice_captain,
+                    multiplier: outplayer.multiplier,
+                    position: outplayer.position,
+                  }
                   : newPick
-              ),
-            }
+            ),
+          }
           : pick
       ),
     ]);
@@ -1532,15 +1563,15 @@ function ManagerProvider({ children }) {
       ...picks.map((pick, key) =>
         key === pickIndex - 1
           ? {
-              ...pick,
-              newPicks: pick.newPicks.map((newPick) =>
-                newPick.element === inplayerOne.element
-                  ? { ...newPick, position: inplayerTwo.position }
-                  : newPick.element === inplayerTwo.element
+            ...pick,
+            newPicks: pick.newPicks.map((newPick) =>
+              newPick.element === inplayerOne.element
+                ? { ...newPick, position: inplayerTwo.position }
+                : newPick.element === inplayerTwo.element
                   ? { ...newPick, position: inplayerOne.position }
                   : newPick
-              ),
-            }
+            ),
+          }
           : pick
       ),
     ]);
@@ -1578,15 +1609,15 @@ function ManagerProvider({ children }) {
     player.multiplier === 0 ? setInPlayerOne({}) : setOutPlayer({});
   };
   const getInTheBank = () => {
-    if(picks.length > 0) {
-      const totalBudget = +(picks[pickIndex-1]?.totalBudget)
-    let spent =
-      picks[pickIndex - 1]?.newPicks?.reduce((x, y) => x + +y.selling_price, 0) -
-      tempPlayersOut?.reduce((x, y) => x + +y.selling_price, 0);
-    let inBank = totalBudget - (+(spent))
-    return inBank.toFixed(1);
+    if (picks.length > 0) {
+      const totalBudget = +(picks[pickIndex - 1]?.totalBudget)
+      let spent =
+        picks[pickIndex - 1]?.newPicks?.reduce((x, y) => x + +y.selling_price, 0) -
+        tempPlayersOut?.reduce((x, y) => x + +y.selling_price, 0);
+      let inBank = totalBudget - (+(spent))
+      return inBank.toFixed(1);
     }
-    
+
   };
 
   const playersSelected = () => {
@@ -1656,25 +1687,25 @@ function ManagerProvider({ children }) {
         chips.freehit.event !== current[a].event &&
         chips.wildcard.event !== current[a].event
       ) {
-        c+=1;
+        c += 1;
       }
       if (
         current[a].arr.length >= 0 &&
         (chips.freehit.event === current[a].event ||
           chips.wildcard.event === current[a].event) || c === 5
       ) {
-        c+=0;
+        c += 0;
       }
       if (current[a].arr.length > 0 &&
         chips.freehit.event !== current[a].event &&
         chips.wildcard.event !== current[a].event) {
-        if(current[a].arr.length >= c) {
+        if (current[a].arr.length >= c) {
           c = 1;
         } else {
-          c-=current[a].arr.length;
-          c+=1
+          c -= current[a].arr.length;
+          c += 1
         }
-        
+
       }
       a += 1;
       returnFt(a, b, c);
@@ -1685,7 +1716,7 @@ function ManagerProvider({ children }) {
   const transferCost = () => {
     let fts =
       chips.freehit.event === +eventId + pickIndex ||
-      chips.wildcard.event === +eventId + pickIndex
+        chips.wildcard.event === +eventId + pickIndex
         ? 1e10000
         : freeTransfers();
     let playerLength =
@@ -1736,6 +1767,11 @@ function ManagerProvider({ children }) {
     remainingBudget: remainingBudget,
     pickIndex: pickIndex,
     playerName: playerName,
+    initialChips: initialChips,
+    updateInitsWc,
+    updateInitsTc,
+    updateInitsFh,
+    updateInitsBb,
     getManagerInfo,
     updateWildcard,
     addToTransfersIn,

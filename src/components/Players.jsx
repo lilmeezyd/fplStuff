@@ -159,7 +159,7 @@ const viewLastPage = () => {
           {goalkeepers.map((goalkeeper) => {
               let teamObj = teams.find(x => x.id === goalkeeper.team)
               let news = goalkeeper.chance_of_playing_next_round
-              let short_name = teamObj.short_name
+              let short_name = teamObj?.short_name
               let positionObj = elementTypes.find(x => x.id === goalkeeper.element_type)
               let short_pos = positionObj.singular_name_short
               let forwardImage = positionObj.id === 1 ? `${teamObj.code}_1-66`:
@@ -193,7 +193,7 @@ const viewLastPage = () => {
           {defenders.map((defender) => {
               let teamObj = teams.find(x => x.id === defender.team)
               let news = defender.chance_of_playing_next_round
-              let short_name = teamObj.short_name
+              let short_name = teamObj?.short_name
               let positionObj = elementTypes.find(x => x.id === defender.element_type)
               let short_pos = positionObj.singular_name_short
               let forwardImage = positionObj.id === 1 ? `${teamObj.code}_1-66`:
@@ -227,7 +227,7 @@ const viewLastPage = () => {
           {midfielders.map((midfielder) => {
               let teamObj = teams.find(x => x.id === midfielder.team)
               let news = midfielder.chance_of_playing_next_round
-              let short_name = teamObj.short_name
+              let short_name = teamObj?.short_name
               let positionObj = elementTypes.find(x => x.id === midfielder.element_type)
               let short_pos = positionObj.singular_name_short
               let forwardImage = positionObj.id === 1 ? `${teamObj.code}_1-66`:
@@ -261,7 +261,7 @@ const viewLastPage = () => {
           {forwards.map((forward) => {
               let teamObj = teams.find(x => x.id === forward.team)
               let news = forward.chance_of_playing_next_round
-              let short_name = teamObj.short_name
+              let short_name = teamObj?.short_name
               let positionObj = elementTypes.find(x => x.id === forward.element_type)
               let short_pos = positionObj.singular_name_short
               let forwardImage = positionObj.id === 1 ? `${teamObj.code}_1-66`:

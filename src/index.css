@@ -838,12 +838,12 @@ footer {
   height: 20px;
 }
 
-.fix-sd ~ .fix-sd {
+.fix-sd~.fix-sd {
   font-size: 8px;
   height: 10px;
 }
 
-.fix-sd:has(+ .fix-sd)  {
+.fix-sd:has(+ .fix-sd) {
   font-size: 8px;
   height: 10px;
 }
@@ -1247,12 +1247,21 @@ footer {
 }
 
 .chip-buttons {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
 .chip-buttons Button {
-  flex: 1 0 0%;
-  margin: 0 0.5rem;
+  margin: 0.5rem;
+  min-height: 50px;
+}
+
+.style-btn {
+  border: 1px solid #aaa;
+  box-shadow: 0 4px 30px;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  backdrop-filter: blur(5px);
 }
 
 .no-picks-team {
@@ -1290,6 +1299,10 @@ footer {
 .default-player .squad-player,
 .default-bench .squad-player {
   width: 20%;
+}
+
+.bboost {
+  border: 2px solid white;
 }
 
 .data_name {
