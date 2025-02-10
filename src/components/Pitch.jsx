@@ -444,7 +444,7 @@ const Pitch = () => {
                   let inTemp = tempPlayersOut?.some(
                     (x) => x.element === playerPos.element
                   );
-                  let inplayersIn = playersIn[pickIndex - 1].arr?.some(
+                  let inplayersIn = playersIn[pickIndex - 1]?.arr?.some(
                     (x) => x.element === playerPos.element
                   );
                   let playerInClass = inplayersIn ? "player_in" : "";
@@ -511,7 +511,7 @@ const Pitch = () => {
                 let inTemp = tempPlayersOut?.some(
                   (x) => x.element === playerPos.element
                 );
-                let inplayersIn = playersIn[pickIndex - 1].arr?.some(
+                let inplayersIn = playersIn[pickIndex - 1]?.arr?.some(
                   (x) => x.element === playerPos.element
                 );
                 let playerInClass = inplayersIn ? "player_in" : "";
@@ -577,7 +577,7 @@ const Pitch = () => {
                 let inTemp = tempPlayersOut?.some(
                   (x) => x.element === playerPos.element
                 );
-                let inplayersIn = playersIn[pickIndex - 1].arr?.some(
+                let inplayersIn = playersIn[pickIndex - 1]?.arr?.some(
                   (x) => x.element === playerPos.element
                 );
                 let playerInClass = inplayersIn ? "player_in" : "";
@@ -643,7 +643,7 @@ const Pitch = () => {
                 let inTemp = tempPlayersOut?.some(
                   (x) => x.element === playerPos.element
                 );
-                let inplayersIn = playersIn[pickIndex - 1].arr?.some(
+                let inplayersIn = playersIn[pickIndex - 1]?.arr?.some(
                   (x) => x.element === playerPos.element
                 );
                 let playerInClass = inplayersIn ? "player_in" : "";
@@ -709,7 +709,7 @@ const Pitch = () => {
                 let inTemp = tempPlayersOut?.some(
                   (x) => x.element === playerPos.element
                 );
-                let inplayersIn = playersIn[pickIndex - 1].arr?.some(
+                let inplayersIn = playersIn[pickIndex - 1]?.arr?.some(
                   (x) => x.element === playerPos.element
                 );
                 let playerInClass = inplayersIn ? "player_in" : "";
