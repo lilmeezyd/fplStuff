@@ -15,6 +15,7 @@ import {
   getMidfielders,
   getForwards,
   getBenched,
+  getManagers
 } from "../helpers/picksHelper";
 import TransferRows from "./TransferRows";
 import { AiFillCaretRight, AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
@@ -44,13 +45,15 @@ const Pitch = () => {
     updateBboost,
     updateFreehit,
     updateTcap,
+    updateAm,
     updateInitsWc,
     updateInitsTc,
     updateInitsFh,
-    updateInitsBb
+    updateInitsBb,
+    updateInitsAm
   } = useManager();
   const [fplId, setFplId] = useState("");
-  const [init, setInit] = useState({ init_wc: null, init_tc: null, init_bb: null, init_fh: null })
+  const [init, setInit] = useState({ init_wc: null, init_tc: null, init_bb: null, init_fh: null, init_am: null })
   const [managerId, setManagerId] = useState(
     localStorage.getItem("managerId") || null
   );
@@ -65,7 +68,7 @@ const Pitch = () => {
     curSize
   );
 
-  const { init_wc, init_tc, init_bb, init_fh } = init
+  const { init_wc, init_tc, init_bb, init_fh, init_am } = init
 
   const colorOfArr = colorOfArrow()
 
@@ -78,12 +81,13 @@ const Pitch = () => {
         updateInitsWc(event)
         const len = Object.values(state).filter(x => x === event).length
         if (len === 1) {
-          let key_entry = Object.entries(state).filter(x => x[1] === event )[0][0]
+          let key_entry = Object.entries(state).filter(x => x[1] === event)[0][0]
           state[key_entry] = null
           updateInitsBb(state.bb)
           updateInitsFh(state.fh)
           updateInitsTc(state.tc)
-          updateWildcard(true, event, state.bb, state.tc, state.fh)
+          updateInitsAm(state.am)
+          updateWildcard(true, event, state.bb, state.tc, state.fh, state.am)
         }
         return {
           ...state,
@@ -91,7 +95,7 @@ const Pitch = () => {
         }
       } else {
         updateInitsWc(null)
-        updateWildcard(false, null, init_bb, init_tc, init_fh)
+        updateWildcard(false, null, init_bb, init_tc, init_fh, init_am)
         return {
           ...state,
           wc: null
@@ -106,17 +110,18 @@ const Pitch = () => {
           let key_entry = Object.entries(state).filter(x => x[1] === event)[0][0]
           state[key_entry] = null
         }
-          updateInitsBb(state.bb)
-          updateInitsFh(state.fh)
-          updateInitsTc(state.tc)
-          updateWildcard(true, event, state.bb, state.tc, state.fh)
+        updateInitsBb(state.bb)
+        updateInitsFh(state.fh)
+        updateInitsTc(state.tc)
+        updateInitsAm(state.am)
+        updateWildcard(true, event, state.bb, state.tc, state.fh, state.am)
         return {
           ...state,
           wc: event
         }
       } else {
         updateInitsWc(null)
-        updateWildcard(false, null, init_bb, init_tc, init_fh)
+        updateWildcard(false, null, init_bb, init_tc, init_fh, init_am)
         return {
           ...state,
           wc: null
@@ -128,20 +133,21 @@ const Pitch = () => {
         updateInitsFh(event)
         const len = Object.values(state).filter(x => x === event).length
         if (len === 1) {
-          let key_entry = Object.entries(state).filter(x => x[1] === event )[0][0]
+          let key_entry = Object.entries(state).filter(x => x[1] === event)[0][0]
           state[key_entry] = null
         }
-          updateInitsBb(state.bb)
-          updateInitsWc(state.wc)
-          updateInitsTc(state.tc)
-          updateFreehit(true, event, state.tc, state.wc, state.bb)
+        updateInitsBb(state.bb)
+        updateInitsWc(state.wc)
+        updateInitsTc(state.tc)
+        updateInitsAm(state.am)
+        updateFreehit(true, event, state.tc, state.wc, state.bb, state.am)
         return {
           ...state,
           fh: event
         }
       } else {
         updateInitsFh(null)
-        updateFreehit(false, null, init_tc, init_wc, init_bb)
+        updateFreehit(false, null, init_tc, init_wc, init_bb, init_am)
         return {
           ...state,
           fh: null
@@ -153,12 +159,13 @@ const Pitch = () => {
         updateInitsTc(event)
         const len = Object.values(state).filter(x => x === event).length
         if (len === 1) {
-          let key_entry = Object.entries(state).filter(x => x[1] === event )[0][0]
+          let key_entry = Object.entries(state).filter(x => x[1] === event)[0][0]
           state[key_entry] = null
           updateInitsFh(state.fh)
           updateInitsWc(state.wc)
           updateInitsBb(state.bb)
-          updateTcap(true, event, state.fh, state.bb, state.wc)
+          updateInitsAm(state.am)
+          updateTcap(true, event, state.fh, state.bb, state.wc, state.am)
         }
         return {
           ...state,
@@ -166,7 +173,7 @@ const Pitch = () => {
         }
       } else {
         updateInitsTc(null)
-        updateTcap(false, null, init_fh, init_bb, init_wc)
+        updateTcap(false, null, init_fh, init_bb, init_wc, init_am)
         return {
           ...state,
           tc: null
@@ -178,13 +185,14 @@ const Pitch = () => {
         updateInitsBb(event)
         const len = Object.values(state).filter(x => x === event).length
         if (len === 1) {
-          let key_entry = Object.entries(state).filter(x => x[1] === event )[0][0]
+          let key_entry = Object.entries(state).filter(x => x[1] === event)[0][0]
           state[key_entry] = null
         }
-          updateInitsFh(state.fh)
-          updateInitsWc(state.wc)
-          updateInitsTc(state.tc)
-          updateBboost(true, event, state.fh, state.tc, state.wc)
+        updateInitsFh(state.fh)
+        updateInitsWc(state.wc)
+        updateInitsTc(state.tc)
+        updateInitsAm(state.am)
+        updateBboost(true, event, state.fh, state.tc, state.wc, state.am)
         //updateBboost(true, event, init_fh, init_tc, init_wc)
         return {
           ...state,
@@ -192,20 +200,45 @@ const Pitch = () => {
         }
       } else {
         updateInitsBb(null)
-        updateBboost(false, null, init_fh, init_tc, init_wc)
+        updateBboost(false, null, init_fh, init_tc, init_wc, init_am)
         return {
           ...state,
           bb: null
         }
       }
     }
+
+    if (action.type === 'ACTIVATE_AM') {
+      if (state.am === null) { 
+        updateInitsAm(event)
+        const len = Object.values(state).filter(x => x === event).length
+        if (len === 1) {
+          let key_entry = Object.entries(state).filter(x => x[1] === event)[0][0]
+          state[key_entry] = null
+        }
+        updateInitsBb(state.bb)
+        updateInitsFh(state.fh)
+        updateInitsWc(state.wc)
+        updateInitsTc(state.tc)
+        updateAm(true, event,state.fh, state.tc, state.bb, state.wc)
+        return {
+          ...state, bb: event
+        }
+      } else {
+        updateInitsAm(null)
+        updateAm(false, null, init_fh, init_tc, init_wc, init_bb)
+        return {
+          ...state, am: null
+        }
+      }
+    }
   }
 
   const [state, dispatch] = useReducer(reducer, {
-    wc: null, tc: null, bb: null, fh: null
+    wc: null, tc: null, bb: null, fh: null, am: null
   })
-  console.log(state)
-  const { wc, tc, bb, fh } = state
+
+  const { wc, tc, bb, fh, am } = state
 
 
   useEffect(() => {
@@ -213,11 +246,13 @@ const Pitch = () => {
     const tc = initialChips?.init_tc
     const bb = initialChips?.init_bb
     const wc = initialChips?.init_wc
+    const am = initialChips?.init_am
     setInit({
       init_wc: initialChips?.init_wc,
       init_tc: initialChips?.init_tc,
       init_bb: initialChips?.init_bb,
-      init_fh: initialChips?.init_fh
+      init_fh: initialChips?.init_fh,
+      init_am: initialChips?.init_am
     })
     dispatch({
       type: 'INITIAL_CHIPS',
@@ -226,14 +261,15 @@ const Pitch = () => {
         wc,
         tc,
         bb,
-        fh
+        fh,
+        am
       }
     })
   }, [initialChips])
   useEffect(() => {
     setEvent(eventId + 1)
   }, [eventId])
-  
+
   useEffect(() => {
     getPickIndex(curPage);
   }, [getPickIndex, curPage]);
@@ -262,6 +298,15 @@ const Pitch = () => {
   const viewTransfers = () => {
     setShow(true);
   };
+
+  const activateAM = () => {
+    dispatch({ type: 'ACTIVATE_AM' })
+    if (am === null) {
+      setAm(event)
+    } else {
+      setAm(null)
+    }
+  }
 
   const activateWC1 = () => {
     dispatch({
@@ -304,6 +349,7 @@ const Pitch = () => {
   const midfielders = getMidfielders(players, picks, curPage, curSize);
   const forwards = getForwards(players, picks, curPage, curSize);
   const benched = getBenched(players, picks, curPage, curSize);
+  const managers = getManagers(players, picks, curPage, curSize)
   let pageOneVisible = curPage === 1 ? "hidden" : "visible";
   let lastPageVisible =
     curPage === length || length === 0 ? "hidden" : "visible";
@@ -767,11 +813,74 @@ const Pitch = () => {
                 );
               })}
           </div>
+          <div className="manager">
+            {managers !== undefined && 
+            managers?.map((playerPos) => {
+              let player = players?.find((x) => x.id === playerPos.element);
+              let teamObj = teams?.find((x) => x.id === player.team);
+              let inTemp = tempPlayersOut?.some(
+                (x) => x.element === playerPos.element
+              );
+              let inplayersIn = playersIn[pickIndex - 1]?.arr?.some(
+                (x) => x.element === playerPos.element
+              );
+              let playerInClass = inplayersIn ? "player_in" : "";
+              let positionObj = elementTypes?.find(
+                (x) => x.id === player.element_type
+              );
+              let image = positionObj?.id === 5 && !inTemp
+                    ? `${teamObj?.code}-66`
+                    : `0-66`;
+              let news = player.chance_of_playing_next_round;
+              let backgroundColor =
+                news === 0
+                  ? "darkred"
+                  : news === 25
+                    ? "darkorange"
+                    : news === 50
+                      ? "orange"
+                      : news === 75
+                        ? "yellow"
+                        : "rgba(0,0,55,0.9)";
+              let color =
+                news === 25
+                  ? "rgba(0,0,55,0.9)"
+                  : news === 50
+                    ? "rgba(0,0,55,0.9)"
+                    : news === 75
+                      ? "rgba(0,0,55,0.9)"
+                      : "white";
+              const opponents = loadOpponents(
+                fixtures,
+                events,
+                teams,
+                teamObj?.id
+              );
+              const playerOpps = loadPlayerOpponents(opponents, curPage);
+              return (
+                <div key={player.id} className="squad-player">
+                  <SquadPlayer
+                    image={image}
+                    backgroundColor={backgroundColor}
+                    color={color}
+                    playerOpps={playerOpps}
+                    key={player.id}
+                    player={player}
+                    teams={teams}
+                    playerPos={playerPos}
+                    positionObj={positionObj}
+                    playerInClass={playerInClass}
+                    curPage={curPage}
+                  ></SquadPlayer>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         <div className="chip-buttons p-2">
           {new Date().toISOString() < new Date("2024/12/26/14:00").toISOString() && <div>
-            {(wc === null || wc === event) ? <Button onClick={activateWC1}>
+            {((wc === null || wc === event) && (event > am + 2 || event < am)) ? <Button onClick={activateWC1}>
               <div className="style-btn"><div>Wildcard</div>
                 {wc === event && <div>Active</div>}</div>
             </Button> : <Button
@@ -784,7 +893,7 @@ const Pitch = () => {
             </Button>}
           </div>}
 
-          {new Date().toISOString() > new Date("2024/12/26/14:00").toISOString() && <>{(wc === null || wc === event) ? <Button onClick={activateWC2}>
+          {new Date().toISOString() > new Date("2024/12/26/14:00").toISOString() && <>{((wc === null || wc === event) && (event > am + 2 || event < am)) ? <Button onClick={activateWC2}>
             <div className="style-btn"><div>Wildcard</div>
               {wc === event && <div>Active</div>}</div>
           </Button> : <Button disabled className="btn btn-dark">
@@ -794,7 +903,7 @@ const Pitch = () => {
               {wc !== null && <div>GW {wc}</div>}
             </div>
           </Button>}</>}
-          {(bb === null || bb === event) ? <Button onClick={activateBB}>
+          {((bb === null || bb === event) && (event > am + 2 || event < am)) ? <Button onClick={activateBB}>
             <div className="style-btn"><div>Bench Boost</div>{bb === event && <div>Active</div>}</div>
           </Button> : <Button disabled className="btn btn-dark">
             <div className="style-btn">
@@ -803,7 +912,7 @@ const Pitch = () => {
               {bb !== null && <div>GW {bb}</div>}
             </div>
           </Button>}
-          {(fh === null || fh === event) ? <Button onClick={activateFH}>
+          {((fh === null || fh === event) && (event > am + 2 || event < am)) ? <Button onClick={activateFH}>
             <div className="style-btn"><div>FreeHit</div>{fh === event && <div>Active</div>}</div>
           </Button> : <Button disabled className="btn btn-dark">
             <div className="style-btn">
@@ -812,7 +921,7 @@ const Pitch = () => {
               {fh !== null && <div>GW {fh}</div>}
             </div>
           </Button>}
-          {(tc === null || tc === event) ? <Button onClick={activateTC}>
+          {((tc === null || tc === event) && (event > am + 2 || event < am)) ? <Button onClick={activateTC}>
             <div className="style-btn"><div>Triple Captain</div>
               {tc === event && <div>Active</div>}</div>
           </Button> : <Button disabled className="btn btn-dark">
@@ -820,6 +929,16 @@ const Pitch = () => {
               <div>Triple Captain</div>
               {tc !== null && <div>Played</div>}
               {tc !== null && <div>GW {tc}</div>}
+            </div>
+          </Button>}
+          {(am === null || am === event) ? <Button onClick={activateAM}>
+            <div className="style-btn"><div>Assistant Manager</div>
+              {am === event && <div>Active GWS {am}-{am + 2}</div>}</div>
+          </Button> : <Button disabled className="btn btn-dark">
+            <div className="style-btn">
+              <div>Assistant Manager</div>
+              {am !== null && <div>Played</div>}
+              {am !== null && <div>GWS {am}-{am + 2}</div>}
             </div>
           </Button>}
           <Button

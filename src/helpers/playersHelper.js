@@ -63,7 +63,9 @@ export const getArrangedPlayers = (players, curPage, pageSize) => {
     const forwards = returnedPlayers
                         .filter(player => player.element_type === 4)
 
-    return { goalkeepers, defenders, midfielders, forwards}
+    const managers = returnedPlayers.filter(player => player.element_type === 5)
+
+    return { goalkeepers, defenders, midfielders, forwards, managers}
 }
 
 

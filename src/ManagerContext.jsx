@@ -34,8 +34,10 @@ export const ManagerContext = createContext({
   updateInitsTc: () => { },
   updateInitsFh: () => { },
   updateInitsBb: () => { },
+  updateInitsAm: () => { },
   getManagerInfo: () => { },
   updateWildcard: () => { },
+  updateAm: () => { },
   addToTransfersOut: () => { },
   addToTransfersIn: () => { },
   getPickIndex: () => { },
@@ -77,12 +79,13 @@ function ManagerProvider({ children }) {
   const [eventId, setEventId] = useState(0);
   const [players, setPlayers] = useState([]);
   const [chips, setChips] = useState({
+    am: { used: false, event: null },
     wildcard: { used: false, event: null },
     bboost: { used: false, event: null },
     freehit: { used: false, event: null },
     tcap: { used: false, event: null },
   });
-  const [initialChips, setInitialChips] = useState({ init_wc: null, init_tc: null, init_bb: null, init_fh: null })
+  const [initialChips, setInitialChips] = useState({ init_wc: null, init_tc: null, init_bb: null, init_fh: null, init_am: null })
 
   const [transferLogic, setTransferLogic] = useState({
     rolledFt: false,
@@ -145,17 +148,13 @@ function ManagerProvider({ children }) {
               new Date("2024/12/29/16:00").toISOString()
               ? true
               : false;
-        /*
-        let wildcard1 = data.chips.some((x) => x.name === 'wildcard') && 
-        wildcardLength <= 2 && data.chips.filter((x) => x.name === "wildcard")[0].time < 
-        new Date("2024/12/29/16:30").toISOString()
-        let wildcard2*/
 
         let bboost = data.chips.some((x) => x.name === "bboost") ? true : false;
         let freehit = data.chips.some((x) => x.name === "freehit")
           ? true
           : false;
         let tcap = data.chips.some((x) => x.name === "3xc") ? true : false;
+        let am = data.chips.some(x => x.name === 'manager') ? true : false
 
         let wEvent =
           wildcardLength === 2
@@ -165,9 +164,9 @@ function ManagerProvider({ children }) {
               new Date("2024/12/29/16:00").toISOString()
               ? data.chips.filter((x) => x.name === "wildcard")[0].event
               : null;
-        console.log(wEvent)
 
         //let wEvent = wildcard === true ? data.chips.filter(x => x.name === 'wildcard')[0].event : null
+        let amEvent = am === true ? data.chips.filter(x => x.name === "manager")[0].event : null
         let bEvent =
           bboost === true
             ? data.chips.filter((x) => x.name === "bboost")[0].event
@@ -181,15 +180,17 @@ function ManagerProvider({ children }) {
             ? data.chips.filter((x) => x.name === "3xc")[0].event
             : null;
 
-        setChips({
+        setChips(prev => ({
+          ...prev,
+          am: {used: am, event: amEvent},
           wildcard: { used: wildcard, event: wEvent },
           bboost: { used: bboost, event: bEvent },
           freehit: { used: freehit, event: fEvent },
           tcap: { used: tcap, event: tEvent },
-        });
+        }));
 
         setInitialChips({
-          init_bb: bEvent, init_fh: fEvent, init_tc: tEvent, init_wc: wEvent
+          init_bb: bEvent, init_fh: fEvent, init_tc: tEvent, init_wc: wEvent, init_am: amEvent
         })
 
         const realPicks = [];
@@ -633,8 +634,19 @@ function ManagerProvider({ children }) {
     setPlayerName("");
   };
 
-  const updateWildcard = (isUsed, eventPlayed, bb, tc, fh) => {
+  const updateAm = (isUsed, eventPlayed, bb, tc, fh, wc) => {
     setChips({
+      wildcard: { event: wc, used: wc >= eventId ? true : false },
+      freehit: { event: fh, used: fh >= eventId ? true : false },
+      tcap: { event: tc, used: tc >= eventId ? true : false },
+      bboost: { used: bb >= eventId ? true : false, event: bb },
+      am: { used: isUsed, event: eventPlayed },
+    });
+  }
+
+  const updateWildcard = (isUsed, eventPlayed, bb, tc, fh, am) => {
+    setChips({
+      am: { event: am, used: am >= eventId ? true : false },
       freehit: { event: fh, used: fh >= eventId ? true : false },
       tcap: { event: tc, used: tc >= eventId ? true : false },
       bboost: { used: bb >= eventId ? true : false, event: bb },
@@ -642,8 +654,9 @@ function ManagerProvider({ children }) {
     });
   };
 
-  const updateFreehit = (isUsed, eventPlayed, tc, wc, bb) => {
+  const updateFreehit = (isUsed, eventPlayed, tc, wc, bb, am) => {
     setChips({
+      am: { event: am, used: am >= eventId ? true : false },
       freehit: { used: isUsed, event: eventPlayed },
       tcap: { event: tc, used: tc >= eventId ? true : false },
       wildcard: { event: wc, used: wc >= eventId ? true : false },
@@ -750,8 +763,9 @@ function ManagerProvider({ children }) {
     }
   }, [chips.freehit.event, eventId, pickIndex, real]);
 
-  const updateBboost = (isUsed, eventPlayed, fh, tc, wc) => {
+  const updateBboost = (isUsed, eventPlayed, fh, tc, wc, am) => {
     setChips({
+      am: { event: am, used: am >= eventId ? true : false },
       tcap: { event: tc, used: tc >= eventId ? true : false },
       freehit: { event: fh, used: fh >= eventId ? true : false },
       wildcard: { event: wc, used: wc >= eventId ? true : false },
@@ -759,14 +773,19 @@ function ManagerProvider({ children }) {
     });
   };
 
-  const updateTcap = (isUsed, eventPlayed, fh, bb, wc) => {
+  const updateTcap = (isUsed, eventPlayed, fh, bb, wc, am) => {
     setChips({
+      am: { event: am, used: am >= eventId ? true : false },
       freehit: { event: fh, used: fh >= eventId ? true : false },
       wildcard: { event: wc, used: wc >= eventId ? true : false },
       bboost: { used: bb >= eventId ? true : false, event: bb },
       tcap: { used: isUsed, event: eventPlayed },
     });
   };
+
+  const updateInitsAm = (event) => {
+    setInitialChips(prev => ({...prev, init_am: event}))
+  }
 
   const updateInitsWc = (event) => {
     setInitialChips(prev => ({ ...prev, init_wc: event }))
@@ -1772,7 +1791,9 @@ function ManagerProvider({ children }) {
     updateInitsTc,
     updateInitsFh,
     updateInitsBb,
+    updateInitsAm,
     getManagerInfo,
+    updateAm,
     updateWildcard,
     addToTransfersIn,
     addToTransfersOut,

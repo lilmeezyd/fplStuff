@@ -76,4 +76,8 @@ const getPicks = (players, picks, curPage, curSize, name) => {
   export const getBenched = (players, picks, curPage, curSize) => {
     return getPicks(players, picks, curPage, curSize, "benched");
   };
+
+  export const getManagers = (players, picks, curPage, curSize) => {
+    return getPicks(players, picks, curPage, curSize, "managers")
+  }
   

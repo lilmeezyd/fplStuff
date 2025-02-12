@@ -10,7 +10,7 @@ import nextPage from "../assets/chevron_right.png"
 import {
   getMinMax,
   getPlayers,
-  getArrangedPlayers,
+  getArrangedPlayers, 
 } from "../helpers/playersHelper";
 
 const Players = () => {
@@ -40,6 +40,7 @@ const Players = () => {
     pageSize
   ).midfielders;
   const forwards = getArrangedPlayers(allPlayers, curPage, pageSize).forwards;
+  const managers = getArrangedPlayers(allPlayers, curPage, pageSize).managers
   const prices = getMinMax(players).prices;
   const minPrice = getMinMax(allPlayers).minPrice;
   const maxPrice = getMinMax(allPlayers).maxPrice;
@@ -276,6 +277,40 @@ const viewLastPage = () => {
                       color={color}
                       forwardImage={forwardImage}
                       playerPos={forward}
+                      shortName={short_name}
+                      shortPos={short_pos}
+                      position={positionObj.id}
+                      team={teamObj.id}
+                      sort={sort}></PlayerCard>)
+          })}
+      </div>
+  </div>): ''}
+
+  { managers.length > 0 ? (<div className='table-one' id='managers'>
+  <div className='player-header-1'>
+          <div className='info'></div>
+          <div className='position-table-1'>Managers</div>
+          <div className='money'>£</div>
+          <div className='others'>Points</div>
+      </div>
+      <div>
+          {managers.map((manager) => {
+              let teamObj = teams.find(x => x.id === manager.team)
+              let news = manager.chance_of_playing_next_round
+              let short_name = teamObj?.short_name
+              let positionObj = elementTypes.find(x => x.id === manager.element_type)
+              let short_pos = positionObj.singular_name_short
+              let managerImage =  `${teamObj.code}-66`
+                  let backgroundColor = news === 0 ? 'darkred' : news === 25 ? 'darkorange' :
+                  news === 50 ? 'orange' : news === 75 ? 'yellow' : 'white'
+                  let color = news === 0 ? 'white' : news === 25 ? 'white' :
+                  news === 50 ? 'white' : 'black'    
+                  return (<PlayerCard 
+                      key={manager.id}
+                      backgroundColor={backgroundColor}
+                      color={color}
+                      forwardImage={managerImage}
+                      playerPos={manager}
                       shortName={short_name}
                       shortPos={short_pos}
                       position={positionObj.id}
