@@ -349,7 +349,7 @@ const setSwitchPlayer = (player) => {
                 </Button>}
           </div>
           <div className="py-2">
-            {(tempPlayersOut.length === 0 && 
+            {(tempPlayersOut.length === 0 &&  playerPos?.element_type < 5 && 
             !swapArray.includes(playerPos?.element)) && <Button onClick={(playerPos?.element === outplayer.element || playerPos.element === inplayerOne.element)
                     ? () => setCancelPlayer(playerPos) : () => setSwitchPlayer(playerPos)}  className={`form-control
                       ${playersOut[pickIndex-1].arr.some(x => x.element === playerPos?.element) ?

@@ -163,8 +163,8 @@ const viewLastPage = () => {
               let short_name = teamObj?.short_name
               let positionObj = elementTypes.find(x => x.id === goalkeeper.element_type)
               let short_pos = positionObj.singular_name_short
-              let forwardImage = positionObj.id === 1 ? `${teamObj.code}_1-66`:
-            `${teamObj.code}-66`
+              let forwardImage = positionObj?.id === 1 ? `${teamObj?.code}_1-66`:
+            `${teamObj?.code}-66`
               let backgroundColor = news === 0 ? 'darkred' : news === 25 ? 'darkorange' :
               news === 50 ? 'orange' : news === 75 ? 'yellow' : 'white'
               let color = news === 0 ? 'white' : news === 25 ? 'white' :
@@ -197,8 +197,8 @@ const viewLastPage = () => {
               let short_name = teamObj?.short_name
               let positionObj = elementTypes.find(x => x.id === defender.element_type)
               let short_pos = positionObj.singular_name_short
-              let forwardImage = positionObj.id === 1 ? `${teamObj.code}_1-66`:
-            `${teamObj.code}-66`
+              let forwardImage = positionObj.id === 1 ? `${teamObj?.code}_1-66`:
+            `${teamObj?.code}-66`
                   let backgroundColor = news === 0 ? 'darkred' : news === 25 ? 'darkorange' :
                   news === 50 ? 'orange' : news === 75 ? 'yellow' : 'white'
                   let color = news === 0 ? 'white' : news === 25 ? 'white' :
@@ -231,8 +231,8 @@ const viewLastPage = () => {
               let short_name = teamObj?.short_name
               let positionObj = elementTypes.find(x => x.id === midfielder.element_type)
               let short_pos = positionObj.singular_name_short
-              let forwardImage = positionObj.id === 1 ? `${teamObj.code}_1-66`:
-            `${teamObj.code}-66`
+              let forwardImage = positionObj.id === 1 ? `${teamObj?.code}_1-66`:
+            `${teamObj?.code}-66`
                   let backgroundColor = news === 0 ? 'darkred' : news === 25 ? 'darkorange' :
                   news === 50 ? 'orange' : news === 75 ? 'yellow' : 'white'
                   let color = news === 0 ? 'white' : news === 25 ? 'white' :
@@ -265,8 +265,8 @@ const viewLastPage = () => {
               let short_name = teamObj?.short_name
               let positionObj = elementTypes.find(x => x.id === forward.element_type)
               let short_pos = positionObj.singular_name_short
-              let forwardImage = positionObj.id === 1 ? `${teamObj.code}_1-66`:
-            `${teamObj.code}-66`
+              let forwardImage = positionObj.id === 1 ? `${teamObj?.code}_1-66`:
+            `${teamObj?.code}-66`
                   let backgroundColor = news === 0 ? 'darkred' : news === 25 ? 'darkorange' :
                   news === 50 ? 'orange' : news === 75 ? 'yellow' : 'white'
                   let color = news === 0 ? 'white' : news === 25 ? 'white' :
@@ -300,7 +300,7 @@ const viewLastPage = () => {
               let short_name = teamObj?.short_name
               let positionObj = elementTypes.find(x => x.id === manager.element_type)
               let short_pos = positionObj.singular_name_short
-              let managerImage =  `${teamObj.code}-66`
+              let managerImage =  `${teamObj?.code}-66`
                   let backgroundColor = news === 0 ? 'darkred' : news === 25 ? 'darkorange' :
                   news === 50 ? 'orange' : news === 75 ? 'yellow' : 'white'
                   let color = news === 0 ? 'white' : news === 25 ? 'white' :

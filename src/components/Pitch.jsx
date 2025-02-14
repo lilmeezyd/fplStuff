@@ -38,6 +38,8 @@ const Pitch = () => {
     eventId,
     chips,
     initialChips,
+    nowEvent,
+    updateNowEvent,
     playersSelected,
     getInTheBank,
     getPickIndex,
@@ -209,7 +211,7 @@ const Pitch = () => {
     }
 
     if (action.type === 'ACTIVATE_AM') {
-      if (state.am === null) { 
+      if (state.am === null) {
         updateInitsAm(event)
         const len = Object.values(state).filter(x => x === event).length
         if (len === 1) {
@@ -220,7 +222,7 @@ const Pitch = () => {
         updateInitsFh(state.fh)
         updateInitsWc(state.wc)
         updateInitsTc(state.tc)
-        updateAm(true, event,state.fh, state.tc, state.bb, state.wc)
+        updateAm(true, event, state.fh, state.tc, state.bb, state.wc)
         return {
           ...state, bb: event
         }
@@ -284,10 +286,12 @@ const Pitch = () => {
 
   const viewNextPage = () => {
     setEvent((v) => v + 1)
+    updateNowEvent(event+1)
     setCurPage((v) => v + 1);
   };
   const viewPreviousPage = () => {
     setEvent((v) => v - 1)
+    updateNowEvent(event-1)
     setCurPage((v) => v - 1);
   };
 
@@ -301,11 +305,6 @@ const Pitch = () => {
 
   const activateAM = () => {
     dispatch({ type: 'ACTIVATE_AM' })
-    if (am === null) {
-      setAm(event)
-    } else {
-      setAm(null)
-    }
   }
 
   const activateWC1 = () => {
@@ -391,7 +390,7 @@ const Pitch = () => {
         </div>
         <div className="deadlines">
           <div>
-            {playersSelected() === 15 ? (
+            {(event > am + 2 || event < am) && (playersSelected() === 15 ? (
               <button
                 style={{ visibility: pageOneVisible }}
                 onClick={viewPreviousPage}
@@ -404,7 +403,21 @@ const Pitch = () => {
               <button className="btn-controls-1" id="prevButton" disabled>
                 <img src={prevPage} alt="prev_page" />
               </button>
-            )}
+            ))}
+            {(event === am + 2 || event === am +1 || event === am) && (playersSelected() === 16 ? (
+              <button
+                style={{ visibility: pageOneVisible }}
+                onClick={viewPreviousPage}
+                className="btn-controls-1"
+                id="prevButton"
+              >
+                <img src={prevPage} alt="prev_page" />
+              </button>
+            ) : (
+              <button className="btn-controls-1" id="prevButton" disabled>
+                <img src={prevPage} alt="prev_page" />
+              </button>
+            ))}
           </div>
           <div style={{ fontWeight: 700 }}>
             {gameweeks?.map((gameweek, idx) => {
@@ -433,7 +446,7 @@ const Pitch = () => {
             </div>
           </div>
           <div>
-            {playersSelected() === 15 ? (
+            {(event > am + 2 || event < am) && (playersSelected() === 15 ? (
               <button
                 style={{ visibility: lastPageVisible }}
                 onClick={viewNextPage}
@@ -446,14 +459,29 @@ const Pitch = () => {
               <button className="btn-controls-1" id="nextButton" disabled>
                 <img src={nextPage} alt="next_page" />
               </button>
-            )}
+            ))}
+
+            {(event === am + 2 || event === am +1 || event === am) && (playersSelected() === 16 ? (
+              <button
+                style={{ visibility: lastPageVisible }}
+                onClick={viewNextPage}
+                className="btn-controls-1"
+                id="nextButton"
+              >
+                <img src={nextPage} alt="next_page" />
+              </button>
+            ) : (
+              <button className="btn-controls-1" id="nextButton" disabled>
+                <img src={nextPage} alt="next_page" />
+              </button>
+            ))}
           </div>
         </div>
 
         <div className="transfer-data p-2">
           <div className="transfer-item">
             <div>Selected</div>
-            <div>{playersSelected()}/15</div>
+            <div>{playersSelected()}/{(event > am + 2 || event < am) ? 15 : 16}</div>
           </div>
           <div className="transfer-item">
             <div>ITB</div>
@@ -814,67 +842,67 @@ const Pitch = () => {
               })}
           </div>
           <div className="manager">
-            {managers !== undefined && 
-            managers?.map((playerPos) => {
-              let player = players?.find((x) => x.id === playerPos.element);
-              let teamObj = teams?.find((x) => x.id === player.team);
-              let inTemp = tempPlayersOut?.some(
-                (x) => x.element === playerPos.element
-              );
-              let inplayersIn = playersIn[pickIndex - 1]?.arr?.some(
-                (x) => x.element === playerPos.element
-              );
-              let playerInClass = inplayersIn ? "player_in" : "";
-              let positionObj = elementTypes?.find(
-                (x) => x.id === player.element_type
-              );
-              let image = positionObj?.id === 5 && !inTemp
-                    ? `${teamObj?.code}-66`
-                    : `0-66`;
-              let news = player.chance_of_playing_next_round;
-              let backgroundColor =
-                news === 0
-                  ? "darkred"
-                  : news === 25
-                    ? "darkorange"
-                    : news === 50
-                      ? "orange"
-                      : news === 75
-                        ? "yellow"
-                        : "rgba(0,0,55,0.9)";
-              let color =
-                news === 25
-                  ? "rgba(0,0,55,0.9)"
-                  : news === 50
+            {managers !== undefined &&
+              managers?.map((playerPos) => {
+                let player = players?.find((x) => x.id === playerPos.element);
+                let teamObj = teams?.find((x) => x.id === player.team);
+                let inTemp = tempPlayersOut?.some(
+                  (x) => x.element === playerPos.element
+                );
+                let inplayersIn = playersIn[pickIndex - 1]?.arr?.some(
+                  (x) => x.element === playerPos.element
+                );
+                let playerInClass = inplayersIn ? "player_in" : "";
+                let positionObj = elementTypes?.find(
+                  (x) => x.id === player.element_type
+                );
+                let image = positionObj?.id === 5 && !inTemp
+                  ? `${teamObj?.code}-66`
+                  : `0-66`;
+                let news = player.chance_of_playing_next_round;
+                let backgroundColor =
+                  news === 0
+                    ? "darkred"
+                    : news === 25
+                      ? "darkorange"
+                      : news === 50
+                        ? "orange"
+                        : news === 75
+                          ? "yellow"
+                          : "rgba(0,0,55,0.9)";
+                let color =
+                  news === 25
                     ? "rgba(0,0,55,0.9)"
-                    : news === 75
+                    : news === 50
                       ? "rgba(0,0,55,0.9)"
-                      : "white";
-              const opponents = loadOpponents(
-                fixtures,
-                events,
-                teams,
-                teamObj?.id
-              );
-              const playerOpps = loadPlayerOpponents(opponents, curPage);
-              return (
-                <div key={player.id} className="squad-player">
-                  <SquadPlayer
-                    image={image}
-                    backgroundColor={backgroundColor}
-                    color={color}
-                    playerOpps={playerOpps}
-                    key={player.id}
-                    player={player}
-                    teams={teams}
-                    playerPos={playerPos}
-                    positionObj={positionObj}
-                    playerInClass={playerInClass}
-                    curPage={curPage}
-                  ></SquadPlayer>
-                </div>
-              );
-            })}
+                      : news === 75
+                        ? "rgba(0,0,55,0.9)"
+                        : "white";
+                const opponents = loadOpponents(
+                  fixtures,
+                  events,
+                  teams,
+                  teamObj?.id
+                );
+                const playerOpps = loadPlayerOpponents(opponents, curPage);
+                return (
+                  <div key={player.id} className="squad-player">
+                    <SquadPlayer
+                      image={image}
+                      backgroundColor={backgroundColor}
+                      color={color}
+                      playerOpps={playerOpps}
+                      key={player.id}
+                      player={player}
+                      teams={teams}
+                      playerPos={playerPos}
+                      positionObj={positionObj}
+                      playerInClass={playerInClass}
+                      curPage={curPage}
+                    ></SquadPlayer>
+                  </div>
+                );
+              })}
           </div>
         </div>
 

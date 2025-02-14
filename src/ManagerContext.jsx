@@ -30,6 +30,8 @@ export const ManagerContext = createContext({
   pickIndex: 1,
   playerName: "",
   remainingBudget: null,
+  nowEvent: 0,
+  updateNowEvent: () => { },
   updateInitsWc: () => { },
   updateInitsTc: () => { },
   updateInitsFh: () => { },
@@ -55,6 +57,7 @@ export const ManagerContext = createContext({
   defendersSelected: () => { },
   midfieldersSelected: () => { },
   forwardsSelected: () => { },
+  managersSelected: () => { },
   addedPlayer: () => { },
   transferCost: () => { },
   freeTransfers: () => { },
@@ -78,6 +81,7 @@ function ManagerProvider({ children }) {
   const [transferHistory, setTransferHistory] = useState([]);
   const [eventId, setEventId] = useState(0);
   const [players, setPlayers] = useState([]);
+  const [nowEvent, setNowEvent] = useState(0)
   const [chips, setChips] = useState({
     am: { used: false, event: null },
     wildcard: { used: false, event: null },
@@ -104,12 +108,12 @@ function ManagerProvider({ children }) {
   const [pickIndex, setPickIndex] = useState(1);
   const [playerName, setPlayerName] = useState("");
   const [first, setFirst] = useState(true)
+  const { am } = chips
 
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
         const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getPlayers`)
-        //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
         const data = await response.data
         setPlayers(data)
       } catch (error) {
@@ -119,7 +123,6 @@ function ManagerProvider({ children }) {
     }
     fetchPlayers()
     const fetchManagerInfo = async () => {
-      //const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/`
       const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/`;
       try {
         const response = await fetch(url);
@@ -130,7 +133,6 @@ function ManagerProvider({ children }) {
       }
     };
     const fetchManagerHistory = async () => {
-      //const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/history/`
       const url = `https://fpl-stuff-proxy.vercel.app/history/${managerId}/`;
       try {
         const response = await fetch(url);
@@ -165,7 +167,6 @@ function ManagerProvider({ children }) {
               ? data.chips.filter((x) => x.name === "wildcard")[0].event
               : null;
 
-        //let wEvent = wildcard === true ? data.chips.filter(x => x.name === 'wildcard')[0].event : null
         let amEvent = am === true ? data.chips.filter(x => x.name === "manager")[0].event : null
         let bEvent =
           bboost === true
@@ -182,7 +183,7 @@ function ManagerProvider({ children }) {
 
         setChips(prev => ({
           ...prev,
-          am: {used: am, event: amEvent},
+          am: { used: am, event: amEvent },
           wildcard: { used: wildcard, event: wEvent },
           bboost: { used: bboost, event: bEvent },
           freehit: { used: freehit, event: fEvent },
@@ -231,6 +232,7 @@ function ManagerProvider({ children }) {
           setFirst(false)
           const eventId = current[current.length - 1]?.event
           setEventId(eventId)
+          setNowEvent(eventId + 1)
           const chipDay = chips?.filter(x => x.name === 'wildcard' || x.name === 'freehit').map(x => x.event)
           let free = 1
           /*More work */
@@ -269,11 +271,8 @@ function ManagerProvider({ children }) {
           }
 
         }
-
         //localStorage.removeItem('chips')
         // localStorage.setItem('chips', JSON.stringify(chips))
-
-
       } catch (error) {
         console.log(error);
       }
@@ -312,9 +311,7 @@ function ManagerProvider({ children }) {
         localStorage.removeItem("picks");
         localStorage.setItem("picks", JSON.stringify(gameweekPicks));
       } else {
-        //const url = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId}/picks/`;
-        //const url1 = `https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/transfers/`;
-
+        //Manager's first gw
         const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${eventId}/picks/`;
         const url1 = `https://fpl-stuff-proxy.vercel.app/transfers/${managerId}/`;
         try {
@@ -625,6 +622,10 @@ function ManagerProvider({ children }) {
     managerId >= 1 && fetchManagerPicks();
   }, [managerId, eventId, players]);
 
+  const updateNowEvent = (num) => {
+    setNowEvent(num)
+  }
+
   const getManagerInfo = (id) => {
     setManagerId(id);
   };
@@ -636,10 +637,10 @@ function ManagerProvider({ children }) {
 
   const updateAm = (isUsed, eventPlayed, bb, tc, fh, wc) => {
     setChips({
-      wildcard: { event: wc, used: wc >= eventId ? true : false },
-      freehit: { event: fh, used: fh >= eventId ? true : false },
-      tcap: { event: tc, used: tc >= eventId ? true : false },
-      bboost: { used: bb >= eventId ? true : false, event: bb },
+      wildcard: { event: wc, used: wc >= eventId && typeof (wc) !== 'object' ? true : false },
+      freehit: { event: fh, used: fh >= eventId && typeof (wc) !== 'object' ? true : false },
+      tcap: { event: tc, used: tc >= eventId && typeof (wc) !== 'object' ? true : false },
+      bboost: { used: bb >= eventId && typeof (wc) !== 'object' ? true : false, event: bb },
       am: { used: isUsed, event: eventPlayed },
     });
   }
@@ -784,7 +785,7 @@ function ManagerProvider({ children }) {
   };
 
   const updateInitsAm = (event) => {
-    setInitialChips(prev => ({...prev, init_am: event}))
+    setInitialChips(prev => ({ ...prev, init_am: event }))
   }
 
   const updateInitsWc = (event) => {
@@ -800,26 +801,9 @@ function ManagerProvider({ children }) {
     setInitialChips(prev => ({ ...prev, init_tc: event }))
   }
 
+  // transfer in
   const addToTransfersIn = (id, elementType, teamId) => {
-    const player = {};
-    let playersOutG = tempPlayersOut.filter((x) => x.element_type === 1).length;
-    let playersOutD = tempPlayersOut.filter((x) => x.element_type === 2).length;
-    let playersOutM = tempPlayersOut.filter((x) => x.element_type === 3).length;
-    let playersOutF = tempPlayersOut.filter((x) => x.element_type === 4).length;
-
-    let goalkeepers =
-      picks[pickIndex - 1].newPicks.filter((x) => x.element_type === 1).length -
-      playersOutG;
-    let defenders =
-      picks[pickIndex - 1].newPicks.filter((x) => x.element_type === 2).length -
-      playersOutD;
-    let midfielders =
-      picks[pickIndex - 1].newPicks.filter((x) => x.element_type === 3).length -
-      playersOutM;
-    let forwards =
-      picks[pickIndex - 1].newPicks.filter((x) => x.element_type === 4).length -
-      playersOutF;
-
+    const player = {}
     //let price_change = (players.find(x => x.id === id).price_change/10).toFixed(1)
     let element_in_cost = (
       players?.find((x) => x.id === id).now_cost / 10
@@ -839,384 +823,445 @@ function ManagerProvider({ children }) {
     //player.price_change = price_change
     player.element_in_cost = element_in_cost;
     player.selling_price = selling_price;
-
-
-    //let playersOutBenchG = tempPlayersOut.filter(x => x.multiplier === 0 && x.element_type === 1).length
-    let playersOutnonB = tempPlayersOut.filter(
-      (x) => x.multiplier !== 0
-    ).length;
-    let playersOutPG = tempPlayersOut.filter(
-      (x) => x.multiplier !== 0 && x.element_type === 1
-    ).length;
-    let playersOutPD = tempPlayersOut.filter(
-      (x) => x.multiplier !== 0 && x.element_type === 2
-    ).length;
-    let playersOutPM = tempPlayersOut.filter(
-      (x) => x.multiplier !== 0 && x.element_type === 3
-    ).length;
-    let playersOutPF = tempPlayersOut.filter(
-      (x) => x.multiplier !== 0 && x.element_type === 4
-    ).length;
-
-    //let benchGoalie = picks[pickIndex-1].newPicks.filter(x => x.multiplier === 0 && x.element_type === 1).length - playersOutBenchG
-    let nonBench =
-      picks[pickIndex - 1].newPicks.filter((x) => x.multiplier !== 0).length -
-      playersOutnonB;
-    let playingGoalie =
-      picks[pickIndex - 1].newPicks.filter(
-        (x) => x.multiplier !== 0 && x.element_type === 1
-      ).length - playersOutPG;
-    let playingDef =
-      picks[pickIndex - 1].newPicks.filter(
-        (x) => x.multiplier !== 0 && x.element_type === 2
-      ).length - playersOutPD;
-    let playingMid =
-      picks[pickIndex - 1].newPicks.filter(
-        (x) => x.multiplier !== 0 && x.element_type === 3
-      ).length - playersOutPM;
-    let playingFwd =
-      picks[pickIndex - 1].newPicks.filter(
-        (x) => x.multiplier !== 0 && x.element_type === 4
-      ).length - playersOutPF;
-
-
-    if (
-      picks[pickIndex - 1]?.newPicks.length < 15 ||
-      tempPlayersOut.length > 0
-    ) {
-      let orderOne = picks[pickIndex - 1].newPicks.some(
-        (x) => x.position === 13
-      );
-      let orderTwo = picks[pickIndex - 1].newPicks.some(
-        (x) => x.position === 14
-      );
-      let orderThree = picks[pickIndex - 1].newPicks.some(
-        (x) => x.position === 15
-      );
-
-      if (elementType === 1 && playingGoalie === 1) {
-        player.position = 12;
-        player.multiplier = 0;
+    if (elementType === 5) {
+      player.position = 16
+      if (am?.event === nowEvent) {
+        setPicks([
+          ...picks.map((pick, key) =>
+            (key >= pickIndex - 1 && key <= pickIndex + 1)
+              ? { ...pick, newPicks: [...pick.newPicks, player] }
+              : pick
+          ),
+        ]);
       } else {
-        player.position = 1;
-        player.multiplier = 1;
-      }
-
-      if (
-        (elementType === 2 && nonBench === 11) ||
-        (elementType === 2 &&
-          nonBench === 9 &&
-          playingDef === 4 &&
-          playingMid === 5) ||
-        (elementType === 2 && nonBench === 10 && playingGoalie === 0) ||
-        (elementType === 2 && nonBench === 10 && playingFwd === 0)
-      ) {
-        player.multiplier = 0;
-        player.position =
-          !orderOne && !orderTwo && !orderThree
-            ? 13
-            : orderOne && !orderTwo && !orderThree
-              ? 14
-              : orderOne && orderTwo && !orderThree
-                ? 15
-                : !orderOne && orderTwo && orderThree
-                  ? 13
-                  : orderOne && !orderTwo && orderThree
-                    ? 14
-                    : 15;
-      }
-
-      if (
-        (elementType === 3 && nonBench === 11) ||
-        (elementType === 3 &&
-          nonBench === 9 &&
-          playingMid === 4 &&
-          playingDef === 5) ||
-        (elementType === 3 && nonBench === 10 && playingGoalie === 0) ||
-        (elementType === 3 && nonBench === 10 && playingFwd === 0) ||
-        (elementType === 3 && nonBench === 10 && playingDef === 2) ||
-        (elementType === 3 && playingMid === 4 && playingFwd === 3)
-      ) {
-        player.multiplier = 0;
-        player.position =
-          !orderOne && !orderTwo && !orderThree
-            ? 13
-            : orderOne && !orderTwo && !orderThree
-              ? 14
-              : orderOne && orderTwo && !orderThree
-                ? 15
-                : !orderOne && orderTwo && orderThree
-                  ? 13
-                  : orderOne && !orderTwo && orderThree
-                    ? 14
-                    : 15;
-      }
-
-      if (
-        (elementType === 4 && nonBench === 11) ||
-        (elementType === 4 && nonBench === 10 && playingGoalie === 0) ||
-        (elementType === 4 && nonBench === 10 && playingDef === 2) ||
-        (elementType === 4 && playingMid === 5 && playingFwd === 2)
-      ) {
-        player.multiplier = 0;
-        player.position =
-          !orderOne && !orderTwo && !orderThree
-            ? 13
-            : orderOne && !orderTwo && !orderThree
-              ? 14
-              : orderOne && orderTwo && !orderThree
-                ? 15
-                : !orderOne && orderTwo && orderThree
-                  ? 13
-                  : orderOne && !orderTwo && orderThree
-                    ? 14
-                    : 15;
-      }
-      if (
-        (elementType === 1 && goalkeepers < 2) ||
-        (elementType === 2 && defenders < 5) ||
-        (elementType === 3 && midfielders < 5) ||
-        (elementType === 4 && forwards < 3)
-      ) {
-        let repeatedPlayer = [];
-        //switching captaincy
-        /*player.is_captain = playerOut.is_captain
-                player.is_vice_captain = playerOut.is_vice_captain
-                player.multiplier = playerOut.multiplier
-                player.element_out = playerOut.element
-                player.position = playerOut.position*/
-        //x.setAttribute('disabled', true)
-        for (let j = 0; j < playersOut[pickIndex - 1].arr.length; j++) {
-          if (player.element === playersOut[pickIndex - 1].arr[j].element) {
-            repeatedPlayer.push(...playersOut[pickIndex - 1].arr.splice(j, 1));
-          }
+        let managerOut = tempPlayersOut.filter((x) => x.element_type === 5)[0]?.element;
+        setPlayersIn((x) => [
+          ...x.map((gw, idx) =>
+            idx === pickIndex - 1 ? { ...gw, arr: [...gw.arr, player] } : gw
+          ),
+        ]);
+        setPlayersOut((prev) =>
+          prev.map((gw, idx) => (idx > pickIndex - 1 ? { ...gw, arr: [] } : gw))
+        );
+        setTempPlayersOut((x) => [...x.filter((y) => y.element !== managerOut)]);
+        if(am?.event+1 === nowEvent) {
+          setPicks([
+            ...picks.map((pick, key) =>
+              (key >= pickIndex - 1 && key <= pickIndex)
+                ? { ...pick, newPicks: [...pick.newPicks.filter(x => x.element !== managerOut), player] }
+                : pick
+            ),
+          ])
         }
-        if (repeatedPlayer.length === 1) {
-          // player already transferred out
-          playersIn.push();
-          let likelyReplaced = tempPlayersOut.find(
-            (x) => x.element_type === player.element_type
-          );
-          let isOut = picks[pickIndex - 1].newPicks.some(
-            (x) => x.element_out === repeatedPlayer[0].element
-          );
-          if (isOut) {
-            let withIsOut = picks[pickIndex - 1].newPicks.find(
+        if(am?.event+2 === nowEvent) {
+          setPicks([
+            ...picks.map((pick, key) =>
+              (key === pickIndex - 1)
+                ? { ...pick, newPicks: [...pick.newPicks.filter(x => x.element !== managerOut), player] }
+                : pick
+            ),
+          ])
+        }
+        
+      }
+    } else {
+      let playersOutG = tempPlayersOut.filter((x) => x.element_type === 1).length;
+      let playersOutD = tempPlayersOut.filter((x) => x.element_type === 2).length;
+      let playersOutM = tempPlayersOut.filter((x) => x.element_type === 3).length;
+      let playersOutF = tempPlayersOut.filter((x) => x.element_type === 4).length;
+
+      let goalkeepers =
+        picks[pickIndex - 1].newPicks.filter((x) => x.element_type === 1).length -
+        playersOutG;
+      let defenders =
+        picks[pickIndex - 1].newPicks.filter((x) => x.element_type === 2).length -
+        playersOutD;
+      let midfielders =
+        picks[pickIndex - 1].newPicks.filter((x) => x.element_type === 3).length -
+        playersOutM;
+      let forwards =
+        picks[pickIndex - 1].newPicks.filter((x) => x.element_type === 4).length -
+        playersOutF;
+
+      //let playersOutBenchG = tempPlayersOut.filter(x => x.multiplier === 0 && x.element_type === 1).length
+      let playersOutnonB = tempPlayersOut.filter(
+        (x) => x.multiplier !== 0
+      ).length;
+      let playersOutPG = tempPlayersOut.filter(
+        (x) => x.multiplier !== 0 && x.element_type === 1
+      ).length;
+      let playersOutPD = tempPlayersOut.filter(
+        (x) => x.multiplier !== 0 && x.element_type === 2
+      ).length;
+      let playersOutPM = tempPlayersOut.filter(
+        (x) => x.multiplier !== 0 && x.element_type === 3
+      ).length;
+      let playersOutPF = tempPlayersOut.filter(
+        (x) => x.multiplier !== 0 && x.element_type === 4
+      ).length;
+
+      //let benchGoalie = picks[pickIndex-1].newPicks.filter(x => x.multiplier === 0 && x.element_type === 1).length - playersOutBenchG
+      let nonBench =
+        picks[pickIndex - 1].newPicks.filter((x) => x.multiplier !== 0).length -
+        playersOutnonB;
+      let playingGoalie =
+        picks[pickIndex - 1].newPicks.filter(
+          (x) => x.multiplier !== 0 && x.element_type === 1
+        ).length - playersOutPG;
+      let playingDef =
+        picks[pickIndex - 1].newPicks.filter(
+          (x) => x.multiplier !== 0 && x.element_type === 2
+        ).length - playersOutPD;
+      let playingMid =
+        picks[pickIndex - 1].newPicks.filter(
+          (x) => x.multiplier !== 0 && x.element_type === 3
+        ).length - playersOutPM;
+      let playingFwd =
+        picks[pickIndex - 1].newPicks.filter(
+          (x) => x.multiplier !== 0 && x.element_type === 4
+        ).length - playersOutPF;
+
+
+      if (
+        picks[pickIndex - 1]?.newPicks.length < 15 ||
+        tempPlayersOut.length > 0
+      ) {
+        let orderOne = picks[pickIndex - 1].newPicks.some(
+          (x) => x.position === 13
+        );
+        let orderTwo = picks[pickIndex - 1].newPicks.some(
+          (x) => x.position === 14
+        );
+        let orderThree = picks[pickIndex - 1].newPicks.some(
+          (x) => x.position === 15
+        );
+
+        if (elementType === 1 && playingGoalie === 1) {
+          player.position = 12;
+          player.multiplier = 0;
+        } else {
+          player.position = 1;
+          player.multiplier = 1;
+        }
+
+        if (
+          (elementType === 2 && nonBench === 11) ||
+          (elementType === 2 &&
+            nonBench === 9 &&
+            playingDef === 4 &&
+            playingMid === 5) ||
+          (elementType === 2 && nonBench === 10 && playingGoalie === 0) ||
+          (elementType === 2 && nonBench === 10 && playingFwd === 0)
+        ) {
+          player.multiplier = 0;
+          player.position =
+            !orderOne && !orderTwo && !orderThree
+              ? 13
+              : orderOne && !orderTwo && !orderThree
+                ? 14
+                : orderOne && orderTwo && !orderThree
+                  ? 15
+                  : !orderOne && orderTwo && orderThree
+                    ? 13
+                    : orderOne && !orderTwo && orderThree
+                      ? 14
+                      : 15;
+        }
+
+        if (
+          (elementType === 3 && nonBench === 11) ||
+          (elementType === 3 &&
+            nonBench === 9 &&
+            playingMid === 4 &&
+            playingDef === 5) ||
+          (elementType === 3 && nonBench === 10 && playingGoalie === 0) ||
+          (elementType === 3 && nonBench === 10 && playingFwd === 0) ||
+          (elementType === 3 && nonBench === 10 && playingDef === 2) ||
+          (elementType === 3 && playingMid === 4 && playingFwd === 3)
+        ) {
+          player.multiplier = 0;
+          player.position =
+            !orderOne && !orderTwo && !orderThree
+              ? 13
+              : orderOne && !orderTwo && !orderThree
+                ? 14
+                : orderOne && orderTwo && !orderThree
+                  ? 15
+                  : !orderOne && orderTwo && orderThree
+                    ? 13
+                    : orderOne && !orderTwo && orderThree
+                      ? 14
+                      : 15;
+        }
+
+        if (
+          (elementType === 4 && nonBench === 11) ||
+          (elementType === 4 && nonBench === 10 && playingGoalie === 0) ||
+          (elementType === 4 && nonBench === 10 && playingDef === 2) ||
+          (elementType === 4 && playingMid === 5 && playingFwd === 2)
+        ) {
+          player.multiplier = 0;
+          player.position =
+            !orderOne && !orderTwo && !orderThree
+              ? 13
+              : orderOne && !orderTwo && !orderThree
+                ? 14
+                : orderOne && orderTwo && !orderThree
+                  ? 15
+                  : !orderOne && orderTwo && orderThree
+                    ? 13
+                    : orderOne && !orderTwo && orderThree
+                      ? 14
+                      : 15;
+        }
+        if (
+          (elementType === 1 && goalkeepers < 2) ||
+          (elementType === 2 && defenders < 5) ||
+          (elementType === 3 && midfielders < 5) ||
+          (elementType === 4 && forwards < 3)
+        ) {
+          let repeatedPlayer = [];
+          //switching captaincy
+          /*player.is_captain = playerOut.is_captain
+                  player.is_vice_captain = playerOut.is_vice_captain
+                  player.multiplier = playerOut.multiplier
+                  player.element_out = playerOut.element
+                  player.position = playerOut.position*/
+          //x.setAttribute('disabled', true)
+          for (let j = 0; j < playersOut[pickIndex - 1].arr.length; j++) {
+            if (player.element === playersOut[pickIndex - 1].arr[j].element) {
+              repeatedPlayer.push(...playersOut[pickIndex - 1].arr.splice(j, 1));
+            }
+          }
+          if (repeatedPlayer.length === 1) {
+            // player already transferred out
+            playersIn.push();
+            let likelyReplaced = tempPlayersOut.find(
+              (x) => x.element_type === player.element_type
+            );
+            let isOut = picks[pickIndex - 1].newPicks.some(
               (x) => x.element_out === repeatedPlayer[0].element
             );
-            withIsOut.element_out = likelyReplaced.element;
-            let inIndex = playersIn[pickIndex - 1].arr.findIndex(
-              (x) => x.element === withIsOut.element
-            );
-            setPlayersIn((x) => [
-              ...x.map((gw, idx) =>
-                idx === pickIndex - 1
-                  ? {
-                    ...gw,
-                    arr: [
-                      ...gw.arr.filter((y, key) => key !== inIndex),
-                      withIsOut,
-                    ],
-                  }
-                  : gw
-              ),
-            ]);
-            repeatedPlayer[0].is_captain = likelyReplaced.is_captain;
-            repeatedPlayer[0].is_vice_captain = likelyReplaced.is_vice_captain;
-            repeatedPlayer[0].position = likelyReplaced.position;
-            repeatedPlayer[0].multiplier = likelyReplaced.multiplier;
-            let repeatedIndex = picks[pickIndex - 1].newPicks.findIndex(
-              (x) => x.element === likelyReplaced.element
-            );
-            setPicks([
-              ...picks.map((pick, key) =>
-                key === pickIndex - 1
-                  ? {
-                    ...pick,
-                    newPicks: pick.newPicks.map((newPick, idx) =>
-                      idx === repeatedIndex ? repeatedPlayer[0] : newPick
-                    ),
-                  }
-                  : pick
-              ),
-            ]);
-
-            // set picks for later weeks
-            if (chips.freehit.event === +eventId + pickIndex) {
-              if (pickIndex === 1) {
-                setPicks((prev) =>
-                  prev.map((pick, key) =>
-                    key > pickIndex - 1 ? { ...pick, newPicks: real } : pick
-                  )
-                );
-              } else {
-                setPicks((prev) =>
-                  prev.map((pick, key) =>
-                    key > pickIndex - 1
-                      ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
-                      : pick
-                  )
-                );
-              }
-            } else {
-              setPicks((prev) =>
-                prev.map((pick, key) =>
-                  key > pickIndex - 1
-                    ? { ...pick, newPicks: prev[pickIndex - 1].newPicks }
-                    : pick
-                )
+            if (isOut) {
+              let withIsOut = picks[pickIndex - 1].newPicks.find(
+                (x) => x.element_out === repeatedPlayer[0].element
               );
-            }
-          } else {
-            setPicks([
-              ...picks.map((pick, key) =>
-                key === pickIndex - 1
-                  ? {
-                    ...pick,
-                    newPicks: pick.newPicks.map((newPick, idx) =>
-                      newPick.element === repeatedPlayer[0].element
-                        ? repeatedPlayer[0]
-                        : newPick
-                    ),
-                  }
-                  : pick
-              ),
-            ]);
-            // set picks for later weeks
-            if (chips.freehit.event === +eventId + pickIndex) {
-              if (pickIndex === 1) {
-                setPicks((prev) =>
-                  prev.map((pick, key) =>
-                    key > pickIndex - 1 ? { ...pick, newPicks: real } : pick
-                  )
-                );
-              } else {
-                setPicks((prev) =>
-                  prev.map((pick, key) =>
-                    key > pickIndex - 1
-                      ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
-                      : pick
-                  )
-                );
-              }
-            } else {
-              setPicks((prev) =>
-                prev.map((pick, key) =>
-                  key > pickIndex - 1
-                    ? { ...pick, newPicks: prev[pickIndex - 1].newPicks }
-                    : pick
-                )
+              withIsOut.element_out = likelyReplaced.element;
+              let inIndex = playersIn[pickIndex - 1].arr.findIndex(
+                (x) => x.element === withIsOut.element
               );
-            }
-          }
-          let pIndex = tempPlayersOut.findIndex(
-            (x) =>
-              x.element_type === player.element_type &&
-              x.element === likelyReplaced.element
-          );
-
-          setTempPlayersOut((x) => [...x.filter((y, idx) => idx !== pIndex)]);
-        } else {
-          // Normal player addition
-          // set playersIn array
-          if (eventId === 0 && picks[0]?.newPicks.length < 15) {
-            let hasCap = picks[0].newPicks.some((x) => x.is_captain);
-            let hasVC = picks[0].newPicks.some((x) => x.is_vice_captain);
-            if (!hasCap && !hasVC && player.multiplier > 0) {
-              player.is_captain = true;
-              player.multiplier = 2;
-            }
-            if (hasCap && !hasVC && player.multiplier > 0) {
-              player.is_vice_captain = true;
-            }
-
-            // set picks in current week
-            setPicks([
-              ...picks.map((pick, key) =>
-                key === pickIndex - 1
-                  ? { ...pick, newPicks: [...pick.newPicks, player] }
-                  : pick
-              ),
-            ]);
-          } else {
-            let playerOut = tempPlayersOut.find(
-              (x) => x.element_type === player.element_type
-            );
-            let playerOutIndex = picks[pickIndex - 1]?.newPicks?.findIndex(
-              (x) => x.element === playerOut.element
-            );
-            //switching captaincy
-            player.is_captain = playerOut.is_captain;
-            player.is_vice_captain = playerOut.is_vice_captain;
-            player.multiplier = playerOut.multiplier;
-            player.element_out = playerOut.element;
-            player.position = playerOut.position;
-            setPlayersIn((x) => [
-              ...x.map((gw, idx) =>
-                idx === pickIndex - 1
-                  ? { ...gw, arr: [...gw.arr, player] }
-                  : idx > pickIndex - 1
-                    ? { ...gw, arr: [] }
+              setPlayersIn((x) => [
+                ...x.map((gw, idx) =>
+                  idx === pickIndex - 1
+                    ? {
+                      ...gw,
+                      arr: [
+                        ...gw.arr.filter((y, key) => key !== inIndex),
+                        withIsOut,
+                      ],
+                    }
                     : gw
-              ),
-            ]);
-            // set playersOut array
-            setPlayersOut((x) => [
-              ...x.map((gw, idx) =>
-                idx > pickIndex - 1 ? { ...gw, arr: [] } : gw
-              ),
-            ]);
-
-            // set picks in current week
-            setPicks([
-              ...picks.map((pick, key) =>
-                key === pickIndex - 1
-                  ? {
-                    ...pick,
-                    newPicks: pick?.newPicks?.map((newPick, idx) =>
-                      idx === playerOutIndex ? player : newPick
-                    ),
-                  }
-                  : pick
-              ),
-            ]);
-            let pIndex = tempPlayersOut.findIndex(
-              (x) => x.element_type === player.element_type
-            );
-            setTempPlayersOut((x) => [...x.filter((y, idx) => idx !== pIndex)]);
-          }
-
-          // set picks for later weeks
-          if (chips.freehit.event === +eventId + pickIndex) {
-            if (pickIndex === 1) {
-              setPicks((prev) =>
-                prev.map((pick, key) =>
-                  key > pickIndex - 1 ? { ...pick, newPicks: real } : pick
-                )
+                ),
+              ]);
+              repeatedPlayer[0].is_captain = likelyReplaced.is_captain;
+              repeatedPlayer[0].is_vice_captain = likelyReplaced.is_vice_captain;
+              repeatedPlayer[0].position = likelyReplaced.position;
+              repeatedPlayer[0].multiplier = likelyReplaced.multiplier;
+              let repeatedIndex = picks[pickIndex - 1].newPicks.findIndex(
+                (x) => x.element === likelyReplaced.element
               );
+              setPicks([
+                ...picks.map((pick, key) =>
+                  key === pickIndex - 1
+                    ? {
+                      ...pick,
+                      newPicks: pick.newPicks.map((newPick, idx) =>
+                        idx === repeatedIndex ? repeatedPlayer[0] : newPick
+                      ),
+                    }
+                    : pick
+                ),
+              ]);
+
+              // set picks for later weeks
+              if (chips.freehit.event === +eventId + pickIndex) {
+                if (pickIndex === 1) {
+                  setPicks((prev) =>
+                    prev.map((pick, key) =>
+                      key > pickIndex - 1 ? { ...pick, newPicks: real } : pick
+                    )
+                  );
+                } else {
+                  setPicks((prev) =>
+                    prev.map((pick, key) =>
+                      key > pickIndex - 1
+                        ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                        : pick
+                    )
+                  );
+                }
+              } else {
+                setPicks((prev) =>
+                  prev.map((pick, key) =>
+                    key > pickIndex - 1
+                      ? { ...pick, newPicks: prev[pickIndex - 1].newPicks }
+                      : pick
+                  )
+                );
+              }
+            } else {
+              setPicks([
+                ...picks.map((pick, key) =>
+                  key === pickIndex - 1
+                    ? {
+                      ...pick,
+                      newPicks: pick.newPicks.map((newPick, idx) =>
+                        newPick.element === repeatedPlayer[0].element
+                          ? repeatedPlayer[0]
+                          : newPick
+                      ),
+                    }
+                    : pick
+                ),
+              ]);
+              // set picks for later weeks
+              if (chips.freehit.event === +eventId + pickIndex) {
+                if (pickIndex === 1) {
+                  setPicks((prev) =>
+                    prev.map((pick, key) =>
+                      key > pickIndex - 1 ? { ...pick, newPicks: real } : pick
+                    )
+                  );
+                } else {
+                  setPicks((prev) =>
+                    prev.map((pick, key) =>
+                      key > pickIndex - 1
+                        ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                        : pick
+                    )
+                  );
+                }
+              } else {
+                setPicks((prev) =>
+                  prev.map((pick, key) =>
+                    key > pickIndex - 1
+                      ? { ...pick, newPicks: prev[pickIndex - 1].newPicks }
+                      : pick
+                  )
+                );
+              }
+            }
+            let pIndex = tempPlayersOut.findIndex(
+              (x) =>
+                x.element_type === player.element_type &&
+                x.element === likelyReplaced.element
+            );
+
+            setTempPlayersOut((x) => [...x.filter((y, idx) => idx !== pIndex)]);
+          } else {
+            // Normal player addition
+            // set playersIn array
+            if (eventId === 0 && picks[0]?.newPicks.length < 15) {
+              let hasCap = picks[0].newPicks.some((x) => x.is_captain);
+              let hasVC = picks[0].newPicks.some((x) => x.is_vice_captain);
+              if (!hasCap && !hasVC && player.multiplier > 0) {
+                player.is_captain = true;
+                player.multiplier = 2;
+              }
+              if (hasCap && !hasVC && player.multiplier > 0) {
+                player.is_vice_captain = true;
+              }
+
+              // set picks in current week
+              setPicks([
+                ...picks.map((pick, key) =>
+                  key === pickIndex - 1
+                    ? { ...pick, newPicks: [...pick.newPicks, player] }
+                    : pick
+                ),
+              ]);
+            } else {
+              let playerOut = tempPlayersOut.find(
+                (x) => x.element_type === player.element_type
+              );
+              let playerOutIndex = picks[pickIndex - 1]?.newPicks?.findIndex(
+                (x) => x.element === playerOut.element
+              );
+              //switching captaincy
+              player.is_captain = playerOut.is_captain;
+              player.is_vice_captain = playerOut.is_vice_captain;
+              player.multiplier = playerOut.multiplier;
+              player.element_out = playerOut.element;
+              player.position = playerOut.position;
+              setPlayersIn((x) => [
+                ...x.map((gw, idx) =>
+                  idx === pickIndex - 1
+                    ? { ...gw, arr: [...gw.arr, player] }
+                    : idx > pickIndex - 1
+                      ? { ...gw, arr: [] }
+                      : gw
+                ),
+              ]);
+              // set playersOut array
+              setPlayersOut((x) => [
+                ...x.map((gw, idx) =>
+                  idx > pickIndex - 1 ? { ...gw, arr: [] } : gw
+                ),
+              ]);
+
+              // set picks in current week
+              setPicks([
+                ...picks.map((pick, key) =>
+                  key === pickIndex - 1
+                    ? {
+                      ...pick,
+                      newPicks: pick?.newPicks?.map((newPick, idx) =>
+                        idx === playerOutIndex ? player : newPick
+                      ),
+                    }
+                    : pick
+                ),
+              ]);
+              let pIndex = tempPlayersOut.findIndex(
+                (x) => x.element_type === player.element_type
+              );
+              setTempPlayersOut((x) => [...x.filter((y, idx) => idx !== pIndex)]);
+            }
+
+            // set picks for later weeks
+            if (chips.freehit.event === +eventId + pickIndex) {
+              if (pickIndex === 1) {
+                setPicks((prev) =>
+                  prev.map((pick, key) =>
+                    key > pickIndex - 1 ? { ...pick, newPicks: real } : pick
+                  )
+                );
+              } else {
+                setPicks((prev) =>
+                  prev.map((pick, key) =>
+                    key > pickIndex - 1
+                      ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                      : pick
+                  )
+                );
+              }
             } else {
               setPicks((prev) =>
                 prev.map((pick, key) =>
                   key > pickIndex - 1
-                    ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                    ? { ...pick, newPicks: prev[pickIndex - 1].newPicks }
                     : pick
                 )
               );
             }
-          } else {
-            setPicks((prev) =>
-              prev.map((pick, key) =>
-                key > pickIndex - 1
-                  ? { ...pick, newPicks: prev[pickIndex - 1].newPicks }
-                  : pick
-              )
-            );
           }
         }
       }
     }
+
   };
 
+  // transfer out
   const addToTransfersOut = (player) => {
     //Add player to playersOut or remove player from playersOut
     //let totalBudget = +picks[pickIndex-1].totalBudget
@@ -1234,153 +1279,170 @@ function ManagerProvider({ children }) {
       (x) => x.element === player.element
     ).selling_price;
     let remainder = (+totalBudget - spent).toFixed(1);
-    if (isFoundOut) {
-      let isFoundOutIndex = playersOut[pickIndex - 1].arr.findIndex(
-        (x) => x.element === player.element
-      );
-      let isFoundOutTempIndex = tempPlayersOut.findIndex(
-        (x) => x.element === player.element
-      );
-      setPlayersOut((x) => [
-        ...x.map((gw, idx) =>
-          idx === pickIndex - 1
-            ? { ...gw, arr: gw.arr.filter((y, key) => key !== isFoundOutIndex) }
-            : gw
-        ),
-      ]);
-      setTempPlayersOut((x) => [
-        ...x.filter((y, idx) => idx !== isFoundOutTempIndex),
-      ]);
-      setRemainingBudget(+remainder - sellingPrice);
+    if (player?.element_type === 5) {
+      if (am?.event === nowEvent) {
+        setPicks([
+          ...picks.map((pick, key) =>
+            (key >= pickIndex - 1 && key <= pickIndex + 1)
+              ? { ...pick, newPicks: [...pick.newPicks.filter(x => x.element !== player.element)] }
+              : pick
+          ),
+        ]);
+      } else {
+        setPlayersOut((x) => [
+          ...x.map((gw, idx) =>
+            idx === pickIndex - 1 ? { ...gw, arr: [...gw.arr, player] } : gw
+          ),
+        ]);
+        setTempPlayersOut((x) => [...x, player]);
+      }
     } else {
-      if (!isFoundIn) {
-        if (
-          eventId === 0 &&
-          picks[0]?.newPicks.length <= 15 &&
-          pickIndex === 1
-        ) {
-          setPicks([
-            ...picks.map((pick, key) =>
-              key === 0
-                ? {
-                  ...pick,
-                  newPicks: pick.newPicks.filter(
-                    (newPick, idx) => newPick.element !== player.element
-                  ),
-                }
-                : pick
-            ),
-          ]);
-          setRemainingBudget(+remainder - sellingPrice);
-        } else {
-          setPlayersOut((x) => [
-            ...x.map((gw, idx) =>
-              idx === pickIndex - 1 ? { ...gw, arr: [...gw.arr, player] } : gw
-            ),
-          ]);
-          setTempPlayersOut((x) => [...x, player]);
+      if (isFoundOut) {
+        let isFoundOutIndex = playersOut[pickIndex - 1].arr.findIndex(
+          (x) => x.element === player.element
+        );
+        let isFoundOutTempIndex = tempPlayersOut.findIndex(
+          (x) => x.element === player.element
+        );
+        setPlayersOut((x) => [
+          ...x.map((gw, idx) =>
+            idx === pickIndex - 1
+              ? { ...gw, arr: gw.arr.filter((y, key) => key !== isFoundOutIndex) }
+              : gw
+          ),
+        ]);
+        setTempPlayersOut((x) => [
+          ...x.filter((y, idx) => idx !== isFoundOutTempIndex),
+        ]);
+        setRemainingBudget(+remainder - sellingPrice);
+      } else {
+        if (!isFoundIn) {
+          if (
+            eventId === 0 &&
+            picks[0]?.newPicks.length <= 15 &&
+            pickIndex === 1
+          ) {
+            setPicks([
+              ...picks.map((pick, key) =>
+                key === 0
+                  ? {
+                    ...pick,
+                    newPicks: pick.newPicks.filter(
+                      (newPick, idx) => newPick.element !== player.element
+                    ),
+                  }
+                  : pick
+              ),
+            ]);
+            setRemainingBudget(+remainder - sellingPrice);
+          } else {
+            setPlayersOut((x) => [
+              ...x.map((gw, idx) =>
+                idx === pickIndex - 1 ? { ...gw, arr: [...gw.arr, player] } : gw
+              ),
+            ]);
+            setTempPlayersOut((x) => [...x, player]);
+          }
         }
       }
-    }
-
-    if (isFoundIn) {
-      //In PlayersIn Array
-      let isFoundInIndex = playersIn[pickIndex - 1].arr.findIndex(
-        (x) => x.element === player.element
-      );
-      let isFoundInPicksIndex = picks[pickIndex - 1].newPicks.findIndex(
-        (x) => x.element === player.element
-      );
-      let replacedElement =
-        playersIn[pickIndex - 1].arr[isFoundInIndex].element_out;
-      const replacedObj = playersOut[pickIndex - 1].arr.find(
-        (x) => x.element === replacedElement
-      );
-      //let isCaptain = playersIn[pickIndex-1].arr[isFoundInIndex].is_captain
-      //let isViceCaptain = playersIn[pickIndex-1].arr[isFoundInIndex].is_vice_captain
-      //let multiplier = playersIn[pickIndex-1].arr[isFoundInIndex].multiplier
-      //let position = playersIn[pickIndex-1].arr[isFoundInIndex].position
-      let isCaptain =
-        picks[pickIndex - 1].newPicks[isFoundInPicksIndex].is_captain;
-      let isViceCaptain =
-        picks[pickIndex - 1].newPicks[isFoundInPicksIndex].is_vice_captain;
-      let multiplier =
-        picks[pickIndex - 1].newPicks[isFoundInPicksIndex].multiplier;
-      let position =
-        picks[pickIndex - 1].newPicks[isFoundInPicksIndex].position;
-      const replacedElementObj = {
-        ...replacedObj,
-        is_captain: isCaptain,
-        is_vice_captain: isViceCaptain,
-        multiplier: multiplier,
-        position: position,
-      };
-
-      setPlayersIn((x) => [
-        ...x.map((gw, idx) =>
-          idx === pickIndex - 1
-            ? { ...gw, arr: gw.arr.filter((y, key) => key !== isFoundInIndex) }
-            : gw
-        ),
-      ]);
-      setPlayersIn((prev) =>
-        prev.map((gw, idx) => (idx > pickIndex - 1 ? { ...gw, arr: [] } : gw))
-      );
-      setPlayersOut((prev) =>
-        prev.map((gw, idx) => (idx > pickIndex - 1 ? { ...gw, arr: [] } : gw))
-      );
-      setPicks([
-        ...picks.map((pick, key) =>
-          key === pickIndex - 1
-            ? {
-              ...pick,
-              newPicks: pick.newPicks.map((newPick, idx) =>
-                idx === isFoundInPicksIndex ? replacedElementObj : newPick
-              ),
-            }
-            : pick
-        ),
-      ]);
-
-      if (chips.freehit.event === +eventId + pickIndex) {
-        if (pickIndex === 1) {
-          setPicks((prev) =>
-            prev.map((pick, key) =>
-              key > pickIndex - 1 ? { ...pick, newPicks: real } : pick
-            )
-          );
+  
+      if (isFoundIn) {
+        //In PlayersIn Array
+        let isFoundInIndex = playersIn[pickIndex - 1].arr.findIndex(
+          (x) => x.element === player.element
+        );
+        let isFoundInPicksIndex = picks[pickIndex - 1].newPicks.findIndex(
+          (x) => x.element === player.element
+        );
+        let replacedElement =
+          playersIn[pickIndex - 1].arr[isFoundInIndex].element_out;
+        const replacedObj = playersOut[pickIndex - 1].arr.find(
+          (x) => x.element === replacedElement
+        );
+  
+        let isCaptain =
+          picks[pickIndex - 1].newPicks[isFoundInPicksIndex].is_captain;
+        let isViceCaptain =
+          picks[pickIndex - 1].newPicks[isFoundInPicksIndex].is_vice_captain;
+        let multiplier =
+          picks[pickIndex - 1].newPicks[isFoundInPicksIndex].multiplier;
+        let position =
+          picks[pickIndex - 1].newPicks[isFoundInPicksIndex].position;
+        const replacedElementObj = {
+          ...replacedObj,
+          is_captain: isCaptain,
+          is_vice_captain: isViceCaptain,
+          multiplier: multiplier,
+          position: position,
+        };
+  
+        setPlayersIn((x) => [
+          ...x.map((gw, idx) =>
+            idx === pickIndex - 1
+              ? { ...gw, arr: gw.arr.filter((y, key) => key !== isFoundInIndex) }
+              : gw
+          ),
+        ]);
+        setPlayersIn((prev) =>
+          prev.map((gw, idx) => (idx > pickIndex - 1 ? { ...gw, arr: [] } : gw))
+        );
+        setPlayersOut((prev) =>
+          prev.map((gw, idx) => (idx > pickIndex - 1 ? { ...gw, arr: [] } : gw))
+        );
+        setPicks([
+          ...picks.map((pick, key) =>
+            key === pickIndex - 1
+              ? {
+                ...pick,
+                newPicks: pick.newPicks.map((newPick, idx) =>
+                  idx === isFoundInPicksIndex ? replacedElementObj : newPick
+                ),
+              }
+              : pick
+          ),
+        ]);
+  
+        if (chips.freehit.event === +eventId + pickIndex) {
+          if (pickIndex === 1) {
+            setPicks((prev) =>
+              prev.map((pick, key) =>
+                key > pickIndex - 1 ? { ...pick, newPicks: real } : pick
+              )
+            );
+          } else {
+            setPicks((prev) =>
+              prev.map((pick, key) =>
+                key > pickIndex - 1
+                  ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                  : pick
+              )
+            );
+          }
         } else {
           setPicks((prev) =>
             prev.map((pick, key) =>
               key > pickIndex - 1
-                ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                ? { ...pick, newPicks: prev[pickIndex - 1].newPicks }
                 : pick
             )
           );
         }
-      } else {
-        setPicks((prev) =>
-          prev.map((pick, key) =>
-            key > pickIndex - 1
-              ? { ...pick, newPicks: prev[pickIndex - 1].newPicks }
-              : pick
-          )
+  
+        //In PlayersOut Array
+        let isFoundOutIndex = playersOut.findIndex(
+          (x) => x.element === player.element
         );
+        setPlayersOut((x) => [
+          ...x.map((gw, idx) =>
+            idx === pickIndex - 1
+              ? { ...gw, arr: gw.arr.filter((y, key) => key !== isFoundOutIndex) }
+              : gw
+          ),
+        ]);
+        setTempPlayersOut((x) => [...x, replacedElementObj]);
       }
-
-      //In PlayersOut Array
-      let isFoundOutIndex = playersOut.findIndex(
-        (x) => x.element === player.element
-      );
-      setPlayersOut((x) => [
-        ...x.map((gw, idx) =>
-          idx === pickIndex - 1
-            ? { ...gw, arr: gw.arr.filter((y, key) => key !== isFoundOutIndex) }
-            : gw
-        ),
-      ]);
-      setTempPlayersOut((x) => [...x, replacedElementObj]);
     }
+    
   };
 
   const changeCaptain = (id) => {
@@ -1680,6 +1742,15 @@ function ManagerProvider({ children }) {
     }
   };
 
+  const managersSelected = () => {
+    if (picks.length) {
+      let managers =
+        picks[pickIndex - 1].newPicks.filter((x) => x.element_type === 5)
+          .length - tempPlayersOut.filter((x) => x.element_type === 5).length;
+      return managers;
+    }
+  };
+
   const addedPlayer = (team, player) => {
     let playerName = players?.find((x) => x.id === player)?.web_name;
     setPlayerName(playerName);
@@ -1787,6 +1858,8 @@ function ManagerProvider({ children }) {
     pickIndex: pickIndex,
     playerName: playerName,
     initialChips: initialChips,
+    nowEvent: nowEvent,
+    updateNowEvent,
     updateInitsWc,
     updateInitsTc,
     updateInitsFh,
@@ -1812,6 +1885,7 @@ function ManagerProvider({ children }) {
     defendersSelected,
     midfieldersSelected,
     forwardsSelected,
+    managersSelected,
     addedPlayer,
     transferCost,
     freeTransfers,
