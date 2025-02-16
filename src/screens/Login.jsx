@@ -14,13 +14,13 @@ const Login = () => {
     const dispatch = useDispatch()
 
     const [login, { isLoading }] = useLoginMutation()
-    const { userInfo } = useSelector((state) => state.auth)
+    const { adminInfo } = useSelector((state) => state.auth)
 
     useEffect(() => {
-        if(userInfo) {
+        if(adminInfo) {
           navigate('/admin')
         }
-      }, [navigate, userInfo])
+      }, [navigate, adminInfo])
 
     const onSubmit = async (e) => {
         e.preventDefault()

@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux'
 
 function PrivateRoute() {
     const navigate = useNavigate()
-    const { userInfo } = useSelector((state) => state.auth);
+    const { adminInfo } = useSelector((state) => state.auth);
     useEffect(() => {
-      if(!userInfo) return navigate('/')
+      if(!adminInfo) return navigate('/')
     })
     
     

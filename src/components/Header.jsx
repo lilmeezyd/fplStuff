@@ -7,7 +7,7 @@ import { setCredentials } from '../slices/authSlice'
 
 const Header = () => {
     const dispatch = useDispatch()
-    const { userInfo } = useSelector((state) => state.auth);
+    const { adminInfo } = useSelector((state) => state.auth);
     
     const logoutHandler = async () => {
         try {
@@ -33,9 +33,9 @@ const Header = () => {
                             <LinkContainer to='/compare'><Nav.Link>Comparison Tool</Nav.Link></LinkContainer>
                             <LinkContainer to='/planner'><Nav.Link>My Planner</Nav.Link></LinkContainer>
                             <LinkContainer to='/fixtures'><Nav.Link>Fixtures</Nav.Link></LinkContainer>
-                            {userInfo && <LinkContainer to='/admin'><Nav.Link>Admin</Nav.Link></LinkContainer>}
-                           { userInfo && <Nav.Link style={{fontWeight: 700 }}>Hi, {userInfo?.firstName}</Nav.Link>}
-                            {userInfo && <Button onClick={logoutHandler} className='btn btn-lgout'>Logout</Button>}
+                            {adminInfo && <LinkContainer to='/admin'><Nav.Link>Admin</Nav.Link></LinkContainer>}
+                           { adminInfo && <Nav.Link style={{fontWeight: 700 }}>Hi, {adminInfo?.firstName}</Nav.Link>}
+                            {adminInfo && <Button onClick={logoutHandler} className='btn btn-lgout'>Logout</Button>}
                             {/*<LinkContainer to='/achievements'><Nav.Link>Achievements</Nav.Link></LinkContainer> */}   
 
                             {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
