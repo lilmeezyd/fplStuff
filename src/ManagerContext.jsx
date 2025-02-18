@@ -677,6 +677,7 @@ function ManagerProvider({ children }) {
     setOutPlayer({});
     setInPlayerOne({});
     // set picks for later weeks
+
     if (pickIndex === 1) {
       if (eventId === 0) {
         setPicks(prev => prev.map((pick, key) => key >= pickIndex - 1 ? { ...pick, newPicks: [] } : pick))
@@ -712,15 +713,38 @@ function ManagerProvider({ children }) {
             key >= pickIndex - 1 ? { ...pick, newPicks: real } : pick
           )
         );
-      } else {
-        //console.log('normal')
-        setPicks((prev) =>
-          prev.map((pick, key) =>
-            key >= pickIndex - 1
-              ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
-              : pick
+      }
+      else {
+        if (am?.event + 1 === nowEvent) {
+          setPicks((prev) =>
+            picks.map((pick, key) =>
+              (key >= pickIndex - 1 && key <= pickIndex)
+                ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                : key > pickIndex ? {...pick, newPicks: prev[pickIndex - 1].newPicks.filter(x => x.element_type !== 5)}
+                : pick
+            ),
           )
-        );
+        } else if (am?.event + 2 === nowEvent) {
+          setPicks((prev) =>
+            picks.map((pick, key) =>
+              (key === pickIndex - 1)
+                ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                : key >= pickIndex ? {...pick, newPicks: prev[pickIndex - 1].newPicks.filter(x => x.element_type !== 5)}
+                : pick
+            ),
+          )
+        } else {
+          //console.log('normal')
+          setPicks((prev) =>
+            prev.map((pick, key) =>
+              key >= pickIndex - 1
+                ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                : pick
+            )
+          );
+        }
+
+
       }
     }
   };
@@ -844,7 +868,7 @@ function ManagerProvider({ children }) {
           prev.map((gw, idx) => (idx > pickIndex - 1 ? { ...gw, arr: [] } : gw))
         );
         setTempPlayersOut((x) => [...x.filter((y) => y.element !== managerOut)]);
-        if(am?.event+1 === nowEvent) {
+        if (am?.event + 1 === nowEvent) {
           setPicks([
             ...picks.map((pick, key) =>
               (key >= pickIndex - 1 && key <= pickIndex)
@@ -853,7 +877,7 @@ function ManagerProvider({ children }) {
             ),
           ])
         }
-        if(am?.event+2 === nowEvent) {
+        if (am?.event + 2 === nowEvent) {
           setPicks([
             ...picks.map((pick, key) =>
               (key === pickIndex - 1)
@@ -862,7 +886,7 @@ function ManagerProvider({ children }) {
             ),
           ])
         }
-        
+
       }
     } else {
       let playersOutG = tempPlayersOut.filter((x) => x.element_type === 1).length;
@@ -1289,12 +1313,132 @@ function ManagerProvider({ children }) {
           ),
         ]);
       } else {
-        setPlayersOut((x) => [
-          ...x.map((gw, idx) =>
-            idx === pickIndex - 1 ? { ...gw, arr: [...gw.arr, player] } : gw
-          ),
-        ]);
-        setTempPlayersOut((x) => [...x, player]);
+        if (isFoundIn) {
+          //In PlayersIn Array
+          let isFoundInIndex = playersIn[pickIndex - 1].arr.findIndex(
+            (x) => x.element === player.element
+          );
+          let isFoundInPicksIndex = picks[pickIndex - 1].newPicks.findIndex(
+            (x) => x.element === player.element
+          );
+          const replacedObj = playersOut[pickIndex - 1].arr.find(
+            (x) => x.element_type === 5
+          );
+
+          let isCaptain =
+            picks[pickIndex - 1].newPicks[isFoundInPicksIndex].is_captain;
+          let isViceCaptain =
+            picks[pickIndex - 1].newPicks[isFoundInPicksIndex].is_vice_captain;
+          let multiplier =
+            picks[pickIndex - 1].newPicks[isFoundInPicksIndex].multiplier;
+          let position =
+            picks[pickIndex - 1].newPicks[isFoundInPicksIndex].position;
+          const replacedElementObj = {
+            ...replacedObj,
+            is_captain: isCaptain,
+            is_vice_captain: isViceCaptain,
+            multiplier: multiplier,
+            position: position,
+          };
+          //In PlayersOut Array
+          let isFoundOutIndex = playersOut.findIndex(
+            (x) => x.element === player.element
+          );
+          setPlayersOut((x) => [
+            ...x.map((gw, idx) =>
+              idx === pickIndex - 1
+                ? { ...gw, arr: gw.arr.filter((y) => y.element !== player.element) }
+                : gw
+            ),
+          ]);
+          setPlayersIn((x) => [
+            ...x.map((gw, idx) =>
+              idx === pickIndex - 1
+                ? { ...gw, arr: gw.arr.filter((y) => y.element_type !== 5) }
+                : gw
+            ),
+          ]);
+          setPlayersIn((prev) =>
+            prev.map((gw, idx) => (idx > pickIndex - 1 ? { ...gw, arr: [] } : gw))
+          );
+          setPlayersOut((prev) =>
+            prev.map((gw, idx) => (idx > pickIndex - 1 ? { ...gw, arr: [] } : gw))
+          );
+          if (am?.event + 1 === nowEvent) {
+            setPicks([
+              ...picks.map((pick, key) =>
+                (key >= pickIndex - 1 && key <= pickIndex)
+                  ? {
+                    ...pick, newPicks: [...pick.newPicks.filter((newPick) => newPick.element !== player.element
+                    ), replacedElementObj]
+                  }
+                  : pick
+              ),
+            ])
+          }
+          if (am?.event + 2 === nowEvent) {
+            setPicks([
+              ...picks.map((pick, key) =>
+                (key === pickIndex - 1)
+                  ? {
+                    ...pick, newPicks: [...pick.newPicks.filter((newPick) => newPick.element !== player.element
+                    ), replacedElementObj]
+                  }
+                  : pick
+              ),
+            ])
+          }
+
+          setTempPlayersOut((x) => [...x, replacedElementObj]);
+        }
+        if (isFoundOut) {
+          let isFoundOutIndex = playersOut[pickIndex - 1].arr.findIndex(
+            (x) => x.element === player.element
+          );
+          let isFoundOutTempIndex = tempPlayersOut.findIndex(
+            (x) => x.element === player.element
+          );
+          setPlayersOut((x) => [
+            ...x.map((gw, idx) =>
+              idx === pickIndex - 1
+                ? { ...gw, arr: gw.arr.filter((y, key) => key !== isFoundOutIndex) }
+                : gw
+            ),
+          ]);
+          setTempPlayersOut((x) => [
+            ...x.filter((y, idx) => idx !== isFoundOutTempIndex),
+          ]);
+          setRemainingBudget(+remainder - sellingPrice);
+        } else {
+          if (!isFoundIn) {
+            if (
+              eventId === 0 &&
+              picks[0]?.newPicks.length <= 15 &&
+              pickIndex === 1
+            ) {
+              setPicks([
+                ...picks.map((pick, key) =>
+                  key === 0
+                    ? {
+                      ...pick,
+                      newPicks: pick.newPicks.filter(
+                        (newPick, idx) => newPick.element !== player.element
+                      ),
+                    }
+                    : pick
+                ),
+              ]);
+              setRemainingBudget(+remainder - sellingPrice);
+            } else {
+              setPlayersOut((x) => [
+                ...x.map((gw, idx) =>
+                  idx === pickIndex - 1 ? { ...gw, arr: [...gw.arr, player] } : gw
+                ),
+              ]);
+              setTempPlayersOut((x) => [...x, player]);
+            }
+          }
+        }
       }
     } else {
       if (isFoundOut) {
@@ -1345,7 +1489,7 @@ function ManagerProvider({ children }) {
           }
         }
       }
-  
+
       if (isFoundIn) {
         //In PlayersIn Array
         let isFoundInIndex = playersIn[pickIndex - 1].arr.findIndex(
@@ -1359,7 +1503,7 @@ function ManagerProvider({ children }) {
         const replacedObj = playersOut[pickIndex - 1].arr.find(
           (x) => x.element === replacedElement
         );
-  
+
         let isCaptain =
           picks[pickIndex - 1].newPicks[isFoundInPicksIndex].is_captain;
         let isViceCaptain =
@@ -1375,7 +1519,7 @@ function ManagerProvider({ children }) {
           multiplier: multiplier,
           position: position,
         };
-  
+
         setPlayersIn((x) => [
           ...x.map((gw, idx) =>
             idx === pickIndex - 1
@@ -1401,7 +1545,7 @@ function ManagerProvider({ children }) {
               : pick
           ),
         ]);
-  
+
         if (chips.freehit.event === +eventId + pickIndex) {
           if (pickIndex === 1) {
             setPicks((prev) =>
@@ -1427,7 +1571,7 @@ function ManagerProvider({ children }) {
             )
           );
         }
-  
+
         //In PlayersOut Array
         let isFoundOutIndex = playersOut.findIndex(
           (x) => x.element === player.element
@@ -1442,7 +1586,7 @@ function ManagerProvider({ children }) {
         setTempPlayersOut((x) => [...x, replacedElementObj]);
       }
     }
-    
+
   };
 
   const changeCaptain = (id) => {

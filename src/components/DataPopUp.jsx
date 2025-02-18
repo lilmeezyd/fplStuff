@@ -98,7 +98,7 @@ const DataPopUp = (props) => {
           if(playerType === 3) {
               if(noMidfielders === 2) {
                   const toDisable = picks[pickIndex-1].newPicks
-                                      .filter(x => x.element_type === 1 || (x.position < 12 && x.element !== playerId))
+                                      .filter(x => x.element_type === 1 || x.element_type === 5 || (x.position < 12 && x.element !== playerId))
                                       .map(x => x.element)
                   const swap = picks[pickIndex-1].newPicks
                                   .filter(x => x.element_type === 3 && x.position > 12)
@@ -108,10 +108,10 @@ const DataPopUp = (props) => {
                   disablePlayers(toDisable) 
               } else {
                   const toDisable = picks[pickIndex-1].newPicks
-                                      .filter(x => x.element_type === 1 || (x.position < 12 && x.element !== playerId))
+                                      .filter(x => x.element_type === 1 || x.element_type === 5 || (x.position < 12 && x.element !== playerId))
                                       .map(x => x.element)
                   const swap = picks[pickIndex-1].newPicks
-                                  .filter(x => x.element_type !== 1 && x.position > 12)
+                                  .filter(x => x.element_type !== 1 && x.element_type !== 5 && x.position > 12)
                                   .map(x => x.element)
                   addSwap(swap)
                   setSwapArray(toDisable)
@@ -133,10 +133,10 @@ const DataPopUp = (props) => {
                   disablePlayers(toDisable)               
               } else {
                   const toDisable = picks[pickIndex-1].newPicks
-                                      .filter(x => x.element_type === 1 || (x.position < 12 && x.element !== playerId))
+                                      .filter(x => x.element_type === 1 || x.element_type === 5 || (x.position < 12 && x.element !== playerId))
                                       .map(x => x.element)
                   const swap = picks[pickIndex-1].newPicks
-                                  .filter(x => x.element_type !== 1 && x.position > 12)
+                                  .filter(x => x.element_type !== 1 && x.element_type !== 5 && x.position > 12)
                                   .map(x => x.element)
                   addSwap(swap)
                   setSwapArray(toDisable)
@@ -189,10 +189,10 @@ const DataPopUp = (props) => {
           if(playerType === 2) {
               if(noForwards === 1) {
                   const toDisable = picks[pickIndex-1].newPicks
-                                      .filter(x => ((x.element_type === 4 && x.position < 12) || x.element_type === 1))
+                                      .filter(x => ((x.element_type === 4 && x.position < 12) || x.element_type === 1 || x.element_type === 5))
                                       .map(x => x.element)
                   const swap = picks[pickIndex-1].newPicks
-                                  .filter(x => x.element !== playerId && ( (x.element_type !== 4 && x.element_type !== 1) || (x.position >= 12 && x.element_type !== 1)))
+                                  .filter(x => x.element !== playerId && ( (x.element_type !== 4 && x.element_type !== 1) || (x.position >= 12 && x.element_type !== 1&& x.element_type !== 1)))
                                   .map(x => x.element)
                   addSwap(swap)
                   setSwapArray(toDisable)

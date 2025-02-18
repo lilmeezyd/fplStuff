@@ -38,7 +38,8 @@ const SquadPlayer = (props) => {
               ? "1."
               : playerPos.position === 14
               ? "2."
-              : "3."}
+              : playerPos.position === 15
+              ? "3." : ""}
             &nbsp;
             {
               elementTypes?.find((x) => x.id === +playerPos.element_type)?.singular_name_short
