@@ -314,307 +314,346 @@ function ManagerProvider({ children }) {
         //Manager's first gw
         const url = `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${eventId}/picks/`;
         const url1 = `https://fpl-stuff-proxy.vercel.app/transfers/${managerId}/`;
+        const url2 = `https://fpl-stuff-proxy.vercel.app/history/${managerId}/`
         try {
-          const response1 = await fetch(url1);
-          const data1 = await response1.json();
-          setTransferHistory(data1);
-          //console.log(data1)
+          const response2 = await fetch(url2);
+          const data2 = await response2.json();
+          let am = data2.chips.some(x => x.name === 'manager') ? true : false
+          let amEvent = am === true ? data2.chips.filter(x => x.name === "manager")[0].event : null
           try {
-            let data;
-            const response = await fetch(url);
-            const data2 = await response.json();
-            if (data2.active_chip === "freehit") {
-              //https://corsproxy.io/?https://fantasy.premierleague.com
-              const response2 =
-                await //fetch(`http://localhost:5000/${managerId}/event/${eventId-1}/picks`)
-                  fetch(
-                    `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${eventId - 1
-                    }/picks/`
-                  );
-              //fetch(`https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId-1}/picks/`)
-              const data3 = await response2.json();
-              data = data3;
-            } else {
-              data = data2;
-            }
-            /* 
-            setTransferLogic((prev) => ({
-            ...prev, rolledFt: true,
-            tc: 0,
-            fts: 'unlimited'
-          }))*/
-            //console.log(data)
-            setManagerPicks(data);
+            const response1 = await fetch(url1);
+            const data1 = await response1.json();
+            setTransferHistory(data1);
+            try {
+              let data;
+              const response = await fetch(url);
+              const data2 = await response.json();
+              if (data2.active_chip === "freehit") {
+                //https://corsproxy.io/?https://fantasy.premierleague.com
+                const response2 =
+                  await //fetch(`http://localhost:5000/${managerId}/event/${eventId-1}/picks`)
+                    fetch(
+                      `https://fpl-stuff-proxy.vercel.app/${managerId}/event/${eventId - 1
+                      }/picks/`
+                    );
+                //fetch(`https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${managerId}/event/${eventId-1}/picks/`)
+                const data3 = await response2.json();
+                data = data3;
+              } else {
+                data = data2;
+              }
+              /* 
+              setTransferLogic((prev) => ({
+              ...prev, rolledFt: true,
+              tc: 0,
+              fts: 'unlimited'
+            }))*/
+              //console.log(data)
+              setManagerPicks(data);
 
-            //let buyingPrice
-            const newPicks = [];
-            const newPicksHyp = [];
-            const realPicksHyp = [];
-            /*const gameweekPicks = []
-                const gameweekTransfersOut = []
-                const gameweekTransfersIn = []
-        const transferPlayers = []
-        let bank, value*/
+              //let buyingPrice
+              const newPicks = [];
+              const newPicksHyp = [];
+              const realPicksHyp = [];
+              /*const gameweekPicks = []
+                  const gameweekTransfersOut = []
+                  const gameweekTransfersIn = []
+          const transferPlayers = []
+          let bank, value*/
 
-            // Resetting Team to state before auto-subs
-            if (data.automatic_subs.length > 0) {
-              data.picks.forEach((x) => {
-                let found = data.automatic_subs.some(
-                  (player) => player.element_in === x.element
-                );
-                if (found) {
-                  let autoIn = data.automatic_subs.find(
+              // Resetting Team to state before auto-subs
+              if (data.automatic_subs.length > 0) {
+                data.picks.forEach((x) => {
+                  let found = data.automatic_subs.some(
                     (player) => player.element_in === x.element
                   );
-                  let autoOut = data.picks.find(
-                    (player) => player.element === autoIn.element_out
-                  );
-                  let autoInMultiplier = x.multiplier;
-                  let autoOutMultiplier = autoOut.multiplier;
-                  let autoInPosition = x.position;
-                  let autoOutPosition = autoOut.position;
-                  x.multiplier = autoOutMultiplier;
-                  x.position = autoOutPosition;
-                  autoOut.position = autoInPosition;
-                  autoOut.multiplier = autoInMultiplier;
-                }
-              });
-              //.map(y => y.position > 11 ? y.multiplier = 0 : y.multiplier)
-            } else {
-              data.picks.map((x) => x);
-              //.map(y => y.position > 11 ? y.multiplier = 0 : y.multiplier)
-            }
+                  if (found) {
+                    let autoIn = data.automatic_subs.find(
+                      (player) => player.element_in === x.element
+                    );
+                    let autoOut = data.picks.find(
+                      (player) => player.element === autoIn.element_out
+                    );
+                    let autoInMultiplier = x.multiplier;
+                    let autoOutMultiplier = autoOut.multiplier;
+                    let autoInPosition = x.position;
+                    let autoOutPosition = autoOut.position;
+                    x.multiplier = autoOutMultiplier;
+                    x.position = autoOutPosition;
+                    autoOut.position = autoInPosition;
+                    autoOut.multiplier = autoInMultiplier;
+                  }
+                });
+                //.map(y => y.position > 11 ? y.multiplier = 0 : y.multiplier)
+              } else {
+                data.picks.map((x) => x);
+                //.map(y => y.position > 11 ? y.multiplier = 0 : y.multiplier)
+              }
 
-            data.picks.forEach((x) => {
-              data1.forEach((y) => {
-                if (x.element === y.element_in) {
-                  //Removing duplicate entries
-                  let isFound = transferPlayers.some(
-                    (player) => player.element === y.element_in
-                  );
-                  if (isFound) {
-                    return;
-                  } else {
-                    transferPlayers.push({
-                      element: y.element_in,
-                      element_in_cost: y.element_in_cost,
+              data.picks.forEach((x) => {
+                data1.forEach((y) => {
+                  if (x.element === y.element_in) {
+                    //Removing duplicate entries
+                    let isFound = transferPlayers.some(
+                      (player) => player.element === y.element_in
+                    );
+                    if (isFound) {
+                      return;
+                    } else {
+                      transferPlayers.push({
+                        element: y.element_in,
+                        element_in_cost: y.element_in_cost,
+                      });
+                    }
+                  }
+                });
+              });
+
+              data.picks.forEach((x) => {
+                players.forEach((y) => {
+                  if (y.id === x.element) {
+                    let now_cost = (y.now_cost / 10).toFixed(1);
+                    let price_change = (y.cost_change_start / 10).toFixed(1);
+                    newPicksHyp.push({
+                      ...x,
+                      disabled: true,
+                      element_out: null,
+                      element_type: y.element_type,
+                      team: y.team,
+                      now_cost,
+                      price_change,
+                    });
+                    realPicksHyp.push({
+                      ...x,
+                      disabled: true,
+                      element_out: null,
+                      element_type: y.element_type,
+                      team: y.team,
+                      now_cost,
+                      price_change,
                     });
                   }
-                }
+                });
               });
-            });
 
-            data.picks.forEach((x) => {
-              players.forEach((y) => {
-                if (y.id === x.element) {
-                  let now_cost = (y.now_cost / 10).toFixed(1);
-                  let price_change = (y.cost_change_start / 10).toFixed(1);
-                  newPicksHyp.push({
-                    ...x,
-                    disabled: true,
-                    element_out: null,
-                    element_type: y.element_type,
-                    team: y.team,
-                    now_cost,
-                    price_change,
-                  });
-                  realPicksHyp.push({
-                    ...x,
-                    disabled: true,
-                    element_out: null,
-                    element_type: y.element_type,
-                    team: y.team,
-                    now_cost,
-                    price_change,
-                  });
-                }
-              });
-            });
-
-            // Adding selling prices and buying prices to the picks
-            newPicksHyp.forEach((x) => {
-              let selling_price,
-                formattedCost,
-                profit,
-                actualProfit,
-                element_in_cost;
-              let isFound = transferPlayers.some(
-                (player) => player.element === x.element
-              );
-              if (isFound) {
-                element_in_cost = transferPlayers.find(
+              // Adding selling prices and buying prices to the picks
+              newPicksHyp.forEach((x) => {
+                let selling_price,
+                  formattedCost,
+                  profit,
+                  actualProfit,
+                  element_in_cost;
+                let isFound = transferPlayers.some(
                   (player) => player.element === x.element
-                ).element_in_cost;
-                formattedCost = (element_in_cost / 10).toFixed(1);
-                profit = +(+x.now_cost - +formattedCost).toFixed(1);
-                actualProfit = (profit * 10) % 2 === 0 ? "even" : "odd";
-                if (actualProfit === "even") {
-                  if (+profit < 0) {
-                    selling_price = (
-                      +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
-                    ).toFixed(1);
+                );
+                if (isFound) {
+                  element_in_cost = transferPlayers.find(
+                    (player) => player.element === x.element
+                  ).element_in_cost;
+                  formattedCost = (element_in_cost / 10).toFixed(1);
+                  profit = +(+x.now_cost - +formattedCost).toFixed(1);
+                  actualProfit = (profit * 10) % 2 === 0 ? "even" : "odd";
+                  if (actualProfit === "even") {
+                    if (+profit < 0) {
+                      selling_price = (
+                        +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
+                      ).toFixed(1);
+                    } else {
+                      selling_price = (
+                        +(+profit / 2).toFixed(1) + +formattedCost
+                      ).toFixed(1);
+                    }
                   } else {
-                    selling_price = (
-                      +(+profit / 2).toFixed(1) + +formattedCost
-                    ).toFixed(1);
+                    if (+profit < 0) {
+                      selling_price = (
+                        +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
+                      ).toFixed(1);
+                    } else {
+                      selling_price = (
+                        +(+(profit / 2).toFixed(2).slice(0, 3)) + +formattedCost
+                      ).toFixed(1);
+                    }
                   }
+                  newPicks.push({
+                    ...x,
+                    selling_price,
+                    element_in_cost: formattedCost,
+                  });
                 } else {
-                  if (+profit < 0) {
-                    selling_price = (
-                      +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
-                    ).toFixed(1);
+                  formattedCost = (+x.now_cost - +x.price_change).toFixed(1);
+                  profit = +(+x.now_cost - +formattedCost).toFixed(1);
+                  actualProfit = (profit * 10) % 2 === 0 ? "even" : "odd";
+                  //profit = ((+x.now_cost - +formattedCost)/2).toFixed(1)
+                  if (actualProfit === "even") {
+                    if (+profit < 0) {
+                      selling_price = (
+                        +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
+                      ).toFixed(1);
+                    } else {
+                      selling_price = (
+                        +(+profit / 2).toFixed(1) + +formattedCost
+                      ).toFixed(1);
+                    }
                   } else {
-                    selling_price = (
-                      +(+(profit / 2).toFixed(2).slice(0, 3)) + +formattedCost
-                    ).toFixed(1);
+                    if (+profit < 0) {
+                      selling_price = (
+                        +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
+                      ).toFixed(1);
+                    } else {
+                      selling_price = (
+                        +(+(profit / 2).toFixed(2).slice(0, 3)) + +formattedCost
+                      ).toFixed(1);
+                    }
                   }
+                  newPicks.push({
+                    ...x,
+                    selling_price,
+                    element_in_cost: formattedCost,
+                  });
                 }
-                newPicks.push({
-                  ...x,
-                  selling_price,
-                  element_in_cost: formattedCost,
-                });
-              } else {
-                formattedCost = (+x.now_cost - +x.price_change).toFixed(1);
-                profit = +(+x.now_cost - +formattedCost).toFixed(1);
-                actualProfit = (profit * 10) % 2 === 0 ? "even" : "odd";
-                //profit = ((+x.now_cost - +formattedCost)/2).toFixed(1)
-                if (actualProfit === "even") {
-                  if (+profit < 0) {
-                    selling_price = (
-                      +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
-                    ).toFixed(1);
-                  } else {
-                    selling_price = (
-                      +(+profit / 2).toFixed(1) + +formattedCost
-                    ).toFixed(1);
-                  }
-                } else {
-                  if (+profit < 0) {
-                    selling_price = (
-                      +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
-                    ).toFixed(1);
-                  } else {
-                    selling_price = (
-                      +(+(profit / 2).toFixed(2).slice(0, 3)) + +formattedCost
-                    ).toFixed(1);
-                  }
-                }
-                newPicks.push({
-                  ...x,
-                  selling_price,
-                  element_in_cost: formattedCost,
-                });
-              }
-            });
-
-            /* Adding selling prices and buying prices to picks to be used on reset for
-             the first gw in the ui */
-            realPicksHyp.forEach((x) => {
-              let selling_price,
-                formattedCost,
-                profit,
-                actualProfit,
-                element_in_cost;
-              let isFound = transferPlayers.some(
-                (player) => player.element === x.element
-              );
-              if (isFound) {
-                element_in_cost = transferPlayers.find(
-                  (player) => player.element === x.element
-                ).element_in_cost;
-                formattedCost = (element_in_cost / 10).toFixed(1);
-                profit = +(+x.now_cost - +formattedCost).toFixed(1);
-                actualProfit = (profit * 10) % 2 === 0 ? "even" : "odd";
-                if (actualProfit === "even") {
-                  if (+profit < 0) {
-                    selling_price = (
-                      +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
-                    ).toFixed(1);
-                  } else {
-                    selling_price = (
-                      +(+profit / 2).toFixed(1) + +formattedCost
-                    ).toFixed(1);
-                  }
-                } else {
-                  if (+profit < 0) {
-                    selling_price = (
-                      +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
-                    ).toFixed(1);
-                  } else {
-                    selling_price = (
-                      +(+(profit / 2).toFixed(2).slice(0, 3)) + +formattedCost
-                    ).toFixed(1);
-                  }
-                }
-                realPicks.push({
-                  ...x,
-                  selling_price,
-                  element_in_cost: formattedCost,
-                });
-              } else {
-                formattedCost = (+x.now_cost - +x.price_change).toFixed(1);
-                profit = +(+x.now_cost - +formattedCost).toFixed(1);
-                actualProfit = (profit * 10) % 2 === 0 ? "even" : "odd";
-                //profit = ((+x.now_cost - +formattedCost)/2).toFixed(1)
-                if (actualProfit === "even") {
-                  if (+profit < 0) {
-                    selling_price = (
-                      +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
-                    ).toFixed(1);
-                  } else {
-                    selling_price = (
-                      +(+profit / 2).toFixed(1) + +formattedCost
-                    ).toFixed(1);
-                  }
-                } else {
-                  if (+profit < 0) {
-                    selling_price = (
-                      +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
-                    ).toFixed(1);
-                  } else {
-                    selling_price = (
-                      +(+(profit / 2).toFixed(2).slice(0, 3)) + +formattedCost
-                    ).toFixed(1);
-                  }
-                }
-                realPicks.push({
-                  ...x,
-                  selling_price,
-                  element_in_cost: formattedCost,
-                });
-              }
-            });
-
-            bank = (data.entry_history.bank / 10).toFixed(1);
-            value = (data.entry_history.value / 10).toFixed(1);
-            let totalBudget = (
-              newPicks.reduce((x, y) => x + +y.selling_price, 0) + +bank
-            ).toFixed(1);
-
-            for (let i = eventId + 1; i <= 39; i++) {
-              gameweekPicks.push({
-                event: i,
-                newPicks,
-                totalBudget,
-                bank,
-                value,
               });
-              gameweekTransfersOut.push({ event: i, arr: [] });
-              gameweekTransfersIn.push({ event: i, arr: [] });
+
+              /* Adding selling prices and buying prices to picks to be used on reset for
+               the first gw in the ui */
+              realPicksHyp.forEach((x) => {
+                let selling_price,
+                  formattedCost,
+                  profit,
+                  actualProfit,
+                  element_in_cost;
+                let isFound = transferPlayers.some(
+                  (player) => player.element === x.element
+                );
+                if (isFound) {
+                  element_in_cost = transferPlayers.find(
+                    (player) => player.element === x.element
+                  ).element_in_cost;
+                  formattedCost = (element_in_cost / 10).toFixed(1);
+                  profit = +(+x.now_cost - +formattedCost).toFixed(1);
+                  actualProfit = (profit * 10) % 2 === 0 ? "even" : "odd";
+                  if (actualProfit === "even") {
+                    if (+profit < 0) {
+                      selling_price = (
+                        +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
+                      ).toFixed(1);
+                    } else {
+                      selling_price = (
+                        +(+profit / 2).toFixed(1) + +formattedCost
+                      ).toFixed(1);
+                    }
+                  } else {
+                    if (+profit < 0) {
+                      selling_price = (
+                        +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
+                      ).toFixed(1);
+                    } else {
+                      selling_price = (
+                        +(+(profit / 2).toFixed(2).slice(0, 3)) + +formattedCost
+                      ).toFixed(1);
+                    }
+                  }
+                  realPicks.push({
+                    ...x,
+                    selling_price,
+                    element_in_cost: formattedCost,
+                  });
+                } else {
+                  formattedCost = (+x.now_cost - +x.price_change).toFixed(1);
+                  profit = +(+x.now_cost - +formattedCost).toFixed(1);
+                  actualProfit = (profit * 10) % 2 === 0 ? "even" : "odd";
+                  //profit = ((+x.now_cost - +formattedCost)/2).toFixed(1)
+                  if (actualProfit === "even") {
+                    if (+profit < 0) {
+                      selling_price = (
+                        +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
+                      ).toFixed(1);
+                    } else {
+                      selling_price = (
+                        +(+profit / 2).toFixed(1) + +formattedCost
+                      ).toFixed(1);
+                    }
+                  } else {
+                    if (+profit < 0) {
+                      selling_price = (
+                        +(+profit.toFixed(2).slice(0, 4)) + +formattedCost
+                      ).toFixed(1);
+                    } else {
+                      selling_price = (
+                        +(+(profit / 2).toFixed(2).slice(0, 3)) + +formattedCost
+                      ).toFixed(1);
+                    }
+                  }
+                  realPicks.push({
+                    ...x,
+                    selling_price,
+                    element_in_cost: formattedCost,
+                  });
+                }
+              });
+
+              bank = (data.entry_history.bank / 10).toFixed(1);
+              value = (data.entry_history.value / 10).toFixed(1);
+              let totalBudget = (
+                newPicks.reduce((x, y) => x + +y.selling_price, 0) + +bank
+              ).toFixed(1);
+
+              for (let i = eventId + 1; i <= 39; i++) {
+                if (amEvent === nowEvent - 1) {
+                  const superNewz = newPicks?.filter(x => x.element_type !== 5)
+                  const extraPrice = +newPicks?.find(x => x.element_type === 5)?.selling_price
+                  const newBank = (+bank + (+extraPrice)).toFixed(1)
+                  const superTotal = (superNewz.reduce((x, y) => x + +y.selling_price, 0) + +newBank).toFixed(1)
+                  if (i <= eventId + 2) {
+                    gameweekPicks.push({ event: i, newPicks, totalBudget, bank, value })
+                  } else {
+                    gameweekPicks.push({ event: i, newPicks: superNewz, totalBudget: superTotal, bank: newBank, value })
+                  }
+                }
+                else if (amEvent === nowEvent - 2) {
+                  const superNewz = newPicks?.filter(x => x.element_type !== 5)
+                  const extraPrice = +newPicks?.find(x => x.element_type === 5)?.selling_price
+                  const newBank = (+bank + (+extraPrice)).toFixed(1)
+                  const superTotal = (superNewz.reduce((x, y) => x + +y.selling_price, 0) + +newBank).toFixed(1)
+                  if (i <= eventId + 1) {
+                    gameweekPicks.push({ event: i, newPicks, totalBudget, bank, value })
+                  } else {
+                    gameweekPicks.push({ event: i, newPicks: superNewz, totalBudget: superTotal, bank: newBank, value })
+                  }
+                } else if (amEvent === nowEvent - 3) {
+                  const superNewz = newPicks?.filter(x => x.element_type !== 5)
+                  const extraPrice = +newPicks?.find(x => x.element_type === 5)?.selling_price
+                  const newBank = (+bank + (+extraPrice)).toFixed(1)
+                  const superTotal = (superNewz.reduce((x, y) => x + +y.selling_price, 0) + +newBank).toFixed(1)
+                  gameweekPicks.push({ event: i, newPicks: superNewz, totalBudget: superTotal, bank: newBank, value })
+                }
+                else {
+                  gameweekPicks.push({
+                    event: i,
+                    newPicks,
+                    totalBudget,
+                    bank,
+                    value,
+                  });
+                }
+
+                gameweekTransfersOut.push({ event: i, arr: [] });
+                gameweekTransfersIn.push({ event: i, arr: [] });
+              }
+              setPicks(gameweekPicks);
+              setReal(realPicks);
+              setPlayersOut(gameweekTransfersOut);
+              setPlayersIn(gameweekTransfersIn);
+              setRemainingBudget(bank);
+              localStorage.removeItem("picks");
+              localStorage.setItem("picks", JSON.stringify(gameweekPicks));
+            } catch (error) {
+              console.log(error);
             }
-            setPicks(gameweekPicks);
-            setReal(realPicks);
-            setPlayersOut(gameweekTransfersOut);
-            setPlayersIn(gameweekTransfersIn);
-            setRemainingBudget(bank);
-            localStorage.removeItem("picks");
-            localStorage.setItem("picks", JSON.stringify(gameweekPicks));
           } catch (error) {
             console.log(error);
           }
         } catch (error) {
-          console.log(error);
+          console.log(error)
         }
       }
     };
@@ -677,7 +716,72 @@ function ManagerProvider({ children }) {
     setOutPlayer({});
     setInPlayerOne({});
     // set picks for later weeks
-
+    if(eventId === 0) {
+      setPicks(prev => prev.map((pick, key) => key >= pickIndex - 1 ? { ...pick, newPicks: [] } : pick))
+    } else {
+      if(pickIndex === 1) {
+        setPicks((prev) =>
+          prev.map((pick, key) =>
+            key >= pickIndex - 1 ? { ...pick, newPicks: real } : pick
+          )
+        );
+      } else {
+        if (
+          chips.freehit.event === picks[pickIndex - 2].event &&
+          pickIndex - 2 > 0
+        ) {
+          //console.log('gt 0')
+          setPicks((prev) =>
+            prev.map((pick, key) =>
+              key >= pickIndex - 1
+                ? { ...pick, newPicks: prev[pickIndex - 3].newPicks }
+                : pick
+            )
+          );
+        }
+        else if (
+          chips.freehit.event === picks[pickIndex - 2].event &&
+          pickIndex - 2 === 0
+        ) {
+          //console.log('lt 0')
+          setPicks((prev) =>
+            prev.map((pick, key) =>
+              key >= pickIndex - 1 ? { ...pick, newPicks: real } : pick
+            )
+          );
+        } else if(am?.event + 1 === nowEvent) {
+          console.log('boyt')
+          setPicks((prev) =>
+            picks.map((pick, key) =>
+              (key >= pickIndex - 1 && key <= pickIndex)
+                ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                : key > pickIndex ? { ...pick, newPicks: prev[pickIndex - 2].newPicks.filter(x => x.element_type !== 5) }
+                  : pick
+            ),
+          )
+        } else if (am?.event + 2 === nowEvent) {
+          console.log('i am here')
+          setPicks((prev) =>
+            picks.map((pick, key) =>
+              (key === pickIndex - 1)
+                ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
+                : key >= pickIndex ? { ...pick, newPicks: prev[pickIndex - 2].newPicks.filter(x => x.element_type !== 5) }
+                  : pick
+            ),
+          )
+        } else {
+          console.log('normal')
+          setPicks((prev) =>
+            prev.map((pick, key) =>
+              key >= pickIndex - 1
+                ? { ...pick, newPicks: prev[pickIndex - 2].newPicks.filter(x => x.element_type !== 5) }
+                : pick
+            )
+          );
+        }
+      }
+    }
+/*
     if (pickIndex === 1) {
       if (eventId === 0) {
         setPicks(prev => prev.map((pick, key) => key >= pickIndex - 1 ? { ...pick, newPicks: [] } : pick))
@@ -716,25 +820,27 @@ function ManagerProvider({ children }) {
       }
       else {
         if (am?.event + 1 === nowEvent) {
+          console.log('boyt')
           setPicks((prev) =>
             picks.map((pick, key) =>
               (key >= pickIndex - 1 && key <= pickIndex)
                 ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
-                : key > pickIndex ? {...pick, newPicks: prev[pickIndex - 1].newPicks.filter(x => x.element_type !== 5)}
-                : pick
+                : key > pickIndex ? { ...pick, newPicks: prev[pickIndex - 1].newPicks.filter(x => x.element_type !== 5) }
+                  : pick
             ),
           )
         } else if (am?.event + 2 === nowEvent) {
+          console.log('i am here')
           setPicks((prev) =>
             picks.map((pick, key) =>
               (key === pickIndex - 1)
                 ? { ...pick, newPicks: prev[pickIndex - 2].newPicks }
-                : key >= pickIndex ? {...pick, newPicks: prev[pickIndex - 1].newPicks.filter(x => x.element_type !== 5)}
-                : pick
+                : key >= pickIndex ? { ...pick, newPicks: prev[pickIndex - 1].newPicks.filter(x => x.element_type !== 5) }
+                  : pick
             ),
           )
         } else {
-          //console.log('normal')
+          console.log('normal')
           setPicks((prev) =>
             prev.map((pick, key) =>
               key >= pickIndex - 1
@@ -746,7 +852,7 @@ function ManagerProvider({ children }) {
 
 
       }
-    }
+    }*/
   };
   const actDeact = useCallback(() => {
     if (chips.freehit.event === +eventId + pickIndex) {
