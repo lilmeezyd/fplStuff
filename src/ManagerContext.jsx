@@ -720,11 +720,29 @@ function ManagerProvider({ children }) {
       setPicks(prev => prev.map((pick, key) => key >= pickIndex - 1 ? { ...pick, newPicks: [] } : pick))
     } else {
       if(pickIndex === 1) {
-        setPicks((prev) =>
-          prev.map((pick, key) =>
-            key >= pickIndex - 1 ? { ...pick, newPicks: real } : pick
+        if(am?.event + 1 === nowEvent) {
+          setPicks((prev) =>
+            prev.map((pick, key) =>
+              (key >= pickIndex - 1 && key <= pickIndex)
+                ? { ...pick, newPicks: real }
+                :  { ...pick, newPicks: prev[pickIndex - 1].newPicks.filter(x => x.element_type !== 5) }
+            ),
           )
-        );
+        } else if (am?.event + 2 === nowEvent) {
+          setPicks((prev) =>
+            prev.map((pick, key) =>
+              (key === pickIndex - 1)
+                ? { ...pick, newPicks: real }
+                : { ...pick, newPicks: prev[pickIndex - 1].newPicks.filter(x => x.element_type !== 5) }
+            ),
+          )
+        } else {
+          setPicks((prev) =>
+            prev.map((pick, key) =>
+              key >= pickIndex - 1 ? { ...pick, newPicks: real } : pick
+            )
+          );
+        }
       } else {
         if (
           chips.freehit.event === picks[pickIndex - 2].event &&
@@ -743,14 +761,12 @@ function ManagerProvider({ children }) {
           chips.freehit.event === picks[pickIndex - 2].event &&
           pickIndex - 2 === 0
         ) {
-          //console.log('lt 0')
           setPicks((prev) =>
             prev.map((pick, key) =>
               key >= pickIndex - 1 ? { ...pick, newPicks: real } : pick
             )
           );
         } else if(am?.event + 1 === nowEvent) {
-          console.log('boyt')
           setPicks((prev) =>
             picks.map((pick, key) =>
               (key >= pickIndex - 1 && key <= pickIndex)
@@ -760,7 +776,6 @@ function ManagerProvider({ children }) {
             ),
           )
         } else if (am?.event + 2 === nowEvent) {
-          console.log('i am here')
           setPicks((prev) =>
             picks.map((pick, key) =>
               (key === pickIndex - 1)
@@ -770,7 +785,6 @@ function ManagerProvider({ children }) {
             ),
           )
         } else {
-          console.log('normal')
           setPicks((prev) =>
             prev.map((pick, key) =>
               key >= pickIndex - 1

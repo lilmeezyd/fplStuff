@@ -52,6 +52,13 @@ export const playerApiSlice = apiSlice.injectEndpoints({
                 method: 'POST'
             }),
             invalidatesTags: ['Player']
+        }),
+        updatePlayers8: builder.mutation({
+            query: () => ({
+                url: `${PLAYERS_URL}/list8`,
+                method: 'POST'
+            }),
+            invalidatesTags: ['Player']
         })
     })
 })
@@ -59,5 +66,6 @@ export const playerApiSlice = apiSlice.injectEndpoints({
 export const { useUpdatePlayersMutation,
     useUpdatePlayers2Mutation, useUpdatePlayers3Mutation,
     useUpdatePlayers4Mutation, useUpdatePlayers5Mutation,
-    useUpdatePlayers6Mutation, useUpdatePlayers7Mutation
+    useUpdatePlayers6Mutation, useUpdatePlayers7Mutation, 
+    useUpdatePlayers8Mutation
  } = playerApiSlice

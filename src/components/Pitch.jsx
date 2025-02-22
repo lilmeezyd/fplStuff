@@ -381,9 +381,9 @@ const Pitch = () => {
         <div>
           <h1>{managerInfo?.name}</h1>
           <h4>{managerInfo?.player_first_name} {managerInfo?.player_last_name}</h4>
-          <div className="my-rank"><div>{colorOfArr === 'green' && <AiFillCaretUp />}
-            {colorOfArr === 'red' && <AiFillCaretDown />}
-            {colorOfArr === 'grey' && <AiFillCaretRight />}
+          <div className="my-rank"><div className="rank-arrow-housing">{colorOfArr === 'green' && <AiFillCaretUp color="green" />}
+            {colorOfArr === 'red' && <AiFillCaretDown color="red" />}
+            {colorOfArr === 'grey' && <AiFillCaretRight color="grey" />}
           </div>
             <h4 style={{ padding: 0, margin: 0, marginLeft: 10 + 'px' }}>{managerInfo?.summary_overall_rank}</h4>
           </div>

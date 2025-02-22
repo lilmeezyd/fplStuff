@@ -5,7 +5,8 @@ import { useUpdateEventsMutation } from '../slices/eventApiSlice'
 import {
     useUpdatePlayersMutation,
     useUpdatePlayers2Mutation, useUpdatePlayers3Mutation,
-    useUpdatePlayers4Mutation, useUpdatePlayers5Mutation, useUpdatePlayers6Mutation, useUpdatePlayers7Mutation
+    useUpdatePlayers4Mutation, useUpdatePlayers5Mutation, useUpdatePlayers6Mutation, useUpdatePlayers7Mutation,
+    useUpdatePlayers8Mutation
 } from '../slices/loadPlayersSlice'
 
 
@@ -28,6 +29,8 @@ const Admin = () => {
     ] = useUpdatePlayers6Mutation()
     const [updatePlayers7, { isLoading: playLoad7 }
     ] = useUpdatePlayers7Mutation()
+    const [updatePlayers8, { isLoading: playLoad8 }
+    ] = useUpdatePlayers8Mutation()
 
     const updateFixtureList = async () => {
         try {
@@ -100,6 +103,14 @@ const Admin = () => {
     const updatePlayerList7 = async () => {
         try {
             const res = await updatePlayers7().unwrap()
+            console.log(res)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const updatePlayerList8 = async () => {
+        try {
+            const res = await updatePlayers8().unwrap()
             console.log(res)
         } catch (error) {
             console.log(error)
@@ -230,6 +241,20 @@ const Admin = () => {
                     </div>
                     <Button onClick={updatePlayerList7}>
                     {playLoad7 === true ? <Spinner /> : 'Update'}
+                    </Button>
+                </div>
+            </div>
+            <div className='admin-panel-child'>
+                <div>
+                    <h5>Update Player List 8</h5>
+                    <div className='admin-panel-line'></div>
+                    <div>Message</div>
+                    <div className='admin-update'>
+                        <div>Updated on:&nbsp;</div>
+                        <div>Yesterday</div>
+                    </div>
+                    <Button onClick={updatePlayerList8}>
+                    {playLoad8 === true ? <Spinner /> : 'Update'}
                     </Button>
                 </div>
             </div>

@@ -1441,6 +1441,13 @@ footer {
   padding: 5px;
 }
 
+.rank-arrow-housing {
+  border: 1px solid #aaa;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
 .message {
   margin: 0.5rem 0;
   padding: 0.4rem;
