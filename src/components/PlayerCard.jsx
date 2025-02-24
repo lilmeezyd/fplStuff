@@ -9,6 +9,7 @@ const PlayerCard = (props) => {
     backgroundColor, color, forwardImage, playerPos, shortName, shortPos,
     position, team, sort
   } = props
+  const { teams } = usePlayer()
   const { pickIndex, picks, playersSelected, goalkeepersSelected,
     defendersSelected, midfieldersSelected, forwardsSelected,
     managersSelected,
@@ -16,6 +17,7 @@ const PlayerCard = (props) => {
   } = useManager()
   const [showInfo, setShowInfo] = useState(false)
   const [showTransfer, setShowTransfer] = useState(false)
+  const [page, setPage] = useState(0)
   const [show, setShow] = useState(false);
   const [showPop, setShowPop] = useState(false)
   const { am } = chips
@@ -23,6 +25,30 @@ const PlayerCard = (props) => {
 
   const handleClose = () => setShow(false);
   const handleClosePop = () => setShowPop(false)
+  const fixtureOpponents = playerPos?.fixtures?.filter(x => +x.event >= +nowEvent)?.map(x => {
+    const opp = x.is_home === true ? x.team_a : x.team_h
+    const returnedOpponent = `${teams?.find(y => y.id === opp)?.short_name}`
+    let color =
+      x.difficulty === 4 || x.difficulty === 5
+        ? "rgb(255,255,255)"
+        : "rgb(0,0,0)";
+    let backgroundColor =
+      x.difficulty === 2
+        ? "rgb(1, 252, 122)"
+        : x.difficulty === 3
+          ? "rgb(231, 231, 231)"
+          : x.difficulty === 4
+            ? "rgb(255, 23, 81)"
+            : x.difficulty === 5
+              ? "rgb(128, 7, 45)"
+              : "rgb(0,0,0)";
+    return <div style={{
+      textTransform: x.is_home === true ? 'uppercase' : 'lowercase' ,
+      background: backgroundColor, color: color
+    }}>
+      {returnedOpponent}
+    </div>
+  }).slice(0, 4)
 
   const handleShowInfo = () => {
     setShow(true)
@@ -78,6 +104,13 @@ const PlayerCard = (props) => {
               </div>
             </div>
           </button>
+          <div className="player-fixtures">
+            {fixtureOpponents.map((fix, idx) =>
+              <div key={idx + 1}>
+                {fix}
+              </div>
+            )}
+          </div>
         </div>
         <div className="price money">{(playerPos.now_cost / 10).toFixed(1)}</div>
         <div className="points others">{sort === 'event_points' ? playerPos.event_points : playerPos.total_points}</div>
@@ -129,11 +162,11 @@ const TransferPopUp = (props) => {
           <span className='danger span-msg'>You already have the maximum number of Players in your squad</span>
         </div>}
         {playersSelected() < 16 && playerPos.element_type === 5 && managersSelected() === 1 && <div className='message'>
-            <span className='danger span-msg'>You already have an assistant manager selected</span>
-          </div>}
-          {playerPos.element_type === 5 && am?.used === false && <div className='message'>
-            <span className='danger span-msg'>Assistant manager chip is not activated</span>
-          </div>}
+          <span className='danger span-msg'>You already have an assistant manager selected</span>
+        </div>}
+        {playerPos.element_type === 5 && am?.used === false && <div className='message'>
+          <span className='danger span-msg'>Assistant manager chip is not activated</span>
+        </div>}
         {(playersSelected() < 15 || playersSelected() < 16) &&
           playerPos.element_type === 1 &&
           goalkeepersSelected() === 2 && <div className='message'>
@@ -161,8 +194,8 @@ const TransferPopUp = (props) => {
               playerPos.element_type === 2 && (defendersSelected() === undefined || defendersSelected() < 5)) ||
             ((playersSelected() < 16 || playersSelected() === undefined) &&
               playerPos.element_type === 3 && (midfieldersSelected() === undefined || midfieldersSelected() < 5)) ||
-            ((playersSelected() < 16 || playersSelected() === undefined) && 
-            (nowEvent === am?.event + 2 || nowEvent === am?.event + 1 || nowEvent === am?.event) &&
+            ((playersSelected() < 16 || playersSelected() === undefined) &&
+              (nowEvent === am?.event + 2 || nowEvent === am?.event + 1 || nowEvent === am?.event) &&
               playerPos.element_type === 5 && (managersSelected() === undefined || managersSelected() < 1)) ||
             ((playersSelected() < 16 || playersSelected() === undefined) &&
               playerPos.element_type === 4 && (forwardsSelected() === undefined || forwardsSelected() < 3))) && <button
