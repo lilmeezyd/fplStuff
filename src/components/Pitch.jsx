@@ -19,6 +19,7 @@ import {
 } from "../helpers/picksHelper";
 import TransferRows from "./TransferRows";
 import { AiFillCaretRight, AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
+import Fixtures from "../screens/Fixtures";
 const Pitch = () => {
   const {
     players,
@@ -981,6 +982,8 @@ const Pitch = () => {
           </Button>
         </div>
         <TransferRows show={show} handleClose={handleClose} />
+
+        <Fixtures />
       </div>)}
     </>
   );

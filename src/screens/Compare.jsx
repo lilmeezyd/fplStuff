@@ -15,9 +15,11 @@ import {
 const Compare = () => {
   const { players, events, elementTypes, teams } = usePlayer();
   const [playersId, setPlayersId] = useState({ player1: 1, player2: 1 });
-  const [ playerNames, setPlayerNames ] = useState({playerName1: 
-    '', playerName2: ''})
-  const [ playerSet, setPlayerSet] = useState({playerSet1: false, playerSet2: false})
+  const [playerNames, setPlayerNames] = useState({
+    playerName1:
+      '', playerName2: ''
+  })
+  const [playerSet, setPlayerSet] = useState({ playerSet1: false, playerSet2: false })
   const [playerData1, setPlayerData1] = useState({ start1: 1, end1: 1 });
   const [playerData2, setPlayerData2] = useState({ start2: 1, end2: 1 });
   const [data1, setData1] = useState({});
@@ -43,11 +45,63 @@ const Compare = () => {
     const data = players.find(player => player.id === player2)
     setData2(data)
   }, [players, player2]);
+  console.log(data1)
+  console.log(data2)
+
+  const fixtureOpponents1 = data1?.fixtures?.map(x => {
+    const opp = x.is_home === true ? x.team_a : x.team_h
+    const returnedOpponent = `${teams?.find(y => y.id === opp)?.short_name}`
+    let color =
+      x.difficulty === 4 || x.difficulty === 5
+        ? "rgb(255,255,255)"
+        : "rgb(0,0,0)";
+    let backgroundColor =
+      x.difficulty === 2
+        ? "rgb(1, 252, 122)"
+        : x.difficulty === 3
+          ? "rgb(231, 231, 231)"
+          : x.difficulty === 4
+            ? "rgb(255, 23, 81)"
+            : x.difficulty === 5
+              ? "rgb(128, 7, 45)"
+              : "rgb(0,0,0)";
+    return <div style={{
+      textTransform: x.is_home === true ? 'uppercase' : 'lowercase',
+      background: backgroundColor, color: color
+    }}>
+      {returnedOpponent}
+    </div>
+  }).slice(0, 5)
+
+  const fixtureOpponents2 = data2?.fixtures?.map(x => {
+    const opp = x.is_home === true ? x.team_a : x.team_h
+    const returnedOpponent = `${teams?.find(y => y.id === opp)?.short_name}`
+    let color =
+      x.difficulty === 4 || x.difficulty === 5
+        ? "rgb(255,255,255)"
+        : "rgb(0,0,0)";
+    let backgroundColor =
+      x.difficulty === 2
+        ? "rgb(1, 252, 122)"
+        : x.difficulty === 3
+          ? "rgb(231, 231, 231)"
+          : x.difficulty === 4
+            ? "rgb(255, 23, 81)"
+            : x.difficulty === 5
+              ? "rgb(128, 7, 45)"
+              : "rgb(0,0,0)";
+    return <div style={{
+      textTransform: x.is_home === true ? 'uppercase' : 'lowercase',
+      background: backgroundColor, color: color
+    }}>
+      {returnedOpponent}
+    </div>
+  }).slice(0, 5)
 
   const playersForUl = useMemo(() => {
     const playersForUl1 = players?.filter(player => player.web_name?.toLowerCase().startsWith(playerName1?.toLowerCase()))
     const playersForUl2 = players?.filter(player => player.web_name?.toLowerCase().startsWith(playerName2?.toLowerCase()))
-    return { playersForUl1, playersForUl2}
+    return { playersForUl1, playersForUl2 }
   }, [players, playerName1, playerName2])
 
   const { playersForUl1, playersForUl2 } = playersForUl
@@ -158,17 +212,17 @@ const Compare = () => {
       expected_assists_per_90:
         p1History?.reduce((x, y) => x + y.minutes, 0) > 30
           ? p1History?.reduce((x, y) => x + +y.expected_assists, 0) /
-            (p1History?.reduce((x, y) => x + y.minutes, 0) / 90)
+          (p1History?.reduce((x, y) => x + y.minutes, 0) / 90)
           : 0,
       expected_goals_per_90:
         p1History?.reduce((x, y) => x + y.minutes, 0) > 30
           ? p1History?.reduce((x, y) => x + +y.expected_goals, 0) /
-            (p1History?.reduce((x, y) => x + y.minutes, 0) / 90)
+          (p1History?.reduce((x, y) => x + y.minutes, 0) / 90)
           : 0,
       expected_goal_involvements_per_90:
         p1History?.reduce((x, y) => x + y.minutes, 0) > 30
           ? p1History?.reduce((x, y) => x + +y.expected_goal_involvements, 0) /
-            (p1History?.reduce((x, y) => x + y.minutes, 0) / 90)
+          (p1History?.reduce((x, y) => x + y.minutes, 0) / 90)
           : 0,
     };
     const p2 = {
@@ -197,17 +251,17 @@ const Compare = () => {
       expected_assists_per_90:
         p2History?.reduce((x, y) => x + y.minutes, 0) > 30
           ? p2History?.reduce((x, y) => x + +y.expected_assists, 0) /
-            (p2History?.reduce((x, y) => x + y.minutes, 0) / 90)
+          (p2History?.reduce((x, y) => x + y.minutes, 0) / 90)
           : 0,
       expected_goals_per_90:
         p2History?.reduce((x, y) => x + y.minutes, 0) > 30
           ? p2History?.reduce((x, y) => x + +y.expected_goals, 0) /
-            (p2History?.reduce((x, y) => x + y.minutes, 0) / 90)
+          (p2History?.reduce((x, y) => x + y.minutes, 0) / 90)
           : 0,
       expected_goal_involvements_per_90:
         p2History?.reduce((x, y) => x + y.minutes, 0) > 30
           ? p2History?.reduce((x, y) => x + +y.expected_goal_involvements, 0) /
-            (p2History?.reduce((x, y) => x + y.minutes, 0) / 90)
+          (p2History?.reduce((x, y) => x + y.minutes, 0) / 90)
           : 0,
     };
     return { p1, p2 };
@@ -291,40 +345,40 @@ const Compare = () => {
             <div className="player-wrapper">
               <div className="p1">
                 <input
-                onClick={() => {
-                  setPlayerSet(prevState => ({
-                    ...prevState,
-                    playerSet1: !playerSet1
-                  }))
-                }}
-                onChange={e => {
-                  setPlayerNames(prevState => ({
-                    ...prevState,
-                    playerName1: e.target.value
-                  }))
-                }}
-                value={playerName1} className="custom-select" type="text" />
+                  onClick={() => {
+                    setPlayerSet(prevState => ({
+                      ...prevState,
+                      playerSet1: !playerSet1
+                    }))
+                  }}
+                  onChange={e => {
+                    setPlayerNames(prevState => ({
+                      ...prevState,
+                      playerName1: e.target.value
+                    }))
+                  }}
+                  value={playerName1} className="custom-select" type="text" />
                 {playerSet1 && <ul>
-                {playersForUl1
-                  .sort((x, y) => (x.web_name > y.web_name ? 1 : -1))
-                  .map((player) => (
-                    <li onClick={(e) => {
-                      setPlayerSet(prevState => ({
-                        ...prevState,
-                        playerSet1: !playerSet1
-                      }))
-                      setPlayerNames(prevState => ({
-                        ...prevState,
-                        playerName1: e.target.innerHTML
-                      }))
-                      setPlayersId((prevState) => ({
-                        ...prevState,
-                        player1: e.target.value,
-                      }))
-                    }} className="p-1" value={player.id} key={player.id}>
-                      {player.web_name}
-                    </li>
-                  ))}
+                  {playersForUl1
+                    .sort((x, y) => (x.web_name > y.web_name ? 1 : -1))
+                    .map((player) => (
+                      <li onClick={(e) => {
+                        setPlayerSet(prevState => ({
+                          ...prevState,
+                          playerSet1: !playerSet1
+                        }))
+                        setPlayerNames(prevState => ({
+                          ...prevState,
+                          playerName1: e.target.innerHTML
+                        }))
+                        setPlayersId((prevState) => ({
+                          ...prevState,
+                          player1: e.target.value,
+                        }))
+                      }} className="p-1" value={player.id} key={player.id}>
+                        {player.web_name}
+                      </li>
+                    ))}
                 </ul>}
               </div>
               {playerToCompare1 && (
@@ -347,41 +401,42 @@ const Compare = () => {
             <div className="player-wrapper">
               <div className="p1">
                 <input
-                onClick={() => {
-                  setPlayerSet(prevState => ({
-                    ...prevState,
-                    playerSet2: !playerSet2
-                  }))
-                }}
-                onChange={e => {
-                  setPlayerNames(prevState => ({
-                    ...prevState,
-                    playerName2: e.target.value
-                  }))}}
+                  onClick={() => {
+                    setPlayerSet(prevState => ({
+                      ...prevState,
+                      playerSet2: !playerSet2
+                    }))
+                  }}
+                  onChange={e => {
+                    setPlayerNames(prevState => ({
+                      ...prevState,
+                      playerName2: e.target.value
+                    }))
+                  }}
                   value={playerName2}
-                 className="custom-select" type="text" />
+                  className="custom-select" type="text" />
                 {playerSet2 && <ul>
-                {playersForUl2
-                  .sort((x, y) => (x.web_name > y.web_name ? 1 : -1))
-                  .map((player) => (
-                    <li
-                    onClick={(e) => {
-                      setPlayerSet(prevState => ({
-                        ...prevState,
-                        playerSet2: !playerSet2
-                      }))
-                      setPlayerNames(prevState => ({
-                        ...prevState,
-                        playerName2: e.target.innerHTML
-                      }))
-                      setPlayersId((prevState) => ({
-                        ...prevState,
-                        player2: e.target.value,
-                      }))
-                    }} className="p-1" value={player.id} key={player.id}>
-                      {player.web_name}
-                    </li>
-                  ))}
+                  {playersForUl2
+                    .sort((x, y) => (x.web_name > y.web_name ? 1 : -1))
+                    .map((player) => (
+                      <li
+                        onClick={(e) => {
+                          setPlayerSet(prevState => ({
+                            ...prevState,
+                            playerSet2: !playerSet2
+                          }))
+                          setPlayerNames(prevState => ({
+                            ...prevState,
+                            playerName2: e.target.innerHTML
+                          }))
+                          setPlayersId((prevState) => ({
+                            ...prevState,
+                            player2: e.target.value,
+                          }))
+                        }} className="p-1" value={player.id} key={player.id}>
+                        {player.web_name}
+                      </li>
+                    ))}
                 </ul>}
               </div>
               {playerToCompare2 && (
@@ -403,17 +458,38 @@ const Compare = () => {
             </div>
           </div>
           <div className="comparison py-2">
-            <div onClick={onStat} style={{ fontWeight: 700,
-            background: '#0000ff1f',
-              borderRadius: 0.8+'rem', border: '2px solid blue' }} className="p-2">
+            <div onClick={onStat} style={{
+              fontWeight: 700,
+              background: '#0000ff1f',
+              borderRadius: 0.8 + 'rem', border: '2px solid blue'
+            }} className="p-2">
               Select Gameweeks range for {playerToCompare1.name}
             </div>
-            <div onClick={onGraph} style={{ fontWeight: 700,
-              borderRadius: 0.8+'rem',
-              background: '#ff000029', border: '2px solid red'  }} className="p-2">
+            <div onClick={onGraph} style={{
+              fontWeight: 700,
+              borderRadius: 0.8 + 'rem',
+              background: '#ff000029', border: '2px solid red'
+            }} className="p-2">
               Select Gameweeks range for {playerToCompare2.name}
             </div>
           </div>
+          {/*<h6 style={{fontWeight: "bold"}}>NEXT 5 FIXTURES</h6>
+          <div className="player-fixtures-wrapper">
+            <div className="player-fixtures">
+              {fixtureOpponents1?.map((fix, idx) =>
+                <div key={idx + 1}>
+                  {fix}
+                </div>
+              )}
+            </div>
+            <div className="player-fixtures">
+              {fixtureOpponents2?.map((fix, idx) =>
+                <div key={idx + 1}>
+                  {fix}
+                </div>
+              )}
+            </div>
+          </div>*/}
 
           <div className="range-wrapper">
             <div className="range-contents">
@@ -543,9 +619,9 @@ const Compare = () => {
                     width:
                       p1.total_points > 0
                         ? (p1.total_points /
-                            (p1.total_points + p2.total_points)) *
-                            100 +
-                          "%"
+                          (p1.total_points + p2.total_points)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p1.total_points > 0 && "blue",
                     padding: 0.3 + "rem",
@@ -557,9 +633,9 @@ const Compare = () => {
                     width:
                       p2.total_points > 0
                         ? (p2.total_points /
-                            (p1.total_points + p2.total_points)) *
-                            100 +
-                          "%"
+                          (p1.total_points + p2.total_points)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p2.total_points > 0 && "red",
                     padding: 0.3 + "rem",
@@ -578,9 +654,9 @@ const Compare = () => {
                     width:
                       p1.goals_scored > 0
                         ? (p1.goals_scored /
-                            (p1.goals_scored + p2.goals_scored)) *
-                            100 +
-                          "%"
+                          (p1.goals_scored + p2.goals_scored)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p1.goals_scored > 0 && "blue",
                     padding: 0.3 + "rem",
@@ -592,9 +668,9 @@ const Compare = () => {
                     width:
                       p2.goals_scored > 0
                         ? (p2.goals_scored /
-                            (p1.goals_scored + p2.goals_scored)) *
-                            100 +
-                          "%"
+                          (p1.goals_scored + p2.goals_scored)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p2.goals_scored > 0 && "red",
                     padding: 0.3 + "rem",
@@ -642,9 +718,9 @@ const Compare = () => {
                     width:
                       p1.clean_sheets > 0
                         ? (p1.clean_sheets /
-                            (p1.clean_sheets + p2.clean_sheets)) *
-                            100 +
-                          "%"
+                          (p1.clean_sheets + p2.clean_sheets)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p1.clean_sheets > 0 && "blue",
                     padding: 0.3 + "rem",
@@ -656,9 +732,9 @@ const Compare = () => {
                     width:
                       p2.clean_sheets > 0
                         ? (p2.clean_sheets /
-                            (p1.clean_sheets + p2.clean_sheets)) *
-                            100 +
-                          "%"
+                          (p1.clean_sheets + p2.clean_sheets)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p2.clean_sheets > 0 && "red",
                     padding: 0.3 + "rem",
@@ -768,9 +844,9 @@ const Compare = () => {
                     width:
                       p1.yellow_cards > 0
                         ? (p1.yellow_cards /
-                            (p1.yellow_cards + p2.yellow_cards)) *
-                            100 +
-                          "%"
+                          (p1.yellow_cards + p2.yellow_cards)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p1.yellow_cards > 0 && "blue",
                     padding: 0.3 + "rem",
@@ -782,9 +858,9 @@ const Compare = () => {
                     width:
                       p2.yellow_cards > 0
                         ? (p2.yellow_cards /
-                            (p1.yellow_cards + p2.yellow_cards)) *
-                            100 +
-                          "%"
+                          (p1.yellow_cards + p2.yellow_cards)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p2.yellow_cards > 0 && "red",
                     padding: 0.3 + "rem",
@@ -803,7 +879,7 @@ const Compare = () => {
                     width:
                       p1.red_cards > 0
                         ? (p1.red_cards / (p1.red_cards + p2.red_cards)) * 100 +
-                          "%"
+                        "%"
                         : 0 + "%",
                     background: p1.red_cards > 0 && "blue",
                     padding: 0.3 + "rem",
@@ -815,7 +891,7 @@ const Compare = () => {
                     width:
                       p2.red_cards > 0
                         ? (p2.red_cards / (p1.red_cards + p2.red_cards)) * 100 +
-                          "%"
+                        "%"
                         : 0 + "%",
                     background: p2.red_cards > 0 && "red",
                     padding: 0.3 + "rem",
@@ -892,9 +968,9 @@ const Compare = () => {
                     width:
                       p1.expected_goals > 0
                         ? (p1.expected_goals /
-                            (p1.expected_goals + p2.expected_goals)) *
-                            100 +
-                          "%"
+                          (p1.expected_goals + p2.expected_goals)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p1.expected_goals > 0 && "blue",
                     padding: 0.3 + "rem",
@@ -906,9 +982,9 @@ const Compare = () => {
                     width:
                       p2.expected_goals > 0
                         ? (p2.expected_goals /
-                            (p1.expected_goals + p2.expected_goals)) *
-                            100 +
-                          "%"
+                          (p1.expected_goals + p2.expected_goals)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p2.expected_goals > 0 && "red",
                     padding: 0.3 + "rem",
@@ -927,9 +1003,9 @@ const Compare = () => {
                     width:
                       p1.expected_assists > 0
                         ? (p1.expected_assists /
-                            (p1.expected_assists + p2.expected_assists)) *
-                            100 +
-                          "%"
+                          (p1.expected_assists + p2.expected_assists)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p1.expected_assists > 0 && "blue",
                     padding: 0.3 + "rem",
@@ -941,9 +1017,9 @@ const Compare = () => {
                     width:
                       p2.expected_assists > 0
                         ? (p2.expected_assists /
-                            (p1.expected_assists + p2.expected_assists)) *
-                            100 +
-                          "%"
+                          (p1.expected_assists + p2.expected_assists)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p2.expected_assists > 0 && "red",
                     padding: 0.3 + "rem",
@@ -962,10 +1038,10 @@ const Compare = () => {
                     width:
                       p1.expected_goal_involvements > 0
                         ? (p1.expected_goal_involvements /
-                            (p1.expected_goal_involvements +
-                              p2.expected_goal_involvements)) *
-                            100 +
-                          "%"
+                          (p1.expected_goal_involvements +
+                            p2.expected_goal_involvements)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p1.expected_goal_involvements > 0 && "blue",
                     padding: 0.3 + "rem",
@@ -977,10 +1053,10 @@ const Compare = () => {
                     width:
                       p2.expected_goal_involvements > 0
                         ? (p2.expected_goal_involvements /
-                            (p1.expected_goal_involvements +
-                              p2.expected_goal_involvements)) *
-                            100 +
-                          "%"
+                          (p1.expected_goal_involvements +
+                            p2.expected_goal_involvements)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p2.expected_goal_involvements > 0 && "red",
                     padding: 0.3 + "rem",
@@ -1000,10 +1076,10 @@ const Compare = () => {
                     width:
                       p1.expected_goals_per_90 > 0
                         ? (p1.expected_goals_per_90 /
-                            (p1.expected_goals_per_90 +
-                              p2.expected_goals_per_90)) *
-                            100 +
-                          "%"
+                          (p1.expected_goals_per_90 +
+                            p2.expected_goals_per_90)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p1.expected_goals_per_90 > 0 && "blue",
                     padding: 0.3 + "rem",
@@ -1015,10 +1091,10 @@ const Compare = () => {
                     width:
                       p2.expected_goals_per_90 > 0
                         ? (p2.expected_goals_per_90 /
-                            (p1.expected_goals_per_90 +
-                              p2.expected_goals_per_90)) *
-                            100 +
-                          "%"
+                          (p1.expected_goals_per_90 +
+                            p2.expected_goals_per_90)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p2.expected_goals_per_90 > 0 && "red",
                     padding: 0.3 + "rem",
@@ -1037,10 +1113,10 @@ const Compare = () => {
                     width:
                       p1.expected_assists_per_90 > 0
                         ? (p1.expected_assists_per_90 /
-                            (p1.expected_assists_per_90 +
-                              p2.expected_assists_per_90)) *
-                            100 +
-                          "%"
+                          (p1.expected_assists_per_90 +
+                            p2.expected_assists_per_90)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p1.expected_assists_per_90 > 0 && "blue",
                     padding: 0.3 + "rem",
@@ -1052,10 +1128,10 @@ const Compare = () => {
                     width:
                       p2.expected_assists_per_90 > 0
                         ? (p2.expected_assists_per_90 /
-                            (p1.expected_assists_per_90 +
-                              p2.expected_assists_per_90)) *
-                            100 +
-                          "%"
+                          (p1.expected_assists_per_90 +
+                            p2.expected_assists_per_90)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background: p2.expected_assists_per_90 > 0 && "red",
                     padding: 0.3 + "rem",
@@ -1075,10 +1151,10 @@ const Compare = () => {
                     width:
                       p1.expected_goal_involvements_per_90 > 0
                         ? (p1.expected_goal_involvements_per_90 /
-                            (p1.expected_goal_involvements_per_90 +
-                              p2.expected_goal_involvements_per_90)) *
-                            100 +
-                          "%"
+                          (p1.expected_goal_involvements_per_90 +
+                            p2.expected_goal_involvements_per_90)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background:
                       p1.expected_goal_involvements_per_90 > 0 && "blue",
@@ -1091,10 +1167,10 @@ const Compare = () => {
                     width:
                       p2.expected_goal_involvements_per_90 > 0
                         ? (p2.expected_goal_involvements_per_90 /
-                            (p1.expected_goal_involvements_per_90 +
-                              p2.expected_goal_involvements_per_90)) *
-                            100 +
-                          "%"
+                          (p1.expected_goal_involvements_per_90 +
+                            p2.expected_goal_involvements_per_90)) *
+                        100 +
+                        "%"
                         : 0 + "%",
                     background:
                       p2.expected_goal_involvements_per_90 > 0 && "red",
