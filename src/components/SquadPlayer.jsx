@@ -72,10 +72,11 @@ const SquadPlayer = (props) => {
                       <div key={idx}>
                         {opp.arr.map((x, idx) => {
                           let color =
-                            x.difficulty === 4 || x.difficulty === 5
+                            x.difficulty === 1 || x.difficulty === 4 || x.difficulty === 5
                               ? "rgb(255,255,255)"
                               : "rgb(0,0,0)";
                           let backgroundColor =
+                          x.difficulty === 1 ? "rgb(55, 85, 35)" :
                             x.difficulty === 2
                               ? "rgb(1, 252, 122)"
                               : x.difficulty === 3

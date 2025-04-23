@@ -48,9 +48,9 @@ const PlayerInfo = (props) => {
                   x.team_h_difficulty
                   let venue = playerDetails().teamId === x.team_a ? 'Away' : 
                   'Home'
-                  let color = diff === 4 || diff === 5 ? 
+                  let color = diff === 1 || diff === 4 || diff === 5 ? 
                         'rgb(255,255,255)': 'rgb(0,0,0)'
-                  let backgroundColor = diff === 2 ? 'rgb(1, 252, 122)' : 
+                  let backgroundColor = diff === 1 ? "rgb(55, 85, 35)" : diff === 2 ? 'rgb(1, 252, 122)' : 
                         diff === 3 ? 'rgb(231, 231, 231)' : diff === 4 ?
                         'rgb(255, 23, 81)' : diff === 5 ? 'rgb(128, 7, 45)' : 'rgb(0,0,0)'
                         return (

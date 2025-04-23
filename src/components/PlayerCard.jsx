@@ -29,10 +29,11 @@ const PlayerCard = (props) => {
     const opp = x.is_home === true ? x.team_a : x.team_h
     const returnedOpponent = `${teams?.find(y => y.id === opp)?.short_name}`
     let color =
-      x.difficulty === 4 || x.difficulty === 5
+      x.difficulty === 1 || x.difficulty === 4 || x.difficulty === 5
         ? "rgb(255,255,255)"
         : "rgb(0,0,0)";
     let backgroundColor =
+    x.difficulty === 1 ? "rgb(55, 85, 35)" :
       x.difficulty === 2
         ? "rgb(1, 252, 122)"
         : x.difficulty === 3
