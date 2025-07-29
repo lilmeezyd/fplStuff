@@ -2083,21 +2083,16 @@ function ManagerProvider({ children }) {
   };
 
   const colorOfArrow = () => {
-    if (managerHistory.current) {
-      let color;
-      let gwCurrent =
-        managerHistory.current[managerHistory.current.length - 1].overall_rank;
-      let gwPrevious =
-        managerHistory.current[managerHistory.current.length - 2].overall_rank;
-      if (gwCurrent < gwPrevious) {
-        color = "green";
-      } else if (gwCurrent > gwPrevious) {
-        color = "red";
-      } else {
-        color = "grey";
-      }
-      return color;
+    if (managerHistory.current?.length >= 2) {
+      const gwCurrent = managerHistory.current.at(-1).overall_rank;
+      const gwPrevious = managerHistory.current.at(-2).overall_rank;
+
+      if (gwCurrent < gwPrevious) return "green";
+      if (gwCurrent > gwPrevious) return "red";
+      return "grey";
     }
+
+    return "grey"; // Default or fallback
   };
 
   const contextValue = {

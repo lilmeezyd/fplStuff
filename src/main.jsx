@@ -34,9 +34,9 @@ const router = createBrowserRouter(
       {/*<Route path='/achievements' element={<AchievementsScreen />} />*/}
       <Route path='/fixtures' element={<Fixtures />} />
       <Route path='/login' element={<Login />} />
-      <Route path="" element={<PrivateRoute />}>
+      {/*<Route path="" element={<PrivateRoute />}>*/}
         <Route path='/admin' element={<Admin />} />
-      </Route>
+      {/*</Route>*/}
       <Route path="*" element={<Unknown />} />
     </Route>
   )

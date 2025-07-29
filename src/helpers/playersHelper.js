@@ -1,19 +1,22 @@
 //let curPage = 1
 
 export const getMinMax = (players) => {
-    let prices = []
-    let maxPrice = players.length > 0 ? 
-    Math.max(...players.map(x => (x.now_cost/10).toFixed(1))) : 0
-    let minPrice = players.length > 0 ?  
-    Math.min(...players.map(x => (x.now_cost/10).toFixed(1))) : 0
-    
-    for(let i=maxPrice; i>=minPrice; i-=0.5) {
-        prices.push(+(i.toFixed(1)))
-	
-    }
+  let prices = [];
+    console.log("players:", players);
+    console.log("Array.isArray(players):", Array.isArray(players));
 
-    return { prices, minPrice, maxPrice }
-} 
+
+  const mappedPrices = players?.map(x => +(x.now_cost / 10).toFixed(1));
+
+  const maxPrice = players.length > 0 ? Math.max(...mappedPrices) : 0;
+  const minPrice = players.length > 0 ? Math.min(...mappedPrices) : 0;
+
+  for (let i = maxPrice; i >= minPrice; i -= 0.5) {
+    prices.push(+i.toFixed(1));
+  }
+
+  return { prices, minPrice, maxPrice };
+};
 
 export const getPlayers = (players, sort, view, word, cutPrice) => {
     let id
