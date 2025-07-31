@@ -55,6 +55,8 @@ const Pitch = () => {
     updateInitsBb,
     updateInitsAm
   } = useManager();
+
+
   const [fplId, setFplId] = useState("");
   const [init, setInit] = useState({ init_wc: null, init_tc: null, init_bb: null, init_fh: null, init_am: null })
   const [managerId, setManagerId] = useState(
@@ -391,7 +393,7 @@ const Pitch = () => {
         </div>
         <div className="deadlines">
           <div>
-            {(event > am + 2 || event < am) && (playersSelected() === 15 ? (
+            {(event + eventId > eventId) && (playersSelected() === 15 ? (
               <button
                 style={{ visibility: pageOneVisible }}
                 onClick={viewPreviousPage}
@@ -405,20 +407,7 @@ const Pitch = () => {
                 <img src={prevPage} alt="prev_page" />
               </button>
             ))}
-            {(event === am + 2 || event === am +1 || event === am) && (playersSelected() === 16 ? (
-              <button
-                style={{ visibility: pageOneVisible }}
-                onClick={viewPreviousPage}
-                className="btn-controls-1"
-                id="prevButton"
-              >
-                <img src={prevPage} alt="prev_page" />
-              </button>
-            ) : (
-              <button className="btn-controls-1" id="prevButton" disabled>
-                <img src={prevPage} alt="prev_page" />
-              </button>
-            ))}
+            
           </div>
           <div style={{ fontWeight: 700 }}>
             {gameweeks?.map((gameweek, idx) => {
@@ -447,7 +436,7 @@ const Pitch = () => {
             </div>
           </div>
           <div>
-            {(event > am + 2 || event < am) && (playersSelected() === 15 ? (
+            {(event + eventId < 38) && (playersSelected() === 15 ? (
               <button
                 style={{ visibility: lastPageVisible }}
                 onClick={viewNextPage}
@@ -462,27 +451,14 @@ const Pitch = () => {
               </button>
             ))}
 
-            {(event === am + 2 || event === am +1 || event === am) && (playersSelected() === 16 ? (
-              <button
-                style={{ visibility: lastPageVisible }}
-                onClick={viewNextPage}
-                className="btn-controls-1"
-                id="nextButton"
-              >
-                <img src={nextPage} alt="next_page" />
-              </button>
-            ) : (
-              <button className="btn-controls-1" id="nextButton" disabled>
-                <img src={nextPage} alt="next_page" />
-              </button>
-            ))}
+            
           </div>
         </div>
 
         <div className="transfer-data p-2">
           <div className="transfer-item">
             <div>Selected</div>
-            <div>{playersSelected()}/{(event > am + 2 || event < am) ? 15 : 16}</div>
+            <div>{playersSelected()}/ 15</div>
           </div>
           <div className="transfer-item">
             <div>ITB</div>
@@ -907,7 +883,7 @@ const Pitch = () => {
           </div>
         </div>
 
-        <div className="chip-buttons p-2">
+        {/*<div className="chip-buttons p-2">
           {new Date().toISOString() < new Date("2024/12/26/14:00").toISOString() && <div>
             {((wc === null || wc === event) && (event > am + 2 || event < am)) ? <Button onClick={activateWC1}>
               <div className="style-btn"><div>Wildcard</div>
@@ -980,7 +956,7 @@ const Pitch = () => {
           >
             Change FPL ID
           </Button>
-        </div>
+        </div>*/}
         <TransferRows show={show} handleClose={handleClose} />
 
         <Fixtures />

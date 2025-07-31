@@ -1954,15 +1954,16 @@ function ManagerProvider({ children }) {
     player.multiplier === 0 ? setInPlayerOne({}) : setOutPlayer({});
   };
   const getInTheBank = () => {
+    
     if (picks.length > 0) {
-      const totalBudget = +(picks[pickIndex - 1]?.totalBudget)
+      const totalBudget = +(picks[pickIndex - 1]?.budget)
       let spent =
         picks[pickIndex - 1]?.newPicks?.reduce((x, y) => x + +y.selling_price, 0) -
         tempPlayersOut?.reduce((x, y) => x + +y.selling_price, 0);
-      let inBank = totalBudget - (+(spent))
+     let inBank = totalBudget - (+(spent))
       return inBank.toFixed(1);
     }
-
+ 
   };
 
   const playersSelected = () => {
@@ -2070,7 +2071,7 @@ function ManagerProvider({ children }) {
   const transferCost = () => {
     let fts =
       chips.freehit.event === +eventId + pickIndex ||
-        chips.wildcard.event === +eventId + pickIndex
+        chips.wildcard.event === +eventId + pickIndex || +eventId === 0
         ? 1e10000
         : freeTransfers();
     let playerLength =
@@ -2078,7 +2079,7 @@ function ManagerProvider({ children }) {
         ? 0
         : playersOut[pickIndex - 1]?.arr.length;
     let cost = playerLength <= fts ? 0 : (fts - playerLength) * 4;
-
+console.log(`Cost: ${cost}`)
     return cost;
   };
 

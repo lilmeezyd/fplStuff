@@ -1,13 +1,20 @@
-import Players from '../components/Players'
-import Pitch from '../components/Pitch'
+import { lazy, Suspense } from 'react';
+
+const Pitch = lazy(() => import('../components/Pitch'));
+const Players = lazy(() => import('../components/Players'));
+
 const Planner = () => {
   return (
     <div className="main">
+      <Suspense fallback={<div>Loading Pitch...</div>}>
         <Pitch />
-        {/*<div>Pitch</div>*/}
-        <Players />
-    </div>
-  )
-}
+      </Suspense>
 
-export default Planner
+      <Suspense fallback={<div>Loading Players...</div>}>
+        <Players />
+      </Suspense>
+    </div>
+  );
+};
+
+export default Planner;

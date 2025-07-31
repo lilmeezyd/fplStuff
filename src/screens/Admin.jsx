@@ -160,7 +160,7 @@ const Admin = () => {
                     </Button>
                 </div>
             </div>
-            <div className='admin-panel-child'>
+            {/* <div className='admin-panel-child'>
                 <div>
                     <h5>Update Player List 2</h5>
                     <div className='admin-panel-line'></div>
@@ -258,7 +258,7 @@ const Admin = () => {
                     </Button>
                 </div>
             </div>
-        </div>
+        */}</div>
     )
 }
 

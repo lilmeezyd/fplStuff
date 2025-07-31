@@ -34,6 +34,7 @@ function PlayerProvider({ children }){
                 const response = await axios.get(`https://fpl-stuff-proxy.vercel.app/api/data/getTeams`)
                 //const response = await axios.get('https://fpl-stuff-proxy.vercel.app/fixtures')
                 const data = await response.data
+                console.log(data)
                 setTeams(data)
             } catch (error) {
                 let errorMsg = error?.response?.data?.msg || error?.message

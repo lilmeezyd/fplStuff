@@ -2,8 +2,7 @@
 
 export const getMinMax = (players) => {
   let prices = [];
-    console.log("players:", players);
-    console.log("Array.isArray(players):", Array.isArray(players));
+    
 
 
   const mappedPrices = players?.map(x => +(x.now_cost / 10).toFixed(1));
