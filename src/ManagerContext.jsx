@@ -1956,10 +1956,12 @@ function ManagerProvider({ children }) {
   const getInTheBank = () => {
     
     if (picks.length > 0) {
-      const totalBudget = +(picks[pickIndex - 1]?.budget)
+      const totalBudget = +(picks[pickIndex - 1]?.totalBudget)
       let spent =
         picks[pickIndex - 1]?.newPicks?.reduce((x, y) => x + +y.selling_price, 0) -
         tempPlayersOut?.reduce((x, y) => x + +y.selling_price, 0);
+      console.log(`totalBudget: ${picks[pickIndex - 1].totalBudget}`)     
+    
      let inBank = totalBudget - (+(spent))
       return inBank.toFixed(1);
     }

@@ -46,7 +46,7 @@ console.log(`Teams:${teams}`)
 
   const renderPlayers = (group, title) => (
     group.length > 0 && (
-      <div className='table-one' id={title.toLowerCase()}>
+      <div className='table-one' id={title?.toLowerCase()}>
         <div className='player-header-1'>
           <div className='info'></div>
           <div className='position-table-1'>{title}</div>
@@ -54,25 +54,25 @@ console.log(`Teams:${teams}`)
           <div className='others'>Points</div>
         </div>
         <div>
-          {group.map((player) => {
-            const teamObj = teams.find(x => x.id === player.team);
-            const posObj = elementTypes.find(x => x.id === player.element_type);
-            const news = player.chance_of_playing_next_round;
+          {group?.map((player) => {
+            const teamObj = teams?.find(x => x?.id === player?.team);
+            const posObj = elementTypes?.find(x => x?.id === player?.element_type);
+            const news = player?.chance_of_playing_next_round;
             const forwardImage = posObj?.id === 1 ? `${teamObj?.code}_1-66` : `${teamObj?.code}-66`;
             const backgroundColor = news === 0 ? 'darkred' : news === 25 ? 'darkorange' : news === 50 ? 'orange' : news === 75 ? 'yellow' : 'white';
             const color = [0, 25, 50].includes(news) ? 'white' : 'black';
 
             return (
               <PlayerCard
-                key={player.id}
+                key={player?.id}
                 backgroundColor={backgroundColor}
                 color={color}
                 forwardImage={forwardImage}
                 playerPos={player}
                 shortName={teamObj?.short_name}
                 shortPos={posObj?.singular_name_short}
-                position={posObj.id}
-                team={teamObj.id}
+                position={posObj?.id}
+                team={teamObj?.id}
                 sort={sort}
               />
             );
