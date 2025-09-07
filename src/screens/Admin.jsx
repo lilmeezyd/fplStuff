@@ -54,7 +54,7 @@ const Admin = () => {
     const updatePlayerList1 = async () => {
         try {
             const res = await updatePlayers().unwrap()
-            console.log(res)
+            console.log(`res: ${res}`);
         } catch (error) {
             console.log(error)
         }

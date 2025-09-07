@@ -11,3 +11,6 @@ run = ["sh", "-c", "npm run dev"]
 localPort = 3000
 externalPort = 3000
 exposeLocalhost = true
+
+[agent]
+expertMode = true

@@ -2020,7 +2020,7 @@ function ManagerProvider({ children }) {
     let playerName = players?.find((x) => x.id === player)?.web_name;
     setPlayerName(playerName);
   };
-  const freeTransfers = () => {
+  /*const freeTransfers = () => {
     let fts = transferLogic.fts;
     const cPlayersOut = [...playersOut];
     const current = cPlayersOut.splice(0, pickIndex);
@@ -2065,10 +2065,56 @@ function ManagerProvider({ children }) {
       a += 1;
       returnFt(a, b, c);
     }
+    console.log(`Fts: ${fts}`)
     return fts;
-  };
+  };*/
+const freeTransfers = () => {
+  let fts = transferLogic.fts;
+  const cPlayersOut = [...playersOut];
+  const current = cPlayersOut.splice(0, pickIndex);
+console.log(current)
+  if (eventId === 0 && pickIndex === 2) {
+    return 1;
+  }
+
+  if (pickIndex === 1) {
+    return fts;
+  }
+
+  for (let i = 0; i < current.length; i++) {
+    
+    const player = current[i];
+    const { arr, event } = player;
+
+    if (arr.length === 0 && fts < 5 &&
+      chips.freehit.event !== event &&
+      chips.wildcard.event !== event
+    ) {
+      fts += 1;
+    } else if (
+      arr.length > 0 &&
+      chips.freehit.event !== event &&
+      chips.wildcard.event !== event
+    ) {
+      if (arr.length >= fts) {
+        fts = 1;
+      } else {
+        fts = fts - arr.length + 1;
+      }
+    }
+    // if chips used or fts already maxed, fts remains unchanged
+  }
+
+  console.log(`Fts: ${fts}`);
+  return fts;
+};
+
 
   const transferCost = () => {
+console.log('eventId');
+    console.log(eventId)
+    console.log('pickIndex')
+console.log(pickIndex)
     let fts =
       chips.freehit.event === +eventId + pickIndex ||
         chips.wildcard.event === +eventId + pickIndex || +eventId === 0
