@@ -1594,7 +1594,6 @@ footer {
   height: fit-content;
   /*border: 1px solid black;*/
   padding: 0.5rem;
-  display: flex;
   column-gap: 0.5rem;
   background: rgba(0, 139, 139, 0.5);
   border-radius: 10px;
@@ -1662,7 +1661,7 @@ footer {
 
 .stat-table-row {
   display: grid;
-  grid-template-columns: 25px 120px 410px 100px 105px 150px 210px;
+  grid-template-columns: 25px 120px 410px 100px 105px 150px 210px 210px;
   width: fit-content;
 }
 

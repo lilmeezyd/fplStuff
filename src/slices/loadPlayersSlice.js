@@ -1,14 +1,14 @@
 import { apiSlice } from "./apiSlice";
-const PLAYERS_URL = "https://fpl-stuff-proxy.vercel.app/api/data"
+/*const PLAYERS_URL = "https://fpl-stuff-proxy.vercel.app/api/data"*/
 //const PLAYERS_URL = "http://localhost:5000/api/data"
-/*const PLAYERS_URL = "https://2e771dbc-b06b-41c9-9123-89e9513716e0-00-1tj5cvezv500d.kirk.replit.dev/api/data"*/
+const PLAYERS_URL = "https://2e771dbc-b06b-41c9-9123-89e9513716e0-00-1tj5cvezv500d.kirk.replit.dev/api/data"
 
 export const playerApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         updatePlayers: builder.mutation({
             query: () => ({
                 url: `${PLAYERS_URL}/load`,
-                method: 'POST'
+                method: 'PATCH'
             }),
             invalidatesTags: ['Player']
         }),

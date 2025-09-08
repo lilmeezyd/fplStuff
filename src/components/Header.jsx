@@ -33,7 +33,7 @@ const Header = () => {
                             <LinkContainer to='/compare'><Nav.Link>Comparison Tool</Nav.Link></LinkContainer>
                             <LinkContainer to='/planner'><Nav.Link>My Planner</Nav.Link></LinkContainer>
                             <LinkContainer to='/fixtures'><Nav.Link>Fixtures</Nav.Link></LinkContainer>
-                            {adminInfo && <LinkContainer to='/admin'><Nav.Link>Admin</Nav.Link></LinkContainer>}
+                            <LinkContainer to='/admin'><Nav.Link>Admin</Nav.Link></LinkContainer>
                            { adminInfo && <Nav.Link style={{fontWeight: 700 }}>Hi, {adminInfo?.firstName}</Nav.Link>}
                             {adminInfo && <Button onClick={logoutHandler} className='btn btn-lgout'>Logout</Button>}
                             {/*<LinkContainer to='/achievements'><Nav.Link>Achievements</Nav.Link></LinkContainer> */}   

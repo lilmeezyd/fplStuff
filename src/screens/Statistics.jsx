@@ -619,6 +619,7 @@ const Statistics = () => {
                 <div className="defense-1">Defence</div>
                 <div className="expected-1">Expected Data</div>
                 <div className="data_90-1">Data Per 90 minutes</div>
+                <div className="data_90-1">DEFCON</div>
               </div>
             </div>
 

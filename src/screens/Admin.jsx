@@ -56,6 +56,7 @@ const Admin = () => {
             const res = await updatePlayers().unwrap()
             console.log(`res: ${res}`);
         } catch (error) {
+            console.log('error')
             console.log(error)
         }
     }
